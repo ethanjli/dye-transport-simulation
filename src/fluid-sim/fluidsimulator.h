@@ -9,16 +9,16 @@
 class FluidSimulator
 {
 public:
-    FluidSimulator(double dt);
+    FluidSimulator(double dt = 0.1);
 
     double dt;
+    FluidSystem system;
 
-    void addDensity(const Grid &field);
+    void addDensity();
+    void addVelocity();
     void stepSystem();
-    Grid getDensity();
 
 private:
-    FluidSystem system;
     void stepDensity();
     void stepVelocity();
 };

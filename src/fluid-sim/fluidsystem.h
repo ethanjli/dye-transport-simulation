@@ -6,7 +6,7 @@
 #include "math.h"
 
 // Compile-time parameters
-const unsigned int kGridSize = 100;
+const unsigned int kGridSize = 64;
 const double kGridLength = 1;
 
 const unsigned int kFullGridSize = kGridSize + 2;
@@ -16,7 +16,7 @@ typedef Eigen::Array<Scalar, kFullGridSize, kFullGridSize> Grid;
 class FluidSystem
 {
 public:
-    FluidSystem();
+    FluidSystem(Scalar diffusionConstant = 0, Scalar viscosity = 0);
 
     Scalar diffusionConstant;
     Scalar viscosity;
@@ -25,9 +25,14 @@ public:
     Grid v;
     Grid u_prev;
     Grid v_prev;
+    Grid u_add;
+    Grid v_add;
 
     Grid density;
     Grid density_prev;
+    Grid density_add;
+
+    void clear();
 };
 
 #endif // FLUIDSYSTEM_H
