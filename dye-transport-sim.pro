@@ -12,4 +12,6 @@ HEADERS += \
     src/fluid-sim/fluidsystem.h \
     src/fluid-sim/math.h
 
+LIBS += -lGL -lGLU -lglut
+
 INCLUDEPATH += /usr/include/eigen3
