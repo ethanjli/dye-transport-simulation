@@ -22,7 +22,7 @@ static void pre_display(void) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0.0, 1.0, 0.0, 1.0);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -33,7 +33,7 @@ static void post_display(void) {
 static void draw_velocity(void) {
     Scalar x, y;
 
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor3f(0.0f, 0.0f, 0.0f);
     glLineWidth(1.0f);
 
     glBegin(GL_LINES);
@@ -62,13 +62,13 @@ static void draw_density(void)
             Scalar d10 = fluidSimulator.system.density(i + 1, j);
             Scalar d11 = fluidSimulator.system.density(i + 1, j + 1);
 
-            glColor3f(d00, d00, d00);
+            glColor3f(1 - 0.4 * d00, 1 - 0.4 * d00, 1);
             glVertex2f(x, y);
-            glColor3f(d10, d10, d10);
+            glColor3f(1 - 0.4 * d10, 1 - 0.4 * d10, 1);
             glVertex2f(x + kGridSpacing, y);
-            glColor3f(d11, d11, d11);
+            glColor3f(1 - 0.4 * d11, 1 - 0.4 * d11, 1);
             glVertex2f(x + kGridSpacing, y + kGridSpacing);
-            glColor3f(d01, d01, d01);
+            glColor3f(1 - 0.4 * d01, 1 - 0.4 * d01, 1);
             glVertex2f(x, y + kGridSpacing);
         }
     }
@@ -153,7 +153,7 @@ static void open_glut_window() {
     glutInitWindowSize(win_x, win_y);
     win_id = glutCreateWindow("Jos Stam's Demo");
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glutSwapBuffers();
     glClear(GL_COLOR_BUFFER_BIT);
