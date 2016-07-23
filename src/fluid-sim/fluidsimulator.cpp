@@ -59,7 +59,7 @@ void FluidSimulator::stepVelocity() {
 void solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
                   std::function<void(Grid&)> setBoundaries,
                   unsigned int numIterations) {
-    Grid temp;
+    Grid temp = Grid::Zero(kFullGridSize, kFullGridSize);
 
     x = x_0;
     for (unsigned int iteration = 0; iteration < numIterations; ++iteration) {
@@ -85,7 +85,7 @@ void advectField(Grid &newField, const Grid &field, const Grid &u, const Grid &v
                  std::function<void(Grid&)> setBoundaries, Scalar dt) {
     Scalar dt_0 = dt * kGridSize;
     for (Grid::Index i = 1; i <= kGridSize; ++i) {
-        for(Grid::Index j = 1; j <= kGridSize; ++j) {
+        for (Grid::Index j = 1; j <= kGridSize; ++j) {
             Scalar x = i - dt_0 * u(i, j);
             x = std::max(0.5, std::min(kGridSize + 0.5, x));
             int i_0 = (int)x;
@@ -106,7 +106,7 @@ void advectField(Grid &newField, const Grid &field, const Grid &u, const Grid &v
 }
 
 void projectField(Grid &u, Grid &v, Grid &p, Grid &div) {
-    p = Grid::Zero();
+    p = Grid::Zero(kFullGridSize, kFullGridSize);
     for (Grid::Index i = 1; i <= kGridSize; ++i) {
         for(Grid::Index j = 1; j <= kGridSize; ++j) {
             div(i, j) = -0.5 * kGridSpacing * (u(i + 1, j) - u(i - 1, j) +

@@ -6,12 +6,12 @@
 #include "math.h"
 
 // Compile-time parameters
-const unsigned int kGridSize = 64;
+const unsigned int kGridSize = 200;
 const double kGridLength = 1;
 
 const unsigned int kFullGridSize = kGridSize + 2;
 const double kGridSpacing = kGridLength / kGridSize;
-typedef Eigen::Array<Scalar, kFullGridSize, kFullGridSize> Grid;
+typedef Eigen::Array<Scalar, Eigen::Dynamic, Eigen::Dynamic> Grid;
 
 class FluidSystem
 {
@@ -21,16 +21,16 @@ public:
     Scalar diffusionConstant;
     Scalar viscosity;
 
-    Grid u;
-    Grid v;
-    Grid u_prev;
-    Grid v_prev;
-    Grid u_add;
-    Grid v_add;
+    Grid u = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid v = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid u_prev = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid v_prev = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid u_add = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid v_add = Grid::Zero(kFullGridSize, kFullGridSize);
 
-    Grid density;
-    Grid density_prev;
-    Grid density_add;
+    Grid density = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid density_prev = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid density_add = Grid::Zero(kFullGridSize, kFullGridSize);
 
     void clear();
 };

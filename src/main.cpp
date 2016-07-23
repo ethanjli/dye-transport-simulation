@@ -79,9 +79,9 @@ static void get_from_UI()
 {
     int i, j;
 
-    fluidSimulator.system.density_add = Grid::Zero();
-    fluidSimulator.system.u_add = Grid::Zero();
-    fluidSimulator.system.v_add = Grid::Zero();
+    fluidSimulator.system.density_add = Grid::Zero(kFullGridSize, kFullGridSize);
+    fluidSimulator.system.u_add = Grid::Zero(kFullGridSize, kFullGridSize);
+    fluidSimulator.system.v_add = Grid::Zero(kFullGridSize, kFullGridSize);
 
     if (!mouse_down[0] && !mouse_down[2]) return;
 
@@ -128,7 +128,7 @@ static void motion_func(int x, int y) {
     yMouse = y;
 }
 static void reshape_func(int width, int height) {
-    glutSetWindow(win_id);
+    //glutSetWindow(win_id);
     glutReshapeWindow(width, height);
     win_x = width;
     win_y = height;
@@ -136,7 +136,7 @@ static void reshape_func(int width, int height) {
 static void idle_func(void) {
     get_from_UI();
     fluidSimulator.stepSystem();
-    glutSetWindow(win_id);
+    //glutSetWindow(win_id);
     glutPostRedisplay();
 }
 static void display_func(void) {
