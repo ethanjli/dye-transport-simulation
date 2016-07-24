@@ -57,6 +57,9 @@ int main()
     interface.init(WIDTH, HEIGHT);
     interface.state = INTERFACE_ACTIVE;
 
+    double lastCheckpoint = glfwGetTime();
+    int renderedFrames = 0;
+
     // Game loop
     while (!glfwWindowShouldClose(window))
     {
@@ -64,6 +67,12 @@ int main()
         GLfloat currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+        ++renderedFrames;
+        if (currentFrame - lastCheckpoint >= 1) {
+            std::cout << 1000.0 / renderedFrames << " ms/frame" << std::endl;
+            renderedFrames = 0;
+            lastCheckpoint = currentFrame;
+        }
 
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
         glfwPollEvents();
