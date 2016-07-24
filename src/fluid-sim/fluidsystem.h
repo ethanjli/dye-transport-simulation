@@ -6,7 +6,7 @@
 #include "math.h"
 
 // Compile-time parameters
-const unsigned int kGridSize = 200;
+const unsigned int kGridSize = 300;
 const double kGridLength = 1;
 
 const unsigned int kFullGridSize = kGridSize + 2;
@@ -21,14 +21,14 @@ public:
     Scalar diffusionConstant;
     Scalar viscosity;
 
-    Grid u = Grid::Zero(kFullGridSize, kFullGridSize);
-    Grid v = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid u = Grid::Random(kFullGridSize, kFullGridSize);
+    Grid v = Grid::Random(kFullGridSize, kFullGridSize);
     Grid u_prev = Grid::Zero(kFullGridSize, kFullGridSize);
     Grid v_prev = Grid::Zero(kFullGridSize, kFullGridSize);
     Grid u_add = Grid::Zero(kFullGridSize, kFullGridSize);
     Grid v_add = Grid::Zero(kFullGridSize, kFullGridSize);
 
-    Grid density = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid density = (Grid::Random(kFullGridSize, kFullGridSize) + 1) * 0.5;
     Grid density_prev = Grid::Zero(kFullGridSize, kFullGridSize);
     Grid density_add = Grid::Zero(kFullGridSize, kFullGridSize);
 

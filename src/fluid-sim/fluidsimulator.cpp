@@ -3,8 +3,8 @@
 #include <utility>
 #include <algorithm>
 
-FluidSimulator::FluidSimulator(double dt) :
-    dt(dt)
+FluidSimulator::FluidSimulator(FluidSystem &system, double dt) :
+    system(system), dt(dt)
 {
     system = FluidSystem();
 }
@@ -82,13 +82,13 @@ void advectField(Grid &newField, const Grid &field, const Grid &u, const Grid &v
     for (Grid::Index i = 1; i <= kGridSize; ++i) {
         for (Grid::Index j = 1; j <= kGridSize; ++j) {
             Scalar x = i - dt_0 * u(i, j);
-            x = std::max(0.5, std::min(kGridSize + 0.5, x));
+            x = std::max(0.5f, std::min(kGridSize + 0.5f, x));
             int i_0 = (int)x;
             int i_1 = i_0 + 1;
             Scalar s_1 = x - i_0;
             Scalar s_0 = 1 - s_1;
             Scalar y = j - dt_0 * v(i, j);
-            y = std::max(0.5, std::min(kGridSize + 0.5, y));
+            y = std::max(0.5f, std::min(kGridSize + 0.5f, y));
             int j_0 = (int)y;
             int j_1 = j_0 + 1;
             Scalar t_1 = y - j_0;

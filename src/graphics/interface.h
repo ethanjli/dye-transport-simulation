@@ -8,6 +8,8 @@
 #include "resourcemanager.h"
 #include "canvas.h"
 
+#include "../fluid-sim/fluidsimulator.h"
+
 enum SimulationState {
     INTERFACE_ACTIVE,
     INTERFACE_MENU,
@@ -33,6 +35,8 @@ public:
 
 private:
     Canvas *canvas;
+    std::shared_ptr<FluidSystem> fluidSystem = std::make_shared<FluidSystem>();
+    FluidSimulator fluidSimulator;
 };
 
 #endif // INTERFACE_H

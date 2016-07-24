@@ -9,8 +9,8 @@ SOURCES += src/main.cpp \
     src/graphics/shader.cpp \
     src/graphics/canvas.cpp \
     src/graphics/interface.cpp \
-    src/graphics/texture.cpp \
-    src/graphics/resourcemanager.cpp
+    src/graphics/resourcemanager.cpp \
+    src/graphics/fluidtexture.cpp
 
 HEADERS += \
     src/fluid-sim/fluidsimulator.h \
@@ -19,8 +19,8 @@ HEADERS += \
     src/graphics/shader.h \
     src/graphics/canvas.h \
     src/graphics/interface.h \
-    src/graphics/texture.h \
-    src/graphics/resourcemanager.h
+    src/graphics/resourcemanager.h \
+    src/graphics/fluidtexture.h
 
 DISTFILES += \
     src/graphics/canvas.frag \
@@ -32,7 +32,7 @@ shaders.files += \
     src/graphics/canvas.vert
 INSTALLS += shaders
 
-LIBS += -lSOIL -lGL -lGLEW -lglfw
+LIBS += -lGL -lGLEW -lglfw
 
 INCLUDEPATH += /usr/include/eigen3 \
     /usr/include/SOIL

@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <algorithm>
+#include <iostream>
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -10,26 +11,30 @@
 #include "resourcemanager.h"
 
 Interface::Interface() :
-    keys() {}
+    keys(), fluidSimulator(FluidSimulator(*fluidSystem)) {
+}
 
 Interface::~Interface() {}
 
 void Interface::init(GLint width, GLint height) {
     // Load shaders
-    ResourceManager::loadShader("canvas", "shaders/canvas.vert", "shaders/canvas.frag");
+    ResourceManager::loadShader("canvas", "shaders/canvas.vert", "shaders/canvas.frag").use();
     // Configure shaders
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width),
                                       static_cast<GLfloat>(height), 0.0f,
                                       -1.0f, 1.0f);
-    ResourceManager::getShader("canvas").use().setInteger("image", 0);
+    ResourceManager::getShader("canvas").setInteger("image", 0);
     ResourceManager::getShader("canvas").setMatrix4("projection", projection);
     // Set render-specific controls
     canvas = new Canvas(ResourceManager::getShader("canvas"), width, height);
     // Load textures
-    ResourceManager::loadTexture("face", "textures/awesomeface.png", GL_TRUE);
+    ResourceManager::loadFluidTexture("fluid", fluidSystem, GL_FALSE);
 }
 
 void Interface::update(GLfloat dt) {
+    // TODO: use dt !
+    fluidSimulator.stepSystem();
+    ResourceManager::getFluidTexture("fluid").update();
 }
 
 void Interface::processInput(GLfloat dt) {
@@ -77,5 +82,5 @@ void Interface::processResize(GLint width, GLint height) {
 }
 
 void Interface::render() {
-    canvas->draw(ResourceManager::getTexture("face"));
+    canvas->draw(ResourceManager::getFluidTexture("fluid"));
 }

@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 Canvas::Canvas(const Shader &shader, GLint width, GLint height) :
-    shader(shader), width(width), height(height)
+    width(width), height(height), shader(shader)
 {
     initRenderData();
 }
@@ -11,7 +11,7 @@ Canvas::~Canvas() {
     glDeleteVertexArrays(1, &quadVAO);
 }
 
-void Canvas::draw(const Texture &texture) {
+void Canvas::draw(const FluidTexture &fluidTexture) {
     const GLfloat rotate = cameraAngle;
 
     shader.use();
@@ -31,7 +31,7 @@ void Canvas::draw(const Texture &texture) {
     shader.setMatrix4("view", view);
 
     glActiveTexture(GL_TEXTURE0);
-    texture.bind();
+    fluidTexture.bind();
 
     glBindVertexArray(quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);

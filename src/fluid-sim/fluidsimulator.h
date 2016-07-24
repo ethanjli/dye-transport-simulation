@@ -9,10 +9,10 @@
 class FluidSimulator
 {
 public:
-    FluidSimulator(double dt = 0.1);
+    FluidSimulator(FluidSystem &system, double dt = 0.1);
 
+    FluidSystem &system;
     double dt;
-    FluidSystem system;
 
     void addDensity();
     void addVelocity();

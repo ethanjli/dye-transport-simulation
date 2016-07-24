@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-#include "texture.h"
+#include "fluidtexture.h"
 #include "shader.h"
 
 // Based on the LearnOpenGL 2D Game Rendering Sprites tutorial
@@ -23,7 +23,7 @@ public:
     GLfloat cameraY = 0;
 
     // Renders a defined quad textured with a given sprite
-    void draw(const Texture &texture);
+    void draw(const FluidTexture &fluidTexture);
 
 private:
     Shader shader;
