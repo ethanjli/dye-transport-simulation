@@ -3,8 +3,8 @@
 #include <utility>
 #include <algorithm>
 
-FluidSimulator::FluidSimulator(FluidSystem &system, double dt) :
-    system(system), dt(dt)
+FluidSimulator::FluidSimulator(FluidSystem &system) :
+    system(system)
 {
     system = FluidSystem();
 }
@@ -17,12 +17,12 @@ void FluidSimulator::addVelocity() {
     system.v += system.v_add;
 }
 
-void FluidSimulator::stepSystem() {
-    stepVelocity();
-    stepDensity();
+void FluidSimulator::stepSystem(Scalar dt) {
+    stepVelocity(dt);
+    stepDensity(dt);
 }
 
-void FluidSimulator::stepDensity() {
+void FluidSimulator::stepDensity(Scalar dt) {
     addDensity();
     std::swap(system.density, system.density_prev);
     diffuseField(system.density, system.density_prev,
@@ -32,7 +32,7 @@ void FluidSimulator::stepDensity() {
                 system.u, system.v, setContinuityFieldBoundaries, dt);
 }
 
-void FluidSimulator::stepVelocity() {
+void FluidSimulator::stepVelocity(Scalar dt) {
     addVelocity();
     std::swap(system.u, system.u_prev);
     diffuseField(system.u, system.u_prev, system.viscosity,

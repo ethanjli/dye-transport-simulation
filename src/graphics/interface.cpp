@@ -32,8 +32,7 @@ void Interface::init(GLint width, GLint height) {
 }
 
 void Interface::update(GLfloat dt) {
-    // TODO: use dt !
-    fluidSimulator.stepSystem();
+    fluidSimulator.stepSystem(dt);
     ResourceManager::getFluidTexture("fluid").update();
 }
 

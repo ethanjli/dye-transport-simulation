@@ -9,18 +9,17 @@
 class FluidSimulator
 {
 public:
-    FluidSimulator(FluidSystem &system, double dt = 0.1);
+    FluidSimulator(FluidSystem &system);
 
     FluidSystem &system;
-    double dt;
 
     void addDensity();
     void addVelocity();
-    void stepSystem();
+    void stepSystem(Scalar dt);
 
 private:
-    void stepDensity();
-    void stepVelocity();
+    void stepDensity(Scalar dt);
+    void stepVelocity(Scalar dt);
 };
 
 void solvePoisson(Grid &solution, const Grid &initial,
