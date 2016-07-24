@@ -1,7 +1,7 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 
-// Based on the LearnOpenGL 2D Game Rendering Sprites tutorial
+// Based on the LearnOpenGL 2D Game Rendering Sprites tutorial, with modifications.
 
 #include <map>
 #include <string>

@@ -6,6 +6,9 @@
 #include "math.h"
 #include "fluidsystem.h"
 
+// Adapted from Jos Stam's Stable Fluids method
+// https://d2f99xq7vri1nk.cloudfront.net/legacy_app_files/pdf/GDC03.pdf
+
 class FluidSimulator
 {
 public:

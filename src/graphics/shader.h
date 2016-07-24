@@ -1,7 +1,7 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-// Based on the LearnOpenGL 2D Game Rendering Sprites tutorial
+// Based on the LearnOpenGL 2D Game Rendering Sprites tutorial, with minor modifications
 
 #include <string>
 
@@ -21,7 +21,7 @@ public:
     Shader &use();
 
     // Compiles the shader from given source code
-    void compile(const std::string &vertexSoruce, const std::string &fragmentSource,
+    void compile(const std::string &vertexSource, const std::string &fragmentSource,
                  const std::string &geometrySource);
 
     // Utility functions

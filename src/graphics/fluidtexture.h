@@ -5,7 +5,7 @@
 
 #include "../fluid-sim/fluidsystem.h"
 
-// Based on the LearnOpenGL 2D Game Rendering Sprites tutorial
+// Based on the LearnOpenGL 2D Game Rendering Sprites tutorial, with heavy modifications
 
 #include <GL/glew.h>
 

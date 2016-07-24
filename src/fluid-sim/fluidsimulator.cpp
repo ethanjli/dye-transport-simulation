@@ -54,17 +54,14 @@ void FluidSimulator::stepVelocity(Scalar dt) {
 void solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
                   std::function<void(Grid&)> setBoundaries,
                   unsigned int numIterations) {
-    Grid temp = Grid::Zero(kFullGridSize, kFullGridSize);
-
     x = x_0;
     for (unsigned int iteration = 0; iteration < numIterations; ++iteration) {
         for (Grid::Index i = 1; i <= kGridSize; ++i) {
             for (Grid::Index j = 1; j <= kGridSize; ++j) {
-                temp(i, j) = (x_0(i, j) + a * (x(i - 1, j) + x(i + 1, j) +
-                                               x(i, j - 1) + x(i, j + 1))) / c;
+                x(i, j) = (x_0(i, j) + a * (x(i - 1, j) + x(i + 1, j) +
+                                            x(i, j - 1) + x(i, j + 1))) / c;
             }
         }
-        x = temp;
 
         setBoundaries(x);
    }

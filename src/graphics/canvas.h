@@ -7,7 +7,7 @@
 #include "fluidtexture.h"
 #include "shader.h"
 
-// Based on the LearnOpenGL 2D Game Rendering Sprites tutorial
+// Based on the LearnOpenGL 2D Game Rendering Sprites tutorial, with modifications
 
 class Canvas
 {

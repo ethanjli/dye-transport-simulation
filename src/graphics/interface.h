@@ -3,7 +3,7 @@
 
 #include <GL/glew.h>
 
-// Based on the LearnOpenGL 2D Game Rendering Sprites tutorial
+// Based on the LearnOpenGL 2D Game Rendering Sprites tutorial, with heavy modifications
 
 #include "resourcemanager.h"
 #include "canvas.h"
