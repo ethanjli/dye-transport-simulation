@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <iostream>
+
 // GLEW
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -6,12 +9,13 @@
 #include "src/graphics/interface.h"
 
 // GLFW function prototypes
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void resizeCallback(GLFWwindow *window, GLint width, GLint height);
 
 // Window dimensions
-const GLuint WIDTH = 600, HEIGHT = 600;
+const GLint WIDTH = 600, HEIGHT = 600;
 
-Interface interface(WIDTH, HEIGHT);
+Interface interface;
 
 // Boilerplate starter code from CS 148 (Summer 2016) Assignment 3's starter code.
 int main()
@@ -23,7 +27,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
     // Create a GLFWwindow object that we can use for GLFW's functions
     GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Dye Transport Simulator", nullptr, nullptr);
@@ -36,7 +40,8 @@ int main()
     glGetError(); // Called once to catch any glewInit() bugs
 
     // Set the required callback functions
-    glfwSetKeyCallback(window, key_callback);
+    glfwSetKeyCallback(window, keyCallback);
+    glfwSetWindowSizeCallback(window, resizeCallback);
 
     // OpenGL configuration
     glViewport(0, 0, WIDTH, HEIGHT);
@@ -49,7 +54,7 @@ int main()
     GLfloat lastFrame = 0.0f;
 
     // Initialize interface
-    interface.init();
+    interface.init(WIDTH, HEIGHT);
     interface.state = INTERFACE_ACTIVE;
 
     // Game loop
@@ -82,11 +87,18 @@ int main()
 }
 
 // Is called whenever a key is pressed/released via GLFW
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GL_TRUE);
     if (key >= 0 && key < 1024) {
         if (action == GLFW_PRESS) interface.keys[key] = GL_TRUE;
         else if (action == GLFW_RELEASE) interface.keys[key] = GL_FALSE;
     }
+}
+
+// Is called whenever the window is resized via GLFW
+void resizeCallback(GLFWwindow* window, GLint width, GLint height)
+{
+    interface.processResize(width, height);
+    glViewport(0, 0, width, height);
 }

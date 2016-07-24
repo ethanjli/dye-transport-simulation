@@ -12,13 +12,11 @@
 class Canvas
 {
 public:
-    Canvas(const Shader &shader, GLuint width, GLuint height);
+    Canvas(const Shader &shader, GLint width, GLint height);
     ~Canvas();
 
-    GLuint width;
-    GLuint height;
-    const GLfloat centerX = 0.5 * width;
-    const GLfloat centerY = 0.5 * height;
+    GLint width;
+    GLint height;
     GLfloat cameraAngle = 0;
     GLfloat cameraZoom = 1;
     GLfloat cameraX = 0;

@@ -2,7 +2,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-Canvas::Canvas(const Shader &shader, GLuint width, GLuint height) :
+Canvas::Canvas(const Shader &shader, GLint width, GLint height) :
     shader(shader), width(width), height(height)
 {
     initRenderData();
@@ -18,7 +18,7 @@ void Canvas::draw(const Texture &texture) {
 
     glm::mat4 view;
 
-    view = glm::translate(view, glm::vec3(centerX, centerY, 0.0f));
+    view = glm::translate(view, glm::vec3(0.5 * width, 0.5 * height, 0.0f));
     // Scale
     view = glm::scale(view, glm::vec3(cameraZoom, cameraZoom, 1.0f));
     // Rotate

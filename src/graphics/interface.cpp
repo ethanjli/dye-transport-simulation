@@ -9,12 +9,12 @@
 
 #include "resourcemanager.h"
 
-Interface::Interface(GLuint width, GLuint height) :
-    keys(), width(width), height(height) {}
+Interface::Interface() :
+    keys() {}
 
 Interface::~Interface() {}
 
-void Interface::init() {
+void Interface::init(GLint width, GLint height) {
     // Load shaders
     ResourceManager::loadShader("canvas", "shaders/canvas.vert", "shaders/canvas.frag");
     // Configure shaders
@@ -67,6 +67,13 @@ void Interface::processInput(GLfloat dt) {
     if (keys[GLFW_KEY_F]) {
         canvas->cameraZoom = std::max(minZoom, canvas->cameraZoom - zoomVelocity * dt);
     }
+}
+
+void Interface::processResize(GLint width, GLint height) {
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width),
+                                      static_cast<GLfloat>(height), 0.0f,
+                                      -1.0f, 1.0f);
+    ResourceManager::getShader("canvas").setMatrix4("projection", projection);
 }
 
 void Interface::render() {

@@ -17,17 +17,17 @@ enum SimulationState {
 class Interface
 {
 public:
-    Interface(GLuint width, GLuint height);
+    Interface();
     ~Interface();
 
     SimulationState state = INTERFACE_ACTIVE;
     GLboolean keys[1024];
-    GLuint width, height;
 
     // Initialize interface state (load all resources)
-    void init();
+    void init(GLint width, GLint height);
     // Interface loop
     void processInput(GLfloat dt);
+    void processResize(GLint width, GLint height);
     void update(GLfloat dt);
     void render();
 
