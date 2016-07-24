@@ -6,54 +6,49 @@
 FluidSimulator::FluidSimulator(double dt) :
     dt(dt)
 {
-    this->system = FluidSystem();
+    system = FluidSystem();
 }
 
 void FluidSimulator::addDensity() {
-    this->system.density += this->system.density_add;
+    system.density += system.density_add;
 }
 void FluidSimulator::addVelocity() {
-    this->system.u += this->system.u_add;
-    this->system.v += this->system.v_add;
+    system.u += system.u_add;
+    system.v += system.v_add;
 }
 
 void FluidSimulator::stepSystem() {
-    this->stepVelocity();
-    this->stepDensity();
+    stepVelocity();
+    stepDensity();
 }
 
 void FluidSimulator::stepDensity() {
-    this->addDensity();
-    std::swap(this->system.density, this->system.density_prev);
-    diffuseField(this->system.density, this->system.density_prev,
-                 this->system.diffusionConstant, setContinuityFieldBoundaries,
-                 this->dt);
-    std::swap(this->system.density, this->system.density_prev);
-    advectField(this->system.density, this->system.density_prev,
-                this->system.u, this->system.v, setContinuityFieldBoundaries,
-                this->dt);
+    addDensity();
+    std::swap(system.density, system.density_prev);
+    diffuseField(system.density, system.density_prev,
+                 system.diffusionConstant, setContinuityFieldBoundaries, dt);
+    std::swap(system.density, system.density_prev);
+    advectField(system.density, system.density_prev,
+                system.u, system.v, setContinuityFieldBoundaries, dt);
 }
 
 void FluidSimulator::stepVelocity() {
-    this->addVelocity();
-    std::swap(this->system.u, this->system.u_prev);
-    diffuseField(this->system.u, this->system.u_prev, this->system.viscosity,
-                 setHorizontalNeumannFieldBoundaries, this->dt);
-    std::swap(this->system.v, this->system.v_prev);
-    diffuseField(this->system.v, this->system.v_prev, this->system.viscosity,
-                 setVerticalNeumannFieldBoundaries, this->dt);
-    projectField(this->system.u, this->system.v,
-                       this->system.u_prev, this->system.v_prev);
-    std::swap(this->system.u, this->system.u_prev);
-    std::swap(this->system.v, this->system.v_prev);
-    advectField(this->system.u, this->system.u_prev,
-                this->system.u_prev, this->system.v_prev,
-                setHorizontalNeumannFieldBoundaries, this->dt);
-    advectField(this->system.v, this->system.v_prev,
-                this->system.u_prev, this->system.v_prev,
-                setVerticalNeumannFieldBoundaries, this->dt);
-    projectField(this->system.u, this->system.v,
-                       this->system.u_prev, this->system.v_prev);
+    addVelocity();
+    std::swap(system.u, system.u_prev);
+    diffuseField(system.u, system.u_prev, system.viscosity,
+                 setHorizontalNeumannFieldBoundaries, dt);
+    std::swap(system.v, system.v_prev);
+    diffuseField(system.v, system.v_prev, system.viscosity,
+                 setVerticalNeumannFieldBoundaries, dt);
+    projectField(system.u, system.v,
+                       system.u_prev, system.v_prev);
+    std::swap(system.u, system.u_prev);
+    std::swap(system.v, system.v_prev);
+    advectField(system.u, system.u_prev, system.u_prev, system.v_prev,
+                setHorizontalNeumannFieldBoundaries, dt);
+    advectField(system.v, system.v_prev, system.u_prev, system.v_prev,
+                setVerticalNeumannFieldBoundaries, dt);
+    projectField(system.u, system.v, system.u_prev, system.v_prev);
 }
 
 void solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
