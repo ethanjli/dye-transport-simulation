@@ -9,7 +9,7 @@
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 // Window dimensions
-const GLuint WIDTH = 300, HEIGHT = 300;
+const GLuint WIDTH = 600, HEIGHT = 600;
 
 Interface interface(WIDTH, HEIGHT);
 

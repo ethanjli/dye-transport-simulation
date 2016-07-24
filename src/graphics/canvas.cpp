@@ -2,8 +2,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-Canvas::Canvas(const Shader &shader) :
-    shader(shader)
+Canvas::Canvas(const Shader &shader, GLuint width, GLuint height) :
+    shader(shader), width(width), height(height)
 {
     initRenderData();
 }
@@ -11,17 +11,23 @@ Canvas::~Canvas() {
     glDeleteVertexArrays(1, &quadVAO);
 }
 
-void Canvas::draw(const Texture &texture, glm::vec2 position, glm::vec2 size, GLfloat rotate) {
+void Canvas::draw(const Texture &texture) {
+    const GLfloat rotate = cameraAngle;
+
     shader.use();
+
     glm::mat4 view;
-    // Move
-    view = glm::translate(view, glm::vec3(position, 0.0f));
-    // Rotate
-    view = glm::translate(view, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
-    view = glm::rotate(view, rotate, glm::vec3(0.0f, 0.0f, 1.0f));
-    view = glm::translate(view, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+
+    view = glm::translate(view, glm::vec3(centerX, centerY, 0.0f));
     // Scale
-    view = glm::scale(view, glm::vec3(size, 1.0f));
+    view = glm::scale(view, glm::vec3(cameraZoom, cameraZoom, 1.0f));
+    // Rotate
+    view = glm::rotate(view, rotate, glm::vec3(0.0f, 0.0f, 1.0f));
+    // Move
+    view = glm::translate(view, glm::vec3(cameraX, cameraY, 0.0f));
+    // Scale to the frame's size
+    view = glm::scale(view, glm::vec3(height, width, 1.0f));
+
     shader.setMatrix4("view", view);
 
     glActiveTexture(GL_TEXTURE0);
@@ -36,13 +42,13 @@ void Canvas::initRenderData() {
     GLuint VBO;
     GLfloat vertices[] = {
         // Pos      // Tex
-        0.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.0f, 1.0f,
+        0.5f, -0.5f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f,
 
-        0.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, 0.0f, 1.0f, 0.0f
+        -0.5f, 0.5f, 0.0f, 1.0f,
+        0.5f, 0.5f, 1.0f, 1.0f,
+        0.5f, -0.5f, 1.0f, 0.0f
     };
 
     glGenVertexArrays(1, &quadVAO);

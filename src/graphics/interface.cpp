@@ -1,5 +1,9 @@
 #include "interface.h"
 
+#include <cmath>
+#include <algorithm>
+
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -20,20 +24,51 @@ void Interface::init() {
     ResourceManager::getShader("canvas").use().setInteger("image", 0);
     ResourceManager::getShader("canvas").setMatrix4("projection", projection);
     // Set render-specific controls
-    canvas = new Canvas(ResourceManager::getShader("canvas"));
+    canvas = new Canvas(ResourceManager::getShader("canvas"), width, height);
     // Load textures
     ResourceManager::loadTexture("face", "textures/awesomeface.png", GL_TRUE);
 }
 
 void Interface::update(GLfloat dt) {
-
 }
 
 void Interface::processInput(GLfloat dt) {
+    const GLfloat translateVelocity = 100;
+    const GLfloat rotateVelocity = 2;
+    const GLfloat zoomVelocity = 4;
+    const GLfloat maxZoom = 4;
+    const GLfloat minZoom = 1;
 
+    if (keys[GLFW_KEY_W]) {
+        canvas->cameraX += translateVelocity * dt * std::sin(canvas->cameraAngle);
+        canvas->cameraY += translateVelocity * dt * std::cos(canvas->cameraAngle);
+    }
+    if (keys[GLFW_KEY_S]) {
+        canvas->cameraX -= translateVelocity * dt * std::sin(canvas->cameraAngle);
+        canvas->cameraY -= translateVelocity * dt * std::cos(canvas->cameraAngle);
+    }
+    if (keys[GLFW_KEY_D]) {
+        canvas->cameraX += translateVelocity * dt * std::sin(canvas->cameraAngle - 1.570796);
+        canvas->cameraY += translateVelocity * dt * std::cos(canvas->cameraAngle - 1.570796);
+    }
+    if (keys[GLFW_KEY_A]) {
+        canvas->cameraX -= translateVelocity * dt * std::sin(canvas->cameraAngle - 1.570796);
+        canvas->cameraY -= translateVelocity * dt * std::cos(canvas->cameraAngle - 1.570796);
+    }
+    if (keys[GLFW_KEY_Q]) {
+        canvas->cameraAngle += rotateVelocity * dt;
+    }
+    if (keys[GLFW_KEY_E]) {
+        canvas->cameraAngle -= rotateVelocity * dt;
+    }
+    if (keys[GLFW_KEY_R]) {
+        canvas->cameraZoom = std::min(maxZoom, canvas->cameraZoom + zoomVelocity * dt);
+    }
+    if (keys[GLFW_KEY_F]) {
+        canvas->cameraZoom = std::max(minZoom, canvas->cameraZoom - zoomVelocity * dt);
+    }
 }
 
 void Interface::render() {
-    canvas->draw(ResourceManager::getTexture("face"), glm::vec2(200, 200),
-                 glm::vec2(300, 400), 45.0f);
+    canvas->draw(ResourceManager::getTexture("face"));
 }

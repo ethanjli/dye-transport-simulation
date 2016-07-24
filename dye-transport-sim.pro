@@ -7,6 +7,7 @@ SOURCES += src/main.cpp \
     src/fluid-sim/fluidsimulator.cpp \
     src/fluid-sim/fluidsystem.cpp \
     src/graphics/shader.cpp \
+    src/graphics/canvas.cpp \
     src/graphics/interface.cpp \
     src/graphics/texture.cpp \
     src/graphics/resourcemanager.cpp
@@ -15,6 +16,7 @@ HEADERS += \
     src/fluid-sim/fluidsimulator.h \
     src/fluid-sim/fluidsystem.h \
     src/fluid-sim/math.h \
+    src/graphics/shader.h \
     src/graphics/canvas.h \
     src/graphics/interface.h \
     src/graphics/texture.h \
