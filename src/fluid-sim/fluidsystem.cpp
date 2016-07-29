@@ -9,9 +9,6 @@ FluidSystem::FluidSystem(const Grid::Index gridSize, Scalar gridLength,
     gridLength(gridLength), gridSpacing(gridLength / gridSize),
     diffusionConstant(diffusionConstant), viscosity(viscosity) {
     clear();
-    u = Grid::Random(fullGridSize, fullGridSize);
-    v = Grid::Random(fullGridSize, fullGridSize);
-    density = (Grid::Random(fullGridSize, fullGridSize) + 1) * 0.5;
 }
 
 void FluidSystem::step(const Grid &addedDensity, const Grid &addedU, const Grid &addedV,

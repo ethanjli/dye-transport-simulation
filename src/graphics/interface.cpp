@@ -12,7 +12,18 @@
 
 Interface::Interface() :
     keys() {
-    zero = Grid::Zero(fluidSystem->fullGridSize, fluidSystem->fullGridSize);
+    addDensity = addU = addV = Grid::Zero(fluidSystem->fullGridSize,
+                                          fluidSystem->fullGridSize);
+    Grid::Index center = 1 + fluidSystem->gridSize / 2;
+    Grid::Index initialWidth = 20;
+    for (Grid::Index i = center - initialWidth; i <= center + initialWidth; ++i) {
+      for (Grid::Index j = center - initialWidth; j <= center + initialWidth; ++j) {
+          fluidSystem->density(i,j) = 4;
+      }
+    }
+    for (Grid::Index i = center - initialWidth / 10; i <= center + initialWidth / 10; ++i) {
+        addV(i, center + 4 * initialWidth) = -1;
+    }
 }
 
 Interface::~Interface() {}
@@ -33,7 +44,7 @@ void Interface::init(GLint width, GLint height) {
 }
 
 void Interface::update(GLfloat dt) {
-    fluidSystem->step(zero, zero, zero, dt);
+    fluidSystem->step(addDensity, addU, addV, dt);
     ResourceManager::getFluidTexture("fluid").update();
 }
 
