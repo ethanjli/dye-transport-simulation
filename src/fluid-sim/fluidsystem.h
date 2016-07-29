@@ -9,53 +9,47 @@
 // Adapted from Jos Stam's Stable Fluids method
 // https://d2f99xq7vri1nk.cloudfront.net/legacy_app_files/pdf/GDC03.pdf
 
-// Compile-time parameters
-const unsigned int kGridSize = 300;
-const double kGridLength = 1;
-
-const unsigned int kFullGridSize = kGridSize + 2;
-const double kGridSpacing = kGridLength / kGridSize;
-typedef Eigen::Array<Scalar, Eigen::Dynamic, Eigen::Dynamic> Grid;
-
 class FluidSystem
 {
 public:
-    FluidSystem(Scalar diffusionConstant = 0, Scalar viscosity = 0);
+    FluidSystem(const Grid::Index gridSize = 300, Scalar gridLength = 1,
+                Scalar diffusionConstant = 0, Scalar viscosity = 0);
+
+    const Grid::Index gridSize;
+    const Grid::Index fullGridSize;
+    const Scalar gridLength;
+    const Scalar gridSpacing;
 
     Scalar diffusionConstant;
     Scalar viscosity;
 
-    Grid u = Grid::Random(kFullGridSize, kFullGridSize);
-    Grid v = Grid::Random(kFullGridSize, kFullGridSize);
-    Grid u_prev = Grid::Zero(kFullGridSize, kFullGridSize);
-    Grid v_prev = Grid::Zero(kFullGridSize, kFullGridSize);
-    Grid u_add = Grid::Zero(kFullGridSize, kFullGridSize);
-    Grid v_add = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid u, u_prev;
+    Grid v, v_prev;
 
-    Grid density = (Grid::Random(kFullGridSize, kFullGridSize) + 1) * 0.5;
-    Grid density_prev = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid density, density_prev;
 
-    void step(Scalar dt, const Grid &addedDensity,
-              const Grid &addedU, const Grid &addedV);
+    void step(const Grid &addedDensity, const Grid &addedU, const Grid &addedV,
+              Scalar dt);
 
     void clear();
 
 private:
     void stepDensity(Scalar dt, const Grid &addedDensity);
     void stepVelocity(Scalar dt, const Grid &addedU, const Grid &addedV);
+
+    void solvePoisson(Grid &solution, const Grid &initial, Scalar alpha, Scalar beta,
+                      std::function<void(Grid&)> setBoundaries,
+                      unsigned int numIterations = 20) const;
+    void diffuseField(Grid &newField, const Grid &field, Scalar diffusionConstant,
+                      Scalar dt, std::function<void(Grid&)> setBoundaries) const;
+    void advectField(Grid &newField, const Grid &field, const Grid &u, const Grid &v,
+                     Scalar dt, std::function<void(Grid&)> setBoundaries) const;
+    void projectField(Grid &u, Grid &v, Grid &pressure, Grid &divergence) const;
+
+    void setFieldBoundaries(Grid &grid, int b) const;
+    void setContinuityFieldBoundaries(Grid &grid) const;
+    void setVerticalNeumannFieldBoundaries(Grid &grid) const;
+    void setHorizontalNeumannFieldBoundaries(Grid &grid) const;
 };
-
-void solvePoisson(Grid &solution, const Grid &initial, Scalar alpha, Scalar beta,
-                  std::function<void(Grid&)> setBoundaries,
-                  unsigned int numIterations = 20);
-void diffuseField(Grid &newField, const Grid &field, Scalar diffusionConstant,
-                  std::function<void(Grid&)> setBoundaries, Scalar dt);
-void advectField(Grid &newField, const Grid &field, const Grid &u, const Grid &v,
-                 std::function<void(Grid&)> setBoundaries, Scalar dt);
-void projectField(Grid &u, Grid &v, Grid &pressure, Grid &divergence);
-
-void setContinuityFieldBoundaries(Grid &grid);
-void setVerticalNeumannFieldBoundaries(Grid &grid);
-void setHorizontalNeumannFieldBoundaries(Grid &grid);
 
 #endif // FLUIDSYSTEM_H

@@ -37,7 +37,7 @@ private:
     Canvas *canvas;
     std::shared_ptr<FluidSystem> fluidSystem = std::make_shared<FluidSystem>();
 
-    const Grid zero = Grid::Zero(kFullGridSize, kFullGridSize);
+    Grid zero;
 };
 
 #endif // INTERFACE_H

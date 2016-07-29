@@ -12,6 +12,7 @@
 
 Interface::Interface() :
     keys() {
+    zero = Grid::Zero(fluidSystem->fullGridSize, fluidSystem->fullGridSize);
 }
 
 Interface::~Interface() {}
@@ -32,7 +33,7 @@ void Interface::init(GLint width, GLint height) {
 }
 
 void Interface::update(GLfloat dt) {
-    fluidSystem->step(dt, zero, zero, zero);
+    fluidSystem->step(zero, zero, zero, dt);
     ResourceManager::getFluidTexture("fluid").update();
 }
 
