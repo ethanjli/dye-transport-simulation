@@ -4,7 +4,6 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += src/main.cpp \
-    src/fluid-sim/fluidsimulator.cpp \
     src/fluid-sim/fluidsystem.cpp \
     src/graphics/shader.cpp \
     src/graphics/canvas.cpp \
@@ -13,7 +12,6 @@ SOURCES += src/main.cpp \
     src/graphics/fluidtexture.cpp
 
 HEADERS += \
-    src/fluid-sim/fluidsimulator.h \
     src/fluid-sim/fluidsystem.h \
     src/fluid-sim/math.h \
     src/graphics/shader.h \

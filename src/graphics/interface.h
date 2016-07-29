@@ -8,7 +8,7 @@
 #include "resourcemanager.h"
 #include "canvas.h"
 
-#include "../fluid-sim/fluidsimulator.h"
+#include "../fluid-sim/fluidsystem.h"
 
 enum SimulationState {
     INTERFACE_ACTIVE,
@@ -36,7 +36,8 @@ public:
 private:
     Canvas *canvas;
     std::shared_ptr<FluidSystem> fluidSystem = std::make_shared<FluidSystem>();
-    FluidSimulator fluidSimulator;
+
+    const Grid zero = Grid::Zero(kFullGridSize, kFullGridSize);
 };
 
 #endif // INTERFACE_H

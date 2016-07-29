@@ -11,7 +11,7 @@
 #include "resourcemanager.h"
 
 Interface::Interface() :
-    keys(), fluidSimulator(FluidSimulator(*fluidSystem)) {
+    keys() {
 }
 
 Interface::~Interface() {}
@@ -32,7 +32,7 @@ void Interface::init(GLint width, GLint height) {
 }
 
 void Interface::update(GLfloat dt) {
-    fluidSimulator.stepSystem(dt);
+    fluidSystem->step(dt, zero, zero, zero);
     ResourceManager::getFluidTexture("fluid").update();
 }
 
