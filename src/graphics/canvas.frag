@@ -6,5 +6,7 @@ uniform sampler2D image;
 
 void main()
 {
-    color = texture(image, TexCoords);
+    vec4 pigment = texture(image, TexCoords); // Texture is actually CMYA
+    //color = vec4(1 - pigment.r, 1 - pigment.g, 1 - pigment.b, pigment.a);
+    color = vec4(1, 1, 1 - pigment.r, 1);
 }
