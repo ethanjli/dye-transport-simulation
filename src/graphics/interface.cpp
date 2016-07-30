@@ -11,18 +11,17 @@
 #include "resourcemanager.h"
 
 Interface::Interface() :
-    keys() {
-    addDensity = addU = addV = Grid::Zero(fluidSystem->fullGridSize,
-                                          fluidSystem->fullGridSize);
+    keys(), addDensity(fluidSystem->fullGridSize, fluidSystem->fullGridSize),
+    addVelocity(fluidSystem->fullGridSize, fluidSystem->fullGridSize) {
     Grid::Index center = 1 + fluidSystem->gridSize / 2;
     Grid::Index initialWidth = 20;
     for (Grid::Index i = center - initialWidth; i <= center + initialWidth; ++i) {
       for (Grid::Index j = center - initialWidth; j <= center + initialWidth; ++j) {
-          fluidSystem->density(i,j) = 4;
+          fluidSystem->density[0](i,j) = 4;
       }
     }
     for (Grid::Index i = center - initialWidth / 10; i <= center + initialWidth / 10; ++i) {
-        addV(i, center + 4 * initialWidth) = -1;
+        addVelocity[1](i, center + 4 * initialWidth) = -1;
     }
 }
 
@@ -44,7 +43,7 @@ void Interface::init(GLint width, GLint height) {
 }
 
 void Interface::update(GLfloat dt) {
-    fluidSystem->step(addDensity, addU, addV, dt);
+    fluidSystem->step(addDensity, addVelocity, dt);
     ResourceManager::getFluidTexture("fluid").update();
 }
 

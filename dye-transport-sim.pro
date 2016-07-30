@@ -3,6 +3,9 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE += -O3
+
 SOURCES += src/main.cpp \
     src/fluid-sim/fluidsystem.cpp \
     src/graphics/shader.cpp \
@@ -14,6 +17,7 @@ SOURCES += src/main.cpp \
 HEADERS += \
     src/fluid-sim/fluidsystem.h \
     src/fluid-sim/math.h \
+    src/fluid-sim/math.tpp \
     src/graphics/shader.h \
     src/graphics/canvas.h \
     src/graphics/interface.h \

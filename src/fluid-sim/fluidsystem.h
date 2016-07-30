@@ -9,6 +9,9 @@
 // Adapted from Jos Stam's Stable Fluids method
 // https://d2f99xq7vri1nk.cloudfront.net/legacy_app_files/pdf/GDC03.pdf
 
+typedef VectorField<1> DyeField;
+typedef VectorField<2> VelocityField;
+
 class FluidSystem
 {
 public:
@@ -23,33 +26,34 @@ public:
     Scalar diffusionConstant;
     Scalar viscosity;
 
-    Grid u, u_prev;
-    Grid v, v_prev;
+    DyeField density;
+    VelocityField velocity;
 
-    Grid density, density_prev;
-
-    void step(const Grid &addedDensity, const Grid &addedU, const Grid &addedV,
+    void step(const DyeField &addedDensity, const VelocityField &addedVelocity,
               Scalar dt);
 
     void clear();
 
 private:
-    void stepDensity(Scalar dt, const Grid &addedDensity);
-    void stepVelocity(Scalar dt, const Grid &addedU, const Grid &addedV);
+    DyeField densityPrev;
+    VelocityField velocityPrev;
+
+    void stepDensity(Scalar dt, const DyeField &addedDensity);
+    void stepVelocity(Scalar dt, const VelocityField &addedVelocity);
 
     void solvePoisson(Grid &solution, const Grid &initial, Scalar alpha, Scalar beta,
                       std::function<void(Grid&)> setBoundaries,
                       unsigned int numIterations = 20) const;
-    void diffuseField(Grid &newField, const Grid &field, Scalar diffusionConstant,
-                      Scalar dt, std::function<void(Grid&)> setBoundaries) const;
-    void advectField(Grid &newField, const Grid &field, const Grid &u, const Grid &v,
-                     Scalar dt, std::function<void(Grid&)> setBoundaries) const;
-    void projectField(Grid &u, Grid &v, Grid &pressure, Grid &divergence) const;
+    void diffuse(Grid &out, const Grid &in, Scalar diffusionConstant,
+                 Scalar dt, std::function<void(Grid&)> setBoundaries) const;
+    void advect(Grid &out, const Grid &in, const Grid &u, const Grid &v,
+                Scalar dt, std::function<void(Grid&)> setBoundaries) const;
+    void project(Grid &u, Grid &v, Grid &pressure, Grid &divergence) const;
 
-    void setFieldBoundaries(Grid &grid, int b) const;
-    void setContinuityFieldBoundaries(Grid &grid) const;
-    void setVerticalNeumannFieldBoundaries(Grid &grid) const;
-    void setHorizontalNeumannFieldBoundaries(Grid &grid) const;
+    void setBoundaries(Grid &grid, int b) const;
+    void setContinuityBoundaries(Grid &grid) const;
+    void setVerticalNeumannBoundaries(Grid &grid) const;
+    void setHorizontalNeumannBoundaries(Grid &grid) const;
 };
 
 #endif // FLUIDSYSTEM_H

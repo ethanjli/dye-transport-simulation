@@ -37,7 +37,8 @@ private:
     Canvas *canvas;
     std::shared_ptr<FluidSystem> fluidSystem = std::make_shared<FluidSystem>();
 
-    Grid addDensity, addU, addV;
+    DyeField addDensity;
+    VelocityField addVelocity;
 };
 
 #endif // INTERFACE_H
