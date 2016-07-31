@@ -6,7 +6,7 @@
 FluidSystem::FluidSystem(Grid::Index width, Grid::Index height,
                          Scalar diffusionConstant, Scalar viscosity) :
     width(width), height(height), fullWidth(width + 2), fullHeight(height + 2),
-    fullDimensions({fullWidth, fullHeight + 2, 1}),
+    dimensions({width, height, 1}), fullDimensions({fullWidth, fullHeight, 1}),
     diffusionConstant(diffusionConstant), viscosity(viscosity),
     density(fullDimensions), velocity(fullDimensions),
     densityPrev(fullDimensions), velocityPrev(fullDimensions) {}

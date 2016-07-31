@@ -8,10 +8,10 @@
 typedef float Scalar;
 const Eigen::Index kGridDimensions = 3;
 typedef Eigen::Tensor<Scalar, kGridDimensions> Grid;
-typedef Eigen::Array<Scalar, 2, 1> Location;
-typedef Eigen::Array<Grid::Index, 2, 1> Indices;
+typedef Eigen::Array<Scalar, kGridDimensions, 1> Location;
+typedef Eigen::Array<Grid::Index, kGridDimensions, 1> Indices;
 
-// Bilinearly interpolates grid with x and y in i and j
-Scalar interpolate(const Grid &grid, Scalar x, Scalar y);
+// Linearly interpolates grid to nearest neighbors
+Scalar interpolate(const Grid &grid, Location x);
 
 #endif // MATH_H
