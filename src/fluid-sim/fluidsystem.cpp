@@ -26,40 +26,37 @@ void FluidSystem::clear() {
 
 void FluidSystem::stepDensity(Scalar dt, const DyeField &addedDensity) {
     density += addedDensity;
-    for (std::size_t i = 0; i < DyeField::coords; ++i) {
-        std::swap(density[i], densityPrev[i]);
-        diffuse(density[i], densityPrev[i], diffusionConstant, dt,
-                std::bind(&FluidSystem::setContinuityBoundaries, this,
-                          std::placeholders::_1));
-        std::swap(density[i], densityPrev[i]);
-        advect(density[i], densityPrev[i], velocity[0], velocity[1], dt,
-                std::bind(&FluidSystem::setContinuityBoundaries, this,
-                          std::placeholders::_1));
+    std::array<BoundarySetter, density.coords> boundarySetters;
+    for (std::size_t i = 0; i < density.coords; ++i) {
+        boundarySetters[i] = std::bind(&FluidSystem::setContinuityBoundaries, this,
+                                       std::placeholders::_1);
     }
+
+    std::swap(density, densityPrev);
+    diffuse(density, densityPrev, diffusionConstant, dt, boundarySetters);
+    std::swap(density, densityPrev);
+    advect(density, densityPrev, velocity, dt, boundarySetters);
 }
 
 void FluidSystem::stepVelocity(Scalar dt, const VelocityField &addedVelocity) {
     velocity += addedVelocity;
+    std::array<BoundarySetter, velocity.coords> boundarySetters;
+    boundarySetters[0] = std::bind(&FluidSystem::setHorizontalNeumannBoundaries,
+                                   this, std::placeholders::_1);
+    boundarySetters[1] = std::bind(&FluidSystem::setVerticalNeumannBoundaries,
+                                   this, std::placeholders::_1);
+
     std::swap(velocity, velocityPrev);
-    diffuse(velocity[0], velocityPrev[0], viscosity, dt,
-                 std::bind(&FluidSystem::setHorizontalNeumannBoundaries, this,
-                           std::placeholders::_1));
-    diffuse(velocity[1], velocityPrev[1], viscosity, dt,
-                 std::bind(&FluidSystem::setVerticalNeumannBoundaries, this,
-                           std::placeholders::_1));
-    project(velocity[0], velocity[1], velocityPrev[0], velocityPrev[1]);
+    diffuse(velocity, velocityPrev, viscosity, dt, boundarySetters);
+    project(velocity);
+
     std::swap(velocity, velocityPrev);
-    advect(velocity[0], velocityPrev[0], velocityPrev[0], velocityPrev[1], dt,
-                std::bind(&FluidSystem::setHorizontalNeumannBoundaries, this,
-                          std::placeholders::_1));
-    advect(velocity[1], velocityPrev[1], velocityPrev[0], velocityPrev[1], dt,
-                std::bind(&FluidSystem::setVerticalNeumannBoundaries, this,
-                          std::placeholders::_1));
-    project(velocity[0], velocity[1], velocityPrev[0], velocityPrev[1]);
+    advect(velocity, velocityPrev, velocityPrev, dt, boundarySetters);
+    project(velocity);
 }
 
 void FluidSystem::solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
-                               std::function<void(Grid&)> setBoundaries,
+                               BoundarySetter setBoundaries,
                                unsigned int numIterations) const {
     Grid temp = Grid::Zero(fullGridSize, fullGridSize);
 
@@ -77,12 +74,13 @@ void FluidSystem::solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
    }
 }
 
-void FluidSystem::project(Grid &u, Grid &v, Grid &p, Grid &div) const {
-    p = Grid::Zero(fullGridSize, fullGridSize);
+void FluidSystem::project(VelocityField &velocity) const {
+    Grid p = Grid::Zero(fullGridSize, fullGridSize);
+    Grid div = Grid::Zero(fullGridSize, fullGridSize);
     for (Grid::Index i = 1; i <= gridSize; ++i) {
         for(Grid::Index j = 1; j <= gridSize; ++j) {
-            div(i, j) = -0.5 * gridSpacing * (u(i + 1, j) - u(i - 1, j) +
-                                               v(i, j + 1) - v(i, j - 1));
+            div(i, j) = -0.5 * gridSpacing * (velocity[0](i + 1, j) - velocity[0](i - 1, j) +
+                                              velocity[1](i, j + 1) - velocity[1](i, j - 1));
         }
     }
     setContinuityBoundaries(div);
@@ -92,42 +90,12 @@ void FluidSystem::project(Grid &u, Grid &v, Grid &p, Grid &div) const {
                            std::placeholders::_1));
     for (Grid::Index i = 1; i <= gridSize; ++i) {
         for(Grid::Index j = 1; j <= gridSize; ++j) {
-            u(i, j) -= 0.5 * gridSize * (p(i + 1, j) - p(i - 1, j));
-            v(i, j) -= 0.5 * gridSize * (p(i, j + 1) - p(i, j - 1));
+            velocity[0](i, j) -= 0.5 * gridSize * (p(i + 1, j) - p(i - 1, j));
+            velocity[1](i, j) -= 0.5 * gridSize * (p(i, j + 1) - p(i, j - 1));
         }
     }
-    setHorizontalNeumannBoundaries(u);
-    setVerticalNeumannBoundaries(v);
-}
-
-void FluidSystem::diffuse(Grid &x, const Grid &x_0, Scalar diff, Scalar dt,
-                          std::function<void(Grid&)> setBoundaries) const {
-    Scalar a = dt * diff * gridSize * gridSize;
-    solvePoisson(x, x_0, a, 1 + 4 * a, setBoundaries);
-}
-void FluidSystem::advect(Grid &newField, const Grid &field,
-                              const Grid &u, const Grid &v, Scalar dt,
-                              std::function<void(Grid&)> setBoundaries) const {
-    Scalar dt_0 = dt * gridSize;
-    for (Grid::Index i = 1; i <= gridSize; ++i) {
-        for (Grid::Index j = 1; j <= gridSize; ++j) {
-            Scalar x = i - dt_0 * u(i, j);
-            x = std::max(0.5f, std::min(gridSize + 0.5f, x));
-            int i_0 = (int)x;
-            int i_1 = i_0 + 1;
-            Scalar s_1 = x - i_0;
-            Scalar s_0 = 1 - s_1;
-            Scalar y = j - dt_0 * v(i, j);
-            y = std::max(0.5f, std::min(gridSize + 0.5f, y));
-            int j_0 = (int)y;
-            int j_1 = j_0 + 1;
-            Scalar t_1 = y - j_0;
-            Scalar t_0 = 1 - t_1;
-            newField(i, j) = (s_0 * (t_0 * field(i_0, j_0) + t_1 * field(i_0, j_1)) +
-                              s_1 * (t_0 * field(i_1, j_0) + t_1 * field(i_1, j_1)));
-        }
-    }
-    setBoundaries(newField);
+    setHorizontalNeumannBoundaries(velocity[0]);
+    setVerticalNeumannBoundaries(velocity[1]);
 }
 
 void FluidSystem::setBoundaries(Grid &grid, int b) const {
