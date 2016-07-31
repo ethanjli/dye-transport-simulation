@@ -18,7 +18,7 @@ Interface::Interface() :
     Grid::Index initialWidth = fluidSystem->gridSize / 20;
     // Initialize velocities
     for (Grid::Index i = centerX - initialWidth / 10; i <= centerX + initialWidth / 10; ++i) {
-        addVelocity[1](i, centerX + 4 * initialWidth) = -0.1;
+        addVelocity[1](i, centerX + 4 * initialWidth) = -20;
     }
     // Initialize dyes
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {

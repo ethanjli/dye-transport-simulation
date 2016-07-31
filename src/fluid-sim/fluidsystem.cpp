@@ -3,10 +3,9 @@
 #include <utility>
 #include <algorithm>
 
-FluidSystem::FluidSystem(const Grid::Index gridSize, Scalar gridLength,
-                         Scalar diffusionConstant, Scalar viscosity) :
+FluidSystem::FluidSystem(const Grid::Index gridSize, Scalar diffusionConstant,
+                         Scalar viscosity) :
     gridSize(gridSize), fullGridSize(gridSize + 2),
-    gridLength(gridLength), gridSpacing(gridLength / gridSize),
     diffusionConstant(diffusionConstant), viscosity(viscosity),
     density(gridSize + 2, gridSize + 2), velocity(gridSize + 2, gridSize + 2),
     densityPrev(gridSize + 2, gridSize + 2), velocityPrev(gridSize + 2, gridSize + 2) {}
@@ -93,16 +92,16 @@ void FluidSystem::project(VelocityField &velocity) const {
 void FluidSystem::grad(VelocityField &out, const Grid &in) const {
     for (Grid::Index i = 1; i <= gridSize; ++i) {
         for (Grid::Index j = 1; j <= gridSize; ++j) {
-            out[0](i, j) = 0.5 * gridSpacing * (in(i + 1, j) - in(i - 1, j));
-            out[1](i, j) = 0.5 * gridSpacing * (in(i, j + 1) - in(i, j - 1));
+            out[0](i, j) = 0.5 * (in(i + 1, j) - in(i - 1, j));
+            out[1](i, j) = 0.5 * (in(i, j + 1) - in(i, j - 1));
         }
     }
 }
 void FluidSystem::div(Grid &out, const VelocityField &in) const {
     for (Grid::Index i = 1; i <= gridSize; ++i) {
         for (Grid::Index j = 1; j <= gridSize; ++j) {
-            out(i, j) = 0.5 * gridSize * (in[0](i + 1, j) - in[0](i - 1, j));
-            out(i, j) += 0.5 * gridSize * (in[1](i, j + 1) - in[1](i, j - 1));
+            out(i, j) = 0.5 * (in[0](i + 1, j) - in[0](i - 1, j));
+            out(i, j) += 0.5 * (in[1](i, j + 1) - in[1](i, j - 1));
         }
     }
 }
