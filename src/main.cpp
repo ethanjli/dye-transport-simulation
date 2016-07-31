@@ -100,8 +100,15 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GL_TRUE);
     if (key >= 0 && key < 1024) {
-        if (action == GLFW_PRESS) interface.keys[key] = GL_TRUE;
-        else if (action == GLFW_RELEASE) interface.keys[key] = GL_FALSE;
+        if (action == GLFW_PRESS) {
+            interface.keys[key] = GL_TRUE;
+            interface.keysDown[key] = GL_TRUE;
+            interface.keysUp[key] = GL_FALSE;
+        } else if (action == GLFW_RELEASE) {
+            interface.keys[key] = GL_FALSE;
+            interface.keysUp[key] = GL_TRUE;
+            interface.keysDown[key] = GL_FALSE;
+        }
     }
 }
 

@@ -11,7 +11,7 @@
 #include "resourcemanager.h"
 
 Interface::Interface() :
-    keys(), addDensity(fluidSystem->fullGridSize, fluidSystem->fullGridSize),
+    addDensity(fluidSystem->fullGridSize, fluidSystem->fullGridSize),
     addVelocity(fluidSystem->fullGridSize, fluidSystem->fullGridSize) {
     Grid::Index centerX = 1 + fluidSystem->gridSize / 2;
     Grid::Index centerY = 1 + fluidSystem->gridSize / 2;
@@ -61,6 +61,7 @@ void Interface::init(GLint width, GLint height) {
 }
 
 void Interface::update(GLfloat dt) {
+    if (state != INTERFACE_ACTIVE) return;
     fluidSystem->step(addDensity, addVelocity, dt);
     ResourceManager::getFluidTexture("fluid").update();
 }
@@ -72,33 +73,40 @@ void Interface::processInput(GLfloat dt) {
     const GLfloat maxZoom = 4;
     const GLfloat minZoom = 1;
 
-    if (keys[GLFW_KEY_W]) {
+    if (keys[GLFW_KEY_W]) { //pan move camera up with respect to canvas
         canvas->cameraX += translateVelocity * dt * std::sin(canvas->cameraAngle);
         canvas->cameraY += translateVelocity * dt * std::cos(canvas->cameraAngle);
     }
-    if (keys[GLFW_KEY_S]) {
+    if (keys[GLFW_KEY_S]) { // pan down with respect to canvas
         canvas->cameraX -= translateVelocity * dt * std::sin(canvas->cameraAngle);
         canvas->cameraY -= translateVelocity * dt * std::cos(canvas->cameraAngle);
     }
-    if (keys[GLFW_KEY_D]) {
+    if (keys[GLFW_KEY_D]) { // pan left with respect to canvas
         canvas->cameraX += translateVelocity * dt * std::sin(canvas->cameraAngle - 1.570796);
         canvas->cameraY += translateVelocity * dt * std::cos(canvas->cameraAngle - 1.570796);
     }
-    if (keys[GLFW_KEY_A]) {
+    if (keys[GLFW_KEY_A]) { // pan right with respect to canvas
         canvas->cameraX -= translateVelocity * dt * std::sin(canvas->cameraAngle - 1.570796);
         canvas->cameraY -= translateVelocity * dt * std::cos(canvas->cameraAngle - 1.570796);
     }
-    if (keys[GLFW_KEY_Q]) {
+    if (keys[GLFW_KEY_Q]) { // rotate camera ccw with respect to canvas
         canvas->cameraAngle += rotateVelocity * dt;
     }
-    if (keys[GLFW_KEY_E]) {
+    if (keys[GLFW_KEY_E]) { // rotate camera cw with respect to canvas
         canvas->cameraAngle -= rotateVelocity * dt;
     }
-    if (keys[GLFW_KEY_R]) {
+    if (keys[GLFW_KEY_R]) { // zoom in
         canvas->cameraZoom = std::min(maxZoom, canvas->cameraZoom + zoomVelocity * dt);
     }
-    if (keys[GLFW_KEY_F]) {
+    if (keys[GLFW_KEY_F]) { // zoom out
         canvas->cameraZoom = std::max(minZoom, canvas->cameraZoom - zoomVelocity * dt);
+    }
+
+    if (keysUp[GLFW_KEY_SPACE]) { // toggle pause/unpause
+        if (state == INTERFACE_ACTIVE) state = INTERFACE_PAUSED;
+        else if (state == INTERFACE_PAUSED) state = INTERFACE_ACTIVE;
+
+        keysUp[GLFW_KEY_SPACE] = GL_FALSE;
     }
 }
 
