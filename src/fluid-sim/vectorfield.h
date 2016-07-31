@@ -17,6 +17,7 @@ public:
 
     VectorField<numCoords> &operator+=(const VectorField<numCoords> &rhs);
     VectorField<numCoords> &operator-=(const VectorField<numCoords> &rhs);
+    VectorField<numCoords> &operator*=(Scalar rhs);
 
 private:
     std::array<Grid, numCoords> grids;
@@ -26,10 +27,11 @@ private:
 template<std::size_t numCoords>
 VectorField<numCoords> operator-=(VectorField<numCoords> lhs,
                                   const VectorField<numCoords> &rhs);
-
 template<std::size_t numCoords>
 VectorField<numCoords> operator-(VectorField<numCoords> lhs,
                                  const VectorField<numCoords> &rhs);
+template<std::size_t numCoords>
+VectorField<numCoords> operator*(VectorField<numCoords> lhs, Scalar rhs);
 
 #include "vectorfield.tpp"
 

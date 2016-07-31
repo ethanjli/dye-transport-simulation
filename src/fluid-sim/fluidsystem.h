@@ -53,6 +53,8 @@ private:
                 const VelocityField &velocity, Scalar dt,
                 std::array<BoundarySetter, numCoords> setBoundaries) const;
     void project(VelocityField &u) const;
+    void grad(VelocityField &out, const Grid &in) const;
+    void div(Grid &out, const VelocityField &in) const;
 
     void setBoundaries(Grid &grid, int b) const;
     void setContinuityBoundaries(Grid &grid) const;

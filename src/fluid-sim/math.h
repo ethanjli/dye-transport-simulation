@@ -10,6 +10,7 @@ typedef Eigen::Array<Scalar, Eigen::Dynamic, Eigen::Dynamic> Grid;
 typedef Eigen::Array<Scalar, 2, 1> Location;
 typedef Eigen::Array<Grid::Index, 2, 1> Indices;
 
+// Bilinearly interpolates grid with x and y in i and j
 Scalar interpolate(const Grid &grid, Scalar x, Scalar y);
 
 #endif // MATH_H
