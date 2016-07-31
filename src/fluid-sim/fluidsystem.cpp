@@ -7,8 +7,8 @@ FluidSystem::FluidSystem(Grid::Index width, Grid::Index height,
                          Scalar diffusionConstant, Scalar viscosity) :
     width(width), height(height), fullWidth(width + 2), fullHeight(height + 2),
     diffusionConstant(diffusionConstant), viscosity(viscosity),
-    density(width + 2, height + 2), velocity(width + 2, height + 2),
-    densityPrev(width + 2, height + 2), velocityPrev(width + 2, height + 2) {}
+    density(width + 2, height + 2, 1), velocity(width + 2, height + 2, 1),
+    densityPrev(width + 2, height + 2, 1), velocityPrev(width + 2, height + 2, 1) {}
 
 void FluidSystem::step(const DyeField &addedDensity, const VelocityField &addedVelocity,
                        Scalar dt) {
@@ -57,14 +57,16 @@ void FluidSystem::stepVelocity(Scalar dt, const VelocityField &addedVelocity) {
 void FluidSystem::solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
                                BoundarySetter setBoundaries,
                                unsigned int numIterations) const {
-    Grid temp(fullWidth, fullHeight);
+    Grid temp(fullWidth, fullHeight, 1);
 
     x = x_0;
     for (unsigned int iteration = 0; iteration < numIterations; ++iteration) {
         for (Grid::Index i = 1; i <= width; ++i) {
             for (Grid::Index j = 1; j <= height; ++j) {
-                temp(i, j) = (x_0(i, j) + a * (x(i - 1, j) + x(i + 1, j) +
-                                               x(i, j - 1) + x(i, j + 1))) / c;
+                temp(i, j, 0) = (x_0(i, j, 0) + a * (x(i - 1, j, 0) +
+                                                     x(i + 1, j, 0) +
+                                                     x(i, j - 1, 0) +
+                                                     x(i, j + 1, 0))) / c;
             }
         }
         x = temp;
@@ -74,8 +76,8 @@ void FluidSystem::solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
 }
 
 void FluidSystem::project(VelocityField &velocity) const {
-    Grid pressure(fullWidth, fullHeight);
-    Grid divergence(fullWidth, fullHeight);
+    Grid pressure(fullWidth, fullHeight, 1);
+    Grid divergence(fullWidth, fullHeight, 1);
     div(divergence, velocity);
     divergence = -1 * divergence;
     setContinuityBoundaries(divergence);
@@ -83,7 +85,7 @@ void FluidSystem::project(VelocityField &velocity) const {
     solvePoisson(pressure, divergence, 1, 4,
                  std::bind(&FluidSystem::setContinuityBoundaries, this,
                            std::placeholders::_1));
-    VelocityField gradient(fullWidth, fullHeight);
+    VelocityField gradient(fullWidth, fullHeight, 1);
     grad(gradient, pressure);
     velocity -= gradient;
     setHorizontalNeumannBoundaries(velocity[0]);
@@ -92,28 +94,28 @@ void FluidSystem::project(VelocityField &velocity) const {
 void FluidSystem::grad(VelocityField &out, const Grid &in) const {
     for (Grid::Index i = 1; i <= width; ++i) {
         for (Grid::Index j = 1; j <= height; ++j) {
-            out[0](i, j) = 0.5 * (in(i + 1, j) - in(i - 1, j));
-            out[1](i, j) = 0.5 * (in(i, j + 1) - in(i, j - 1));
+            out[0](i, j, 0) = 0.5 * (in(i + 1, j, 0) - in(i - 1, j, 0));
+            out[1](i, j, 0) = 0.5 * (in(i, j + 1, 0) - in(i, j - 1, 0));
         }
     }
 }
 void FluidSystem::div(Grid &out, const VelocityField &in) const {
     for (Grid::Index i = 1; i <= width; ++i) {
         for (Grid::Index j = 1; j <= height; ++j) {
-            out(i, j) = 0.5 * (in[0](i + 1, j) - in[0](i - 1, j));
-            out(i, j) += 0.5 * (in[1](i, j + 1) - in[1](i, j - 1));
+            out(i, j, 0) = 0.5 * (in[0](i + 1, j, 0) - in[0](i - 1, j, 0));
+            out(i, j, 0) += 0.5 * (in[1](i, j + 1, 0) - in[1](i, j - 1, 0));
         }
     }
 }
 
 void FluidSystem::setBoundaries(Grid &grid, int b) const {
     for(Grid::Index j = 1; j <= height; ++j) {
-        grid(0, j) = (b == 1 ? -1 : 1) * grid(1, j);
-        grid(width + 1, j) = (b == 1 ? -1 : 1) * grid(width, j);
+        grid(0, j, 0) = (b == 1 ? -1 : 1) * grid(1, j, 0);
+        grid(width + 1, j, 0) = (b == 1 ? -1 : 1) * grid(width, j, 0);
     }
     for (Grid::Index i = 1; i <= width; ++i) {
-        grid(i, 0) = (b == 2 ? -1 : 1) * grid(i, 1);
-        grid(i, height + 1) = (b == 2 ? -1 : 1) * grid(i, height);
+        grid(i, 0, 0) = (b == 2 ? -1 : 1) * grid(i, 1, 0);
+        grid(i, height + 1, 0) = (b == 2 ? -1 : 1) * grid(i, height, 0);
     }
 }
 void FluidSystem::setContinuityBoundaries(Grid &grid) const {

@@ -13,34 +13,34 @@
 Interface::Interface(GLint width, GLint height) :
     width(width), height(height),
     fluidSystem(std::make_shared<FluidSystem>(width, height)),
-    addDensity(fluidSystem->fullWidth, fluidSystem->fullHeight),
-    addVelocity(fluidSystem->fullWidth, fluidSystem->fullHeight) {
+    addDensity(fluidSystem->fullWidth, fluidSystem->fullHeight, 1),
+    addVelocity(fluidSystem->fullWidth, fluidSystem->fullHeight, 1) {
     Grid::Index centerX = 1 + fluidSystem->width / 2;
     Grid::Index centerY = 1 + fluidSystem->height / 2;
     Grid::Index initialWidth = fluidSystem->width / 20;
     Grid::Index initialHeight = fluidSystem->height / 20;
     // Initialize velocities
     for (Grid::Index i = centerX - initialWidth / 10; i <= centerX + initialWidth / 10; ++i) {
-        addVelocity[1](i, centerY + 4 * initialHeight) = -20;
+        addVelocity[1](i, centerY + 4 * initialHeight, 0) = -20;
     }
     // Initialize dyes
     initialWidth = std::min(initialWidth, initialHeight);
     initialHeight = std::min(initialWidth, initialHeight);
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[0](i,j) = 4;
+          fluidSystem->density[0](i, j, 0) = 4;
       }
     }
     centerY = 1 + fluidSystem->height / 4;
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[1](i,j) = 4;
+          fluidSystem->density[1](i, j, 0) = 4;
       }
     }
     centerY = 1 + 3 * fluidSystem->height / 4;
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[2](i,j) = 4;
+          fluidSystem->density[2](i, j, 0) = 4;
       }
     }
 }
@@ -76,7 +76,7 @@ void Interface::processInput(GLfloat dt) {
     const GLfloat rotateVelocity = 2;
     const GLfloat zoomVelocity = 4;
     const GLfloat maxZoom = 4;
-    const GLfloat minZoom = 1;
+    const GLfloat minZoom = 0.95;
 
     if (keys[GLFW_KEY_W]) { //pan move camera up with respect to canvas
         canvas->cameraX += translateVelocity * dt * std::sin(canvas->cameraAngle);

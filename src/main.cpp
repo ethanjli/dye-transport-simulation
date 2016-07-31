@@ -12,8 +12,8 @@
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void resizeCallback(GLFWwindow *window, GLint width, GLint height);
 
-// Window dimensions
-const GLint WIDTH = 180, HEIGHT = 320;
+// Grid and window dimensions
+const GLint WIDTH = 200, HEIGHT = 200;
 const GLint ZOOM = 2;
 
 Interface interface(WIDTH, HEIGHT);

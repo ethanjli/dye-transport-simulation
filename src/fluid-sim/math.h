@@ -6,7 +6,7 @@
 #include <unsupported/Eigen/CXX11/Tensor>
 
 typedef float Scalar;
-typedef Eigen::Tensor<Scalar, 2> Grid;
+typedef Eigen::Tensor<Scalar, 3> Grid;
 typedef Eigen::Array<Scalar, 2, 1> Location;
 typedef Eigen::Array<Grid::Index, 2, 1> Indices;
 
