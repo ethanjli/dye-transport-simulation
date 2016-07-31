@@ -5,6 +5,8 @@ Scalar interpolate(const Grid &grid, Location x) {
     Indices j = i + 1;
     Location t = x - i.cast<Scalar>();
     Location s = 1 - t;
-    return (s[0] * (s[1] * grid(i[0], i[1], 0) + t[1] * grid(i[0], j[1], 0)) +
-            t[0] * (s[1] * grid(j[0], i[1], 0) + t[1] * grid(j[0], j[1], 0)));
+    return (s[1] * (s[0] * grid(i[0], i[1], 0) +
+                    t[0] * grid(j[0], i[1], 0)) +
+            t[1] * (s[0] * grid(i[0], j[1], 0) +
+                    t[0] * grid(j[0], j[1], 0)));
 }
