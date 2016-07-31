@@ -58,7 +58,7 @@ void FluidSystem::stepVelocity(Scalar dt, const VelocityField &addedVelocity) {
 void FluidSystem::solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
                                BoundarySetter setBoundaries,
                                unsigned int numIterations) const {
-    Grid temp = Grid::Zero(fullGridSize, fullGridSize);
+    Grid temp(fullGridSize, fullGridSize);
 
     x = x_0;
     for (unsigned int iteration = 0; iteration < numIterations; ++iteration) {
@@ -75,10 +75,10 @@ void FluidSystem::solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
 }
 
 void FluidSystem::project(VelocityField &velocity) const {
-    Grid pressure = Grid::Zero(fullGridSize, fullGridSize);
-    Grid divergence = Grid::Zero(fullGridSize, fullGridSize);
+    Grid pressure(fullGridSize, fullGridSize);
+    Grid divergence(fullGridSize, fullGridSize);
     div(divergence, velocity);
-    divergence *= -1;
+    divergence = -1 * divergence;
     setContinuityBoundaries(divergence);
     setContinuityBoundaries(pressure);
     solvePoisson(pressure, divergence, 1, 4,
@@ -93,20 +93,18 @@ void FluidSystem::project(VelocityField &velocity) const {
 void FluidSystem::grad(VelocityField &out, const Grid &in) const {
     for (Grid::Index i = 1; i <= gridSize; ++i) {
         for (Grid::Index j = 1; j <= gridSize; ++j) {
-            out[0](i, j) = gridSpacing * (in(i + 1, j) - in(i - 1, j));
-            out[1](i, j) = gridSpacing * (in(i, j + 1) - in(i, j - 1));
+            out[0](i, j) = 0.5 * gridSpacing * (in(i + 1, j) - in(i - 1, j));
+            out[1](i, j) = 0.5 * gridSpacing * (in(i, j + 1) - in(i, j - 1));
         }
     }
-    out *= 0.5;
 }
 void FluidSystem::div(Grid &out, const VelocityField &in) const {
     for (Grid::Index i = 1; i <= gridSize; ++i) {
         for (Grid::Index j = 1; j <= gridSize; ++j) {
-            out(i, j) = gridSize * (in[0](i + 1, j) - in[0](i - 1, j));
-            out(i, j) += gridSize * (in[1](i, j + 1) - in[1](i, j - 1));
+            out(i, j) = 0.5 * gridSize * (in[0](i + 1, j) - in[0](i - 1, j));
+            out(i, j) += 0.5 * gridSize * (in[1](i, j + 1) - in[1](i, j - 1));
         }
     }
-    out *= 0.5;
 }
 
 void FluidSystem::setBoundaries(Grid &grid, int b) const {

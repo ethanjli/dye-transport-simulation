@@ -1,14 +1,15 @@
 template<std::size_t numCoords>
 VectorField<numCoords>::VectorField(Grid::Index numRows, Grid::Index numCols) {
     for (auto &grid : grids) {
-        grid = Grid::Zero(numRows, numCols);
+        grid = Grid(numRows, numCols);
+        grid.setZero();
     }
 }
 
 template<std::size_t numCoords>
 void VectorField<numCoords>::clear() {
     for (auto &grid : grids) {
-        grid = Grid::Zero(grid.rows(), grid.cols());
+        grid.setZero();
     }
 }
 
