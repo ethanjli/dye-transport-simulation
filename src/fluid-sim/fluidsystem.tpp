@@ -8,11 +8,12 @@ void FluidSystem::advect(VectorField<numCoords> &out, const VectorField<numCoord
                 for (Grid::Index k = 1; k <= depth; ++k) {
                     Location x = {static_cast<Scalar>(i), static_cast<Scalar>(j), static_cast<Scalar>(k)};
                     Location dim = dimensions.cast<Scalar>();
-                    Location v = {velocity[0](i, j, k), velocity[1](i, j, k), 0.0f};
+                    Location v = {velocity[0](i, j, k), velocity[1](i, j, k), velocity[2](i, j, k)};
                     x = x - dt * v;
-                    x.min(dim + 0.5f);
-                    x.max(0.5f);
                     x(2) = 0;
+                    dim = dim + 0.5f;
+                    x = x.min(dim);
+                    x = x.max(0.5f);
                     out[d](i, j, k) = interpolate(in[d], x);
                 }
             }
