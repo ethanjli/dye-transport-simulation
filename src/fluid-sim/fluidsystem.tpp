@@ -3,12 +3,12 @@ void FluidSystem::advect(VectorField<numCoords> &out, const VectorField<numCoord
                          const VelocityField &velocity, Scalar dt,
                          std::array<BoundarySetter, numCoords> boundarySetters) const {
     for (std::size_t d = 0; d < numCoords; ++d) {
-      for (Grid::Index i = 1; i <= gridSize; ++i) {
-        for (Grid::Index j = 1; j <= gridSize; ++j) {
+      for (Grid::Index i = 1; i <= width; ++i) {
+        for (Grid::Index j = 1; j <= height; ++j) {
           Scalar x = i - dt * velocity[0](i, j);
           Scalar y = j - dt * velocity[1](i, j);
-          x = std::max(0.5f, std::min(gridSize + 0.5f, x));
-          y = std::max(0.5f, std::min(gridSize + 0.5f, y));
+          x = std::max(0.5f, std::min(width + 0.5f, x));
+          y = std::max(0.5f, std::min(height + 0.5f, y));
           out[d](i, j) = interpolate(in[d], x, y);
         }
       }

@@ -26,7 +26,7 @@ void Canvas::draw(const FluidTexture &fluidTexture) {
     // Move
     view = glm::translate(view, glm::vec3(cameraX, cameraY, 0.0f));
     // Scale to the frame's size
-    view = glm::scale(view, glm::vec3(height, width, 1.0f));
+    view = glm::scale(view, glm::vec3(width, height, 1.0f));
 
     shader.setMatrix4("view", view);
 
@@ -43,14 +43,14 @@ void Canvas::draw(const FluidTexture &fluidTexture) {
 void Canvas::initRenderData() {
     GLuint VBO;
     GLfloat vertices[] = {
-        // Pos      // Tex
-        -0.5f, 0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, 1.0f, 0.0f,
+        // Pos        // Tex
+        -0.5f, 0.5f,  0.0f, 1.0f,
+        0.5f, -0.5f,  1.0f, 0.0f,
         -0.5f, -0.5f, 0.0f, 0.0f,
 
-        -0.5f, 0.5f, 0.0f, 1.0f,
-        0.5f, 0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f, 1.0f, 0.0f
+        -0.5f, 0.5f,  0.0f, 1.0f,
+        0.5f, 0.5f,   1.0f, 1.0f,
+        0.5f, -0.5f,  1.0f, 0.0f
     };
 
     glGenVertexArrays(1, &quadVAO);

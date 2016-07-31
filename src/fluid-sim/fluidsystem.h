@@ -14,11 +14,11 @@ typedef VectorField<2> VelocityField;
 class FluidSystem
 {
 public:
-    FluidSystem(const Grid::Index gridSize = 200, Scalar diffusionConstant = 0,
-                Scalar viscosity = 0);
+    FluidSystem(Grid::Index width = 200, Grid::Index height = 200,
+                Scalar diffusionConstant = 0, Scalar viscosity = 0);
 
-    const Grid::Index gridSize;
-    const Grid::Index fullGridSize;
+    const Grid::Index width, height;
+    const Grid::Index fullWidth, fullHeight;
 
     Scalar diffusionConstant;
     Scalar viscosity;

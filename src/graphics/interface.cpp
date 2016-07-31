@@ -10,31 +10,36 @@
 
 #include "resourcemanager.h"
 
-Interface::Interface() :
-    addDensity(fluidSystem->fullGridSize, fluidSystem->fullGridSize),
-    addVelocity(fluidSystem->fullGridSize, fluidSystem->fullGridSize) {
-    Grid::Index centerX = 1 + fluidSystem->gridSize / 2;
-    Grid::Index centerY = 1 + fluidSystem->gridSize / 2;
-    Grid::Index initialWidth = fluidSystem->gridSize / 20;
+Interface::Interface(GLint width, GLint height) :
+    width(width), height(height),
+    fluidSystem(std::make_shared<FluidSystem>(width, height)),
+    addDensity(fluidSystem->fullWidth, fluidSystem->fullHeight),
+    addVelocity(fluidSystem->fullWidth, fluidSystem->fullHeight) {
+    Grid::Index centerX = 1 + fluidSystem->width / 2;
+    Grid::Index centerY = 1 + fluidSystem->height / 2;
+    Grid::Index initialWidth = fluidSystem->width / 20;
+    Grid::Index initialHeight = fluidSystem->height / 20;
     // Initialize velocities
     for (Grid::Index i = centerX - initialWidth / 10; i <= centerX + initialWidth / 10; ++i) {
-        addVelocity[1](i, centerX + 4 * initialWidth) = -20;
+        addVelocity[1](i, centerY + 4 * initialHeight) = -20;
     }
     // Initialize dyes
+    initialWidth = std::min(initialWidth, initialHeight);
+    initialHeight = std::min(initialWidth, initialHeight);
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
-      for (Grid::Index j = centerY - initialWidth; j <= centerY + initialWidth; ++j) {
+      for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
           fluidSystem->density[0](i,j) = 4;
       }
     }
-    centerY = 1 + fluidSystem->gridSize / 4;
+    centerY = 1 + fluidSystem->height / 4;
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
-      for (Grid::Index j = centerY - initialWidth; j <= centerY + initialWidth; ++j) {
+      for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
           fluidSystem->density[1](i,j) = 4;
       }
     }
-    centerY = 1 + 3 * fluidSystem->gridSize / 4;
+    centerY = 1 + 3 * fluidSystem->height / 4;
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
-      for (Grid::Index j = centerY - initialWidth; j <= centerY + initialWidth; ++j) {
+      for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
           fluidSystem->density[2](i,j) = 4;
       }
     }
@@ -42,7 +47,7 @@ Interface::Interface() :
 
 Interface::~Interface() {}
 
-void Interface::init(GLint width, GLint height) {
+void Interface::init() {
     // Load shaders
     ResourceManager::loadShader("canvas", "shaders/canvas.vert", "shaders/canvas.frag").use();
     // Configure shaders
@@ -67,7 +72,7 @@ void Interface::update(GLfloat dt) {
 }
 
 void Interface::processInput(GLfloat dt) {
-    const GLfloat translateVelocity = 100;
+    const GLfloat translateVelocity = std::min(width, height) / 4;
     const GLfloat rotateVelocity = 2;
     const GLfloat zoomVelocity = 4;
     const GLfloat maxZoom = 4;
@@ -110,9 +115,13 @@ void Interface::processInput(GLfloat dt) {
     }
 }
 
-void Interface::processResize(GLint width, GLint height) {
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width),
-                                      static_cast<GLfloat>(height), 0.0f,
+void Interface::processResize(GLint newWidth, GLint newHeight) {
+    width = newWidth;
+    height = newHeight;
+    canvas->width = newWidth;
+    canvas->height = newHeight;
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(newWidth),
+                                      static_cast<GLfloat>(newHeight), 0.0f,
                                       -1.0f, 1.0f);
     ResourceManager::getShader("canvas").setMatrix4("projection", projection);
 }

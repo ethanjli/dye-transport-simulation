@@ -13,9 +13,10 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 void resizeCallback(GLFWwindow *window, GLint width, GLint height);
 
 // Window dimensions
-const GLint WIDTH = 600, HEIGHT = 600;
+const GLint WIDTH = 180, HEIGHT = 320;
+const GLint ZOOM = 2;
 
-Interface interface;
+Interface interface(WIDTH, HEIGHT);
 
 // Boilerplate starter code from CS 148 (Summer 2016) Assignment 3's starter code.
 int main()
@@ -30,7 +31,9 @@ int main()
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
     // Create a GLFWwindow object that we can use for GLFW's functions
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Dye Transport Simulator", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(WIDTH * ZOOM, HEIGHT * ZOOM,
+                                          "Dye Transport Simulator", nullptr, nullptr);
+    glfwSetWindowAspectRatio(window, WIDTH, HEIGHT);
     glfwMakeContextCurrent(window);
 
     // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
@@ -44,7 +47,7 @@ int main()
     glfwSetWindowSizeCallback(window, resizeCallback);
 
     // OpenGL configuration
-    glViewport(0, 0, WIDTH, HEIGHT);
+    glViewport(0, 0, WIDTH * ZOOM, HEIGHT * ZOOM);
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -54,7 +57,7 @@ int main()
     GLfloat lastFrame = 0.0f;
 
     // Initialize interface
-    interface.init(WIDTH, HEIGHT);
+    interface.init();
     interface.state = INTERFACE_ACTIVE;
 
     double lastCheckpoint = glfwGetTime();

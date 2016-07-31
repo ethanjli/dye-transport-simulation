@@ -20,7 +20,7 @@ enum SimulationState {
 class Interface
 {
 public:
-    Interface();
+    Interface(GLint width, GLint height);
     ~Interface();
 
     SimulationState state = INTERFACE_ACTIVE;
@@ -29,7 +29,7 @@ public:
     std::array<GLboolean, 1024> keysDown = {0};
 
     // Initialize interface state (load all resources)
-    void init(GLint width, GLint height);
+    void init();
     // Interface loop
     void processInput(GLfloat dt);
     void processResize(GLint width, GLint height);
@@ -38,7 +38,8 @@ public:
 
 private:
     Canvas *canvas;
-    std::shared_ptr<FluidSystem> fluidSystem = std::make_shared<FluidSystem>();
+    GLint width, height;
+    std::shared_ptr<FluidSystem> fluidSystem;
 
     DyeField addDensity;
     VelocityField addVelocity;
