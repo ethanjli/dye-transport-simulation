@@ -16,11 +16,11 @@ Interface::Interface(GLint width, GLint height) :
     addDensity(fluidSystem->fullDimensions), addVelocity(fluidSystem->fullDimensions) {
     Grid::Index centerX = 1 + fluidSystem->width / 2;
     Grid::Index centerY = 1 + fluidSystem->height / 2;
-    Grid::Index initialWidth = fluidSystem->width / 20;
-    Grid::Index initialHeight = fluidSystem->height / 20;
+    Grid::Index initialWidth = fluidSystem->width / 10;
+    Grid::Index initialHeight = fluidSystem->height / 10;
     // Initialize velocities
-    for (Grid::Index i = centerX - initialWidth / 10; i <= centerX + initialWidth / 10; ++i) {
-        addVelocity[1](i, centerY + 4 * initialHeight, 0) = -20;
+    for (Grid::Index i = centerX - initialWidth / 5; i <= centerX + initialWidth / 5; ++i) {
+        addVelocity[1](i, centerY + 2 * initialHeight, 0) = -20;
     }
     // Initialize dyes
     initialWidth = std::min(initialWidth, initialHeight);
