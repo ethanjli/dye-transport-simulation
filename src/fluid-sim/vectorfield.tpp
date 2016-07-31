@@ -1,7 +1,7 @@
 template<std::size_t numCoords>
-VectorField<numCoords>::VectorField(Grid::Index numRows, Grid::Index numCols, Grid::Index numSlices) {
+VectorField<numCoords>::VectorField(const std::array<Eigen::Index, kGridDimensions> &dimensions) {
     for (auto &grid : grids) {
-        grid = Grid(numRows, numCols, numSlices);
+        grid = Grid(dimensions);
         grid.setZero();
     }
 }

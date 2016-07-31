@@ -6,7 +6,7 @@
 template<std::size_t numCoords>
 class VectorField {
 public:
-    VectorField(Grid::Index numRows, Grid::Index numCols, Grid::Index numSlices);
+    VectorField(const std::array<Eigen::Index, kGridDimensions> &dimensions);
 
     static const std::size_t coords = numCoords;
 

@@ -6,9 +6,10 @@
 FluidSystem::FluidSystem(Grid::Index width, Grid::Index height,
                          Scalar diffusionConstant, Scalar viscosity) :
     width(width), height(height), fullWidth(width + 2), fullHeight(height + 2),
+    fullDimensions({fullWidth, fullHeight + 2, 1}),
     diffusionConstant(diffusionConstant), viscosity(viscosity),
-    density(width + 2, height + 2, 1), velocity(width + 2, height + 2, 1),
-    densityPrev(width + 2, height + 2, 1), velocityPrev(width + 2, height + 2, 1) {}
+    density(fullDimensions), velocity(fullDimensions),
+    densityPrev(fullDimensions), velocityPrev(fullDimensions) {}
 
 void FluidSystem::step(const DyeField &addedDensity, const VelocityField &addedVelocity,
                        Scalar dt) {
@@ -57,7 +58,7 @@ void FluidSystem::stepVelocity(Scalar dt, const VelocityField &addedVelocity) {
 void FluidSystem::solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
                                BoundarySetter setBoundaries,
                                unsigned int numIterations) const {
-    Grid temp(fullWidth, fullHeight, 1);
+    Grid temp(fullDimensions);
 
     x = x_0;
     for (unsigned int iteration = 0; iteration < numIterations; ++iteration) {
@@ -76,8 +77,8 @@ void FluidSystem::solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
 }
 
 void FluidSystem::project(VelocityField &velocity) const {
-    Grid pressure(fullWidth, fullHeight, 1);
-    Grid divergence(fullWidth, fullHeight, 1);
+    Grid pressure(fullDimensions);
+    Grid divergence(fullDimensions);
     div(divergence, velocity);
     divergence = -1 * divergence;
     setContinuityBoundaries(divergence);
@@ -85,7 +86,7 @@ void FluidSystem::project(VelocityField &velocity) const {
     solvePoisson(pressure, divergence, 1, 4,
                  std::bind(&FluidSystem::setContinuityBoundaries, this,
                            std::placeholders::_1));
-    VelocityField gradient(fullWidth, fullHeight, 1);
+    VelocityField gradient(fullDimensions);
     grad(gradient, pressure);
     velocity -= gradient;
     setHorizontalNeumannBoundaries(velocity[0]);

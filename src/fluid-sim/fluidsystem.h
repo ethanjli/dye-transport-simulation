@@ -19,6 +19,7 @@ public:
 
     const Grid::Index width, height;
     const Grid::Index fullWidth, fullHeight;
+    const std::array<Grid::Index, 3> fullDimensions;
 
     Scalar diffusionConstant;
     Scalar viscosity;

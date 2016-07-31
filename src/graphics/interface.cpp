@@ -13,8 +13,7 @@
 Interface::Interface(GLint width, GLint height) :
     width(width), height(height),
     fluidSystem(std::make_shared<FluidSystem>(width, height)),
-    addDensity(fluidSystem->fullWidth, fluidSystem->fullHeight, 1),
-    addVelocity(fluidSystem->fullWidth, fluidSystem->fullHeight, 1) {
+    addDensity(fluidSystem->fullDimensions), addVelocity(fluidSystem->fullDimensions) {
     Grid::Index centerX = 1 + fluidSystem->width / 2;
     Grid::Index centerY = 1 + fluidSystem->height / 2;
     Grid::Index initialWidth = fluidSystem->width / 20;
