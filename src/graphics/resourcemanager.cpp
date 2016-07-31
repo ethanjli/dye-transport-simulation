@@ -18,25 +18,9 @@ Shader &ResourceManager::getShader(std::string name) {
 }
 
 FluidTexture &ResourceManager::loadFluidTexture(std::string name,
-                                                const std::shared_ptr<FluidSystem> &fluidSystem,
-                                                GLboolean alpha) {
-    bool newFluidTexture = fluidTextures.find(name) == fluidTextures.end();
-    if (newFluidTexture) {
-        fluidTextures.emplace(std::make_pair(name, fluidSystem));
-    }
-    if (alpha) {
-        fluidTextures.at(name).internalFormat = GL_RGBA;
-        fluidTextures.at(name).imageFormat = GL_RGBA;
-    } else {
-        fluidTextures.at(name).internalFormat = GL_RED;
-        fluidTextures.at(name).imageFormat = GL_RED;
-    }
-    // Load image
-    if (newFluidTexture) {
-        fluidTextures.at(name).generate();
-    } else {
-        fluidTextures.at(name).update();
-    }
+                                                const std::shared_ptr<FluidSystem> &fluidSystem) {
+    fluidTextures.emplace(std::make_pair(name, fluidSystem));
+    fluidTextures.at(name).generate();
     return fluidTextures.at(name);
 }
 
@@ -46,7 +30,7 @@ FluidTexture &ResourceManager::getFluidTexture(std::string name) {
 
 void ResourceManager::clear() {
     for (auto iter : shaders) glDeleteProgram(iter.second.id);
-    for (auto iter : fluidTextures) glDeleteTextures(1, &iter.second.id);
+    for (auto iter : fluidTextures) glDeleteTextures(FluidTexture::textures, &iter.second.ids[0]);
 }
 
 Shader ResourceManager::loadShaderFromFile(std::string vShaderFile,

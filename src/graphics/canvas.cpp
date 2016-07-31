@@ -30,8 +30,10 @@ void Canvas::draw(const FluidTexture &fluidTexture) {
 
     shader.setMatrix4("view", view);
 
-    glActiveTexture(GL_TEXTURE0);
-    fluidTexture.bind();
+    for (std::size_t i = 0; i < fluidTexture.textures; ++i) {
+        glActiveTexture(GL_TEXTURE0 + i);
+        fluidTexture.bind(i);
+    }
 
     glBindVertexArray(quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);

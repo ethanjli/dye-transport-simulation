@@ -2,11 +2,13 @@
 in vec2 TexCoords;
 out vec4 color;
 
-uniform sampler2D image;
+uniform sampler2D cyan;
+uniform sampler2D magenta;
+uniform sampler2D yellow;
 
 void main()
 {
-    vec4 pigment = texture(image, TexCoords); // Texture is actually CMYA
-    //color = vec4(1 - pigment.r, 1 - pigment.g, 1 - pigment.b, pigment.a);
-    color = vec4(1, 1, 1 - pigment.r, 1);
+    color = vec4(1 - texture(cyan, TexCoords).r,
+                 1 - texture(magenta, TexCoords).r,
+                 1 - texture(yellow, TexCoords).r, 1);
 }

@@ -25,6 +25,7 @@ public:
                  const std::string &geometrySource);
 
     // Utility functions
+    void setTextureUnit(const GLchar *name, GLint textureUnit, GLboolean useShader = false);
     void setFloat(const GLchar *name, GLfloat value, GLboolean useShader = false);
     void setInteger(const GLchar *name, GLint value, GLboolean useShader = false);
     void setVector2f(const GLchar *name, GLfloat x, GLfloat y, GLboolean useShader = false);

@@ -17,12 +17,13 @@ SOURCES += src/main.cpp \
 HEADERS += \
     src/fluid-sim/fluidsystem.h \
     src/fluid-sim/math.h \
-    src/fluid-sim/math.tpp \
     src/graphics/shader.h \
     src/graphics/canvas.h \
     src/graphics/interface.h \
     src/graphics/resourcemanager.h \
-    src/graphics/fluidtexture.h
+    src/graphics/fluidtexture.h \
+    src/fluid-sim/vectorfield.h \
+    src/fluid-sim/vectorfield.tpp
 
 DISTFILES += \
     src/graphics/canvas.frag \

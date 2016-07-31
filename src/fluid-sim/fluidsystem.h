@@ -1,21 +1,20 @@
 #ifndef FLUIDSYSTEM_H
 #define FLUIDSYSTEM_H
 
-#include <Eigen/Dense>
 #include <functional>
 
-#include "math.h"
+#include "vectorfield.h"
 
 // Adapted from Jos Stam's Stable Fluids method
 // https://d2f99xq7vri1nk.cloudfront.net/legacy_app_files/pdf/GDC03.pdf
 
-typedef VectorField<1> DyeField;
+typedef VectorField<3> DyeField;
 typedef VectorField<2> VelocityField;
 
 class FluidSystem
 {
 public:
-    FluidSystem(const Grid::Index gridSize = 300, Scalar gridLength = 1,
+    FluidSystem(const Grid::Index gridSize = 200, Scalar gridLength = 1,
                 Scalar diffusionConstant = 0, Scalar viscosity = 0);
 
     const Grid::Index gridSize;

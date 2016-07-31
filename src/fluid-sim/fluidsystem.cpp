@@ -26,14 +26,16 @@ void FluidSystem::clear() {
 
 void FluidSystem::stepDensity(Scalar dt, const DyeField &addedDensity) {
     density += addedDensity;
-    std::swap(density[0], densityPrev[0]);
-    diffuse(density[0], densityPrev[0], diffusionConstant, dt,
-                 std::bind(&FluidSystem::setContinuityBoundaries, this,
-                           std::placeholders::_1));
-    std::swap(density[0], densityPrev[0]);
-    advect(density[0], densityPrev[0], velocity[0], velocity[1], dt,
+    for (std::size_t i = 0; i < DyeField::coords; ++i) {
+        std::swap(density[i], densityPrev[i]);
+        diffuse(density[i], densityPrev[i], diffusionConstant, dt,
                 std::bind(&FluidSystem::setContinuityBoundaries, this,
                           std::placeholders::_1));
+        std::swap(density[i], densityPrev[i]);
+        advect(density[i], densityPrev[i], velocity[0], velocity[1], dt,
+                std::bind(&FluidSystem::setContinuityBoundaries, this,
+                          std::placeholders::_1));
+    }
 }
 
 void FluidSystem::stepVelocity(Scalar dt, const VelocityField &addedVelocity) {

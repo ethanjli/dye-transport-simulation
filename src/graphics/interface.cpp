@@ -13,15 +13,30 @@
 Interface::Interface() :
     keys(), addDensity(fluidSystem->fullGridSize, fluidSystem->fullGridSize),
     addVelocity(fluidSystem->fullGridSize, fluidSystem->fullGridSize) {
-    Grid::Index center = 1 + fluidSystem->gridSize / 2;
-    Grid::Index initialWidth = 20;
-    for (Grid::Index i = center - initialWidth; i <= center + initialWidth; ++i) {
-      for (Grid::Index j = center - initialWidth; j <= center + initialWidth; ++j) {
+    Grid::Index centerX = 1 + fluidSystem->gridSize / 2;
+    Grid::Index centerY = 1 + fluidSystem->gridSize / 2;
+    Grid::Index initialWidth = fluidSystem->gridSize / 20;
+    // Initialize velocities
+    for (Grid::Index i = centerX - initialWidth / 10; i <= centerX + initialWidth / 10; ++i) {
+        addVelocity[1](i, centerX + 4 * initialWidth) = -0.1;
+    }
+    // Initialize dyes
+    for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
+      for (Grid::Index j = centerY - initialWidth; j <= centerY + initialWidth; ++j) {
           fluidSystem->density[0](i,j) = 4;
       }
     }
-    for (Grid::Index i = center - initialWidth / 10; i <= center + initialWidth / 10; ++i) {
-        addVelocity[1](i, center + 4 * initialWidth) = -1;
+    centerY = 1 + fluidSystem->gridSize / 4;
+    for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
+      for (Grid::Index j = centerY - initialWidth; j <= centerY + initialWidth; ++j) {
+          fluidSystem->density[1](i,j) = 4;
+      }
+    }
+    centerY = 1 + 3 * fluidSystem->gridSize / 4;
+    for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
+      for (Grid::Index j = centerY - initialWidth; j <= centerY + initialWidth; ++j) {
+          fluidSystem->density[2](i,j) = 4;
+      }
     }
 }
 
@@ -39,7 +54,10 @@ void Interface::init(GLint width, GLint height) {
     // Set render-specific controls
     canvas = new Canvas(ResourceManager::getShader("canvas"), width, height);
     // Load textures
-    ResourceManager::loadFluidTexture("fluid", fluidSystem, GL_FALSE);
+    ResourceManager::loadFluidTexture("fluid", fluidSystem);
+    ResourceManager::getShader("canvas").setTextureUnit("cyan", 0);
+    ResourceManager::getShader("canvas").setTextureUnit("magenta", 1);
+    ResourceManager::getShader("canvas").setTextureUnit("yellow", 2);
 }
 
 void Interface::update(GLfloat dt) {

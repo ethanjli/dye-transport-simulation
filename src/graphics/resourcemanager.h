@@ -27,8 +27,7 @@ public:
     static Shader &getShader(std::string name);
     // Loads (and generates) a fluidTexture from a fluid system
     static FluidTexture &loadFluidTexture(std::string name,
-                                          const std::shared_ptr<FluidSystem> &fluidSystem,
-                                          GLboolean alpha);
+                                          const std::shared_ptr<FluidSystem> &fluidSystem);
     // Retrieves a stored fluid texture
     static FluidTexture &getFluidTexture(std::string name);
     // Properly deallocates all loaded resources
