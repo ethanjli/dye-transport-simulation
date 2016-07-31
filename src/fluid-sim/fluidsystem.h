@@ -9,16 +9,16 @@
 // https://d2f99xq7vri1nk.cloudfront.net/legacy_app_files/pdf/GDC03.pdf
 
 typedef VectorField<3> DyeField;
-typedef VectorField<2> VelocityField;
+typedef VectorField<3> VelocityField;
 
 class FluidSystem
 {
 public:
-    FluidSystem(Grid::Index width = 200, Grid::Index height = 200,
+    FluidSystem(Grid::Index width = 100, Grid::Index height = 100, Grid::Index depth = 3,
                 Scalar diffusionConstant = 0, Scalar viscosity = 0);
 
-    const Grid::Index width, height;
-    const Grid::Index fullWidth, fullHeight;
+    const Grid::Index width, height, depth;
+    const Grid::Index fullWidth, fullHeight, fullDepth;
     const Indices dimensions;
     const std::array<Grid::Index, 3> fullDimensions;
 
@@ -58,8 +58,9 @@ private:
 
     void setBoundaries(Grid &grid, int b) const;
     void setContinuityBoundaries(Grid &grid) const;
-    void setVerticalNeumannBoundaries(Grid &grid) const;
     void setHorizontalNeumannBoundaries(Grid &grid) const;
+    void setVerticalNeumannBoundaries(Grid &grid) const;
+    void setDepthNeumannBoundaries(Grid &grid) const;
 };
 
 #include "fluidsystem.tpp"

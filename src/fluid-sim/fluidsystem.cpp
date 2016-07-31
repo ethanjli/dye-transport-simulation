@@ -3,10 +3,12 @@
 #include <utility>
 #include <algorithm>
 
-FluidSystem::FluidSystem(Grid::Index width, Grid::Index height,
+FluidSystem::FluidSystem(Grid::Index width, Grid::Index height, Grid::Index depth,
                          Scalar diffusionConstant, Scalar viscosity) :
-    width(width), height(height), fullWidth(width + 2), fullHeight(height + 2),
-    dimensions({width, height, 1}), fullDimensions({fullWidth, fullHeight, 1}),
+    width(width), height(height), depth(depth),
+    fullWidth(width + 2), fullHeight(height + 2), fullDepth(depth + 2),
+    dimensions({width, height, depth}),
+    fullDimensions({fullWidth, fullHeight, fullDepth}),
     diffusionConstant(diffusionConstant), viscosity(viscosity),
     density(fullDimensions), velocity(fullDimensions),
     densityPrev(fullDimensions), velocityPrev(fullDimensions) {}
@@ -45,6 +47,8 @@ void FluidSystem::stepVelocity(Scalar dt, const VelocityField &addedVelocity) {
                                    this, std::placeholders::_1);
     boundarySetters[1] = std::bind(&FluidSystem::setVerticalNeumannBoundaries,
                                    this, std::placeholders::_1);
+    boundarySetters[2] = std::bind(&FluidSystem::setDepthNeumannBoundaries,
+                                   this, std::placeholders::_1);
 
     std::swap(velocity, velocityPrev);
     diffuse(velocity, velocityPrev, viscosity, dt, boundarySetters);
@@ -64,10 +68,12 @@ void FluidSystem::solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
     for (unsigned int iteration = 0; iteration < numIterations; ++iteration) {
         for (Grid::Index i = 1; i <= width; ++i) {
             for (Grid::Index j = 1; j <= height; ++j) {
-                temp(i, j, 0) = (x_0(i, j, 0) + a * (x(i - 1, j, 0) +
-                                                     x(i + 1, j, 0) +
-                                                     x(i, j - 1, 0) +
-                                                     x(i, j + 1, 0))) / c;
+                for (Grid::Index k = 1; k <= depth; ++k) {
+                    temp(i, j, k) = (x_0(i, j, k) + a * (x(i - 1, j, k) +
+                                                         x(i + 1, j, k) +
+                                                         x(i, j - 1, k) +
+                                                         x(i, j + 1, k))) / c;
+                }
             }
         }
         x = temp;
@@ -95,36 +101,54 @@ void FluidSystem::project(VelocityField &velocity) const {
 void FluidSystem::grad(VelocityField &out, const Grid &in) const {
     for (Grid::Index i = 1; i <= width; ++i) {
         for (Grid::Index j = 1; j <= height; ++j) {
-            out[0](i, j, 0) = 0.5 * (in(i + 1, j, 0) - in(i - 1, j, 0));
-            out[1](i, j, 0) = 0.5 * (in(i, j + 1, 0) - in(i, j - 1, 0));
+            for (Grid::Index k = 1; k <= depth; ++k) {
+                out[0](i, j, k) = 0.5 * (in(i + 1, j, k) - in(i - 1, j, k));
+                out[1](i, j, k) = 0.5 * (in(i, j + 1, k) - in(i, j - 1, k));
+            }
         }
     }
 }
 void FluidSystem::div(Grid &out, const VelocityField &in) const {
     for (Grid::Index i = 1; i <= width; ++i) {
         for (Grid::Index j = 1; j <= height; ++j) {
-            out(i, j, 0) = 0.5 * (in[0](i + 1, j, 0) - in[0](i - 1, j, 0));
-            out(i, j, 0) += 0.5 * (in[1](i, j + 1, 0) - in[1](i, j - 1, 0));
+            for (Grid::Index k = 1; k <= depth; ++k) {
+                out(i, j, k) = 0;
+                out(i, j, k) += 0.5 * (in[0](i + 1, j, k) - in[0](i - 1, j, k));
+                out(i, j, k) += 0.5 * (in[1](i, j + 1, k) - in[1](i, j - 1, k));
+            }
         }
     }
 }
 
 void FluidSystem::setBoundaries(Grid &grid, int b) const {
     for(Grid::Index j = 1; j <= height; ++j) {
-        grid(0, j, 0) = (b == 1 ? -1 : 1) * grid(1, j, 0);
-        grid(width + 1, j, 0) = (b == 1 ? -1 : 1) * grid(width, j, 0);
+        for (Grid::Index k = 1; k <= depth; ++k) {
+            grid(0, j, k) = (b == 0 ? -1 : 1) * grid(1, j, k);
+            grid(width + 1, j, k) = (b == 0 ? -1 : 1) * grid(width, j, k);
+        }
     }
     for (Grid::Index i = 1; i <= width; ++i) {
-        grid(i, 0, 0) = (b == 2 ? -1 : 1) * grid(i, 1, 0);
-        grid(i, height + 1, 0) = (b == 2 ? -1 : 1) * grid(i, height, 0);
+        for (Grid::Index k = 1; k <= depth; ++k) {
+            grid(i, 0, k) = (b == 1 ? -1 : 1) * grid(i, 1, k);
+            grid(i, height + 1, k) = (b == 1 ? -1 : 1) * grid(i, height, k);
+        }
+    }
+    for (Grid::Index i = 1; i <= width; ++i) {
+        for (Grid::Index j = 1; j <= height; ++j) {
+            grid(i, j, 0) = (b == 2 ? -1 : 1) * grid(i, j, 1);
+            grid(i, j, depth + 1) = (b == 2 ? -1 : 1) * grid(i, j, depth);
+        }
     }
 }
 void FluidSystem::setContinuityBoundaries(Grid &grid) const {
-    setBoundaries(grid, 0);
+    setBoundaries(grid, -1);
 }
 void FluidSystem::setHorizontalNeumannBoundaries(Grid &grid) const {
-    setBoundaries(grid, 1);
+    setBoundaries(grid, 0);
 }
 void FluidSystem::setVerticalNeumannBoundaries(Grid &grid) const {
+    setBoundaries(grid, 1);
+}
+void FluidSystem::setDepthNeumannBoundaries(Grid &grid) const {
     setBoundaries(grid, 2);
 }

@@ -12,7 +12,7 @@ void FluidTexture::generate() {
 
         glBindTexture(GL_TEXTURE_2D, ids[i]);
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, d[0], d[1],
-                     0, format, GL_FLOAT, fluidSystem->density[i].data());
+                     0, format, GL_FLOAT, fluidSystem->density[i].data() + d[0] * d[1]);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filterMin);
@@ -27,7 +27,7 @@ void FluidTexture::update() {
 
         glBindTexture(GL_TEXTURE_2D, ids[i]);
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d[0], d[1], GL_RED, GL_FLOAT,
-                        fluidSystem->density[i].data());
+                        fluidSystem->density[i].data() + d[0] * d[1]);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 }

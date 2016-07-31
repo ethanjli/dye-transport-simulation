@@ -20,26 +20,26 @@ Interface::Interface(GLint width, GLint height) :
     Grid::Index initialHeight = fluidSystem->height / 10;
     // Initialize velocities
     for (Grid::Index i = centerX - initialWidth / 5; i <= centerX + initialWidth / 5; ++i) {
-        addVelocity[1](i, centerY + 2 * initialHeight, 0) = -20;
+        addVelocity[1](i, centerY + 2 * initialHeight, 1) = -20;
     }
     // Initialize dyes
     initialWidth = std::min(initialWidth, initialHeight);
     initialHeight = std::min(initialWidth, initialHeight);
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[0](i, j, 0) = 4;
+          fluidSystem->density[0](i, j, 1) = 4;
       }
     }
     centerY = 1 + fluidSystem->height / 4;
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[1](i, j, 0) = 4;
+          fluidSystem->density[1](i, j, 1) = 4;
       }
     }
     centerY = 1 + 3 * fluidSystem->height / 4;
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[2](i, j, 0) = 4;
+          fluidSystem->density[2](i, j, 1) = 4;
       }
     }
 }
