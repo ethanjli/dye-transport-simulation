@@ -14,33 +14,26 @@ Interface::Interface(GLint width, GLint height) :
     width(width), height(height),
     fluidSystem(std::make_shared<FluidSystem>(width, height)),
     addDensity(fluidSystem->fullDimensions), addVelocity(fluidSystem->fullDimensions) {
-    Grid::Index centerX = 1 + fluidSystem->width / 2;
-    Grid::Index centerY = 1 + fluidSystem->height / 2;
-    Grid::Index initialWidth = fluidSystem->width / 10;
-    Grid::Index initialHeight = fluidSystem->height / 10;
-    // Initialize velocities
-    for (Grid::Index i = centerX - initialWidth / 5; i <= centerX + initialWidth / 5; ++i) {
-        addVelocity[1](i, centerY + 2 * initialHeight, 1) = -20;
-    }
-    // Initialize dyes
+    Grid::Index centerX = fluidSystem->width / 2;
+    Grid::Index centerY = fluidSystem->height / 2;
+    Grid::Index initialWidth = fluidSystem->width / 4;
+    Grid::Index initialHeight = fluidSystem->height / 4;
     initialWidth = std::min(initialWidth, initialHeight);
     initialHeight = std::min(initialWidth, initialHeight);
+    // Initialize velocities
+    fluidSystem->velocity[0](centerX - 20, centerY, 1) = 100;
+    fluidSystem->velocity[0](centerX + 20, centerY, 1) = 100;
+    fluidSystem->velocity[0](centerX, centerY - 20, 1) = 100;
+    fluidSystem->velocity[0](centerX, centerY + 20, 1) = 100;
+    //fluidSystem->velocity[2](centerX, centerY, 5) = 10;
+    // Initialize dyes
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
-      for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[0](i, j, 1) = 4;
-      }
-    }
-    centerY = 1 + fluidSystem->height / 4;
-    for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
-      for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[1](i, j, 1) = 4;
-      }
-    }
-    centerY = 1 + 3 * fluidSystem->height / 4;
-    for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
-      for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[2](i, j, 1) = 4;
-      }
+        for (Grid::Index j = centerY - initialHeight; j < centerY; ++j) {
+            fluidSystem->density[1](i, j, 1) = 10;
+        }
+        for (Grid::Index j = centerY; j <= centerY + initialHeight; ++j) {
+            fluidSystem->density[0](i, j, 1) = 10;
+        }
     }
 }
 

@@ -62,17 +62,22 @@ void FluidSystem::stepVelocity(Scalar dt, const VelocityField &addedVelocity) {
 void FluidSystem::solvePoisson(Grid &x, const Grid &x_0, Scalar a, Scalar c,
                                BoundarySetter setBoundaries,
                                unsigned int numIterations) const {
-    Grid temp(fullDimensions);
-
     x = x_0;
+    if (a == 0) {
+        setBoundaries(x);
+        return;
+    }
+
+    Grid temp(fullDimensions);
+    temp.setZero();
     for (unsigned int iteration = 0; iteration < numIterations; ++iteration) {
         for (Grid::Index i = 1; i <= width; ++i) {
             for (Grid::Index j = 1; j <= height; ++j) {
                 for (Grid::Index k = 1; k <= depth; ++k) {
-                    temp(i, j, k) = (x_0(i, j, k) + a * (x(i - 1, j, k) +
-                                                         x(i + 1, j, k) +
-                                                         x(i, j - 1, k) +
-                                                         x(i, j + 1, k))) / c;
+                    temp(i, j, k) = (x_0(i, j, k) +
+                                     a * (x(i - 1, j, k) + x(i + 1, j, k) +
+                                          x(i, j - 1, k) + x(i, j + 1, k) +
+                                          x(i, j, k - 1) + x(i, j, k + 1))) / c;
                 }
             }
         }
@@ -89,7 +94,7 @@ void FluidSystem::project(VelocityField &velocity) const {
     divergence = -1 * divergence;
     setContinuityBoundaries(divergence);
     setContinuityBoundaries(pressure);
-    solvePoisson(pressure, divergence, 1, 4,
+    solvePoisson(pressure, divergence, 1, 6,
                  std::bind(&FluidSystem::setContinuityBoundaries, this,
                            std::placeholders::_1));
     VelocityField gradient(fullDimensions);
@@ -97,6 +102,7 @@ void FluidSystem::project(VelocityField &velocity) const {
     velocity -= gradient;
     setHorizontalNeumannBoundaries(velocity[0]);
     setVerticalNeumannBoundaries(velocity[1]);
+    setDepthNeumannBoundaries(velocity[2]);
 }
 void FluidSystem::grad(VelocityField &out, const Grid &in) const {
     for (Grid::Index i = 1; i <= width; ++i) {
@@ -104,6 +110,7 @@ void FluidSystem::grad(VelocityField &out, const Grid &in) const {
             for (Grid::Index k = 1; k <= depth; ++k) {
                 out[0](i, j, k) = 0.5 * (in(i + 1, j, k) - in(i - 1, j, k));
                 out[1](i, j, k) = 0.5 * (in(i, j + 1, k) - in(i, j - 1, k));
+                out[2](i, j, k) = 0.5 * (in(i, j, k + 1) - in(i, j, k - 1));
             }
         }
     }
@@ -115,6 +122,7 @@ void FluidSystem::div(Grid &out, const VelocityField &in) const {
                 out(i, j, k) = 0;
                 out(i, j, k) += 0.5 * (in[0](i + 1, j, k) - in[0](i - 1, j, k));
                 out(i, j, k) += 0.5 * (in[1](i, j + 1, k) - in[1](i, j - 1, k));
+                out(i, j, k) += 0.5 * (in[1](i, j, k + 1) - in[1](i, j, k - 1));
             }
         }
     }
@@ -139,6 +147,26 @@ void FluidSystem::setBoundaries(Grid &grid, int b) const {
             grid(i, j, depth + 1) = (b == 2 ? -1 : 1) * grid(i, j, depth);
         }
     }
+
+    grid(0, 0, 0) = (grid(1, 0, 0) + grid(0, 1, 0) + grid(0, 0, 1)) / 3;
+    grid(width + 1, 0, 0) = (grid(width, 0, 0) + grid(width + 1, 1, 0) +
+                             grid(width + 1, 0, 1)) / 3;
+    grid(0, height + 1, 0) = (grid(1, height + 1, 0) + grid(0, height, 0) +
+                              grid(0, height + 1, 1)) / 3;
+    grid(0, 0, depth + 1) = (grid(1, 0, depth + 1) + grid(0, 1, depth + 1) +
+                             grid(0, 0, depth)) / 3;
+    grid(width + 1, height + 1, 0) = (grid(width, height + 1, 0) +
+                                      grid(width + 1, height, 0) +
+                                      grid(width + 1, height + 1, 1)) / 3;
+    grid(width + 1, 0, depth + 1) = (grid(width, 0, depth + 1) +
+                                     grid(width + 1, 1, depth + 1) +
+                                     grid(width + 1, 0, depth)) / 3;
+    grid(0, height + 1, depth + 1) = (grid(1, height + 1, depth + 1) +
+                                      grid(0, height, depth + 1) +
+                                      grid(0, height + 1, depth)) / 3;
+    grid(width + 1, height + 1, depth + 1) = (grid(width, height + 1, depth + 1) +
+                                              grid(width + 1, height, depth + 1) +
+                                              grid(width + 1, height + 1, depth)) / 3;
 }
 void FluidSystem::setContinuityBoundaries(Grid &grid) const {
     setBoundaries(grid, -1);
