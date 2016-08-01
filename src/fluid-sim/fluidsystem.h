@@ -14,7 +14,7 @@ typedef VectorField<3> VelocityField;
 class FluidSystem
 {
 public:
-    FluidSystem(Grid::Index width = 40, Grid::Index height = 40, Grid::Index depth = 3,
+    FluidSystem(Grid::Index width = 40, Grid::Index height = 40, Grid::Index depth = 5,
                 Scalar diffusionConstant = 0, Scalar viscosity = 0);
 
     const Grid::Index width, height, depth;
