@@ -1,0 +1,2 @@
+C:\Qt\Tools\mingw530_32\bin\ar.exe cr lib\libglew32.a  CMakeFiles/glew_s.dir/159124d2de3507794e378598f29831fb/ext/glew-2.0.0/src/glew.c.obj CMakeFiles/glew_s.dir/159124d2de3507794e378598f29831fb/ext/glew-2.0.0/build/glew.rc.obj
+C:\Qt\Tools\mingw530_32\bin\ranlib.exe lib\libglew32.a

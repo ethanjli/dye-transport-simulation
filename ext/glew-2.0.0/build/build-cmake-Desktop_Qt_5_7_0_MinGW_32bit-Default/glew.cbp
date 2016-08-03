@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+   <FileVersion major="1" minor="6" />
+   <Project>
+      <Option title="glew" />
+      <Option makefile_is_custom="1" />
+      <Option compiler="gcc" />
+      <Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;" />
+      <Build>
+      <Target title="all">
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 all" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="edit_cache">
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 edit_cache" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="glew">
+         <Option output="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/bin/glew32.dll" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default" />
+         <Option object_output="./" />
+         <Option type="3" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DGLEW_BUILD" />
+            <Add option="-DGLEW_NO_GLU" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/../../../../i686-w64-mingw32/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include-fixed" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/backward" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/i686-w64-mingw32" />
+            <Add directory="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/cmake/../../include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 glew" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="glew/fast">
+         <Option output="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/bin/glew32.dll" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default" />
+         <Option object_output="./" />
+         <Option type="3" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DGLEW_BUILD" />
+            <Add option="-DGLEW_NO_GLU" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/../../../../i686-w64-mingw32/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include-fixed" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/backward" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/i686-w64-mingw32" />
+            <Add directory="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/cmake/../../include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 glew/fast" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="glew_s">
+         <Option output="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/lib/libglew32.a" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default" />
+         <Option object_output="./" />
+         <Option type="2" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DGLEW_STATIC" />
+            <Add option="-DGLEW_NO_GLU" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/../../../../i686-w64-mingw32/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include-fixed" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/backward" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/i686-w64-mingw32" />
+            <Add directory="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/cmake/../../include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 glew_s" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="glew_s/fast">
+         <Option output="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/lib/libglew32.a" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default" />
+         <Option object_output="./" />
+         <Option type="2" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DGLEW_STATIC" />
+            <Add option="-DGLEW_NO_GLU" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/../../../../i686-w64-mingw32/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include-fixed" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/backward" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/i686-w64-mingw32" />
+            <Add directory="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/cmake/../../include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 glew_s/fast" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="glewinfo">
+         <Option output="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/bin/glewinfo.exe" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/bin" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DGLEW_NO_GLU" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/../../../../i686-w64-mingw32/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include-fixed" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/backward" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/i686-w64-mingw32" />
+            <Add directory="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/cmake/../../include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 glewinfo" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="glewinfo/fast">
+         <Option output="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/bin/glewinfo.exe" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/bin" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DGLEW_NO_GLU" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/../../../../i686-w64-mingw32/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include-fixed" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/backward" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/i686-w64-mingw32" />
+            <Add directory="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/cmake/../../include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 glewinfo/fast" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="install">
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 install" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="install/local">
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 install/local" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="install/strip">
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 install/strip" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="list_install_components">
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 list_install_components" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="rebuild_cache">
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 rebuild_cache" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="visualinfo">
+         <Option output="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/bin/visualinfo.exe" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/bin" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DGLEW_NO_GLU" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/../../../../i686-w64-mingw32/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include-fixed" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/backward" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/i686-w64-mingw32" />
+            <Add directory="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/cmake/../../include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 visualinfo" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="visualinfo/fast">
+         <Option output="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/bin/visualinfo.exe" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/bin" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DGLEW_NO_GLU" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/../../../../i686-w64-mingw32/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include" />
+            <Add directory="C:/Qt/Tools/mingw530_32/bin/../lib/gcc/i686-w64-mingw32/5.3.0/include-fixed" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/backward" />
+            <Add directory="C:/Qt/Tools/mingw530_32/lib/gcc/../../i686-w64-mingw32/include/c++/i686-w64-mingw32" />
+            <Add directory="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/cmake/../../include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 visualinfo/fast" />
+            <CompileFile command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/Qt/Tools/mingw530_32/bin/mingw32-make.exe -f &quot;C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      </Build>
+      <Unit filename="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/src/glew.c">
+      </Unit>
+      <Unit filename="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/src/glewinfo.c">
+      </Unit>
+      <Unit filename="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/src/visualinfo.c">
+      </Unit>
+      <Unit filename="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/glew.rc">
+      </Unit>
+      <Unit filename="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/glewinfo.rc">
+      </Unit>
+      <Unit filename="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/visualinfo.rc">
+      </Unit>
+      <Unit filename="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/include/GL/glew.h">
+      </Unit>
+      <Unit filename="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/include/GL/glxew.h">
+      </Unit>
+      <Unit filename="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/include/GL/wglew.h">
+      </Unit>
+      <Unit filename="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/cmake/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/cmake/../../glew.pc.in">
+          <Option virtualFolder="CMake Files\..\..\" />
+      </Unit>
+   </Project>
+</CodeBlocks_project_file>

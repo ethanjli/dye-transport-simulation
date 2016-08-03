@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/glewinfo.rc
+windows.h
+-
+

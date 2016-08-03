@@ -16,7 +16,7 @@ void resizeCallback(GLFWwindow *window, GLint width, GLint height);
 const GLint WIDTH = 120, HEIGHT = 120;
 const GLint ZOOM = 4;
 
-Interface interface(WIDTH, HEIGHT);
+Interface ui(WIDTH, HEIGHT);
 
 // Boilerplate starter code from CS 148 (Summer 2016) Assignment 3's starter code.
 int main()
@@ -56,9 +56,9 @@ int main()
     GLfloat deltaTime = 0.0f;
     GLfloat lastFrame = 0.0f;
 
-    // Initialize interface
-    interface.init();
-    interface.state = INTERFACE_ACTIVE;
+    // Initialize ui
+    ui.init();
+    ui.state = INTERFACE_ACTIVE;
 
     double lastCheckpoint = glfwGetTime();
     int renderedFrames = 0;
@@ -81,13 +81,13 @@ int main()
         glfwPollEvents();
 
         // Manage user input and game state
-        interface.processInput(deltaTime);
-        interface.update(deltaTime);
+        ui.processInput(deltaTime);
+        ui.update(deltaTime);
 
         // Render
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        interface.render();
+        ui.render();
 
         // Swap the screen buffers
         glfwSwapBuffers(window);
@@ -104,13 +104,13 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GL_TRUE);
     if (key >= 0 && key < 1024) {
         if (action == GLFW_PRESS) {
-            interface.keys[key] = GL_TRUE;
-            interface.keysDown[key] = GL_TRUE;
-            interface.keysUp[key] = GL_FALSE;
+            ui.keys[key] = GL_TRUE;
+            ui.keysDown[key] = GL_TRUE;
+            ui.keysUp[key] = GL_FALSE;
         } else if (action == GLFW_RELEASE) {
-            interface.keys[key] = GL_FALSE;
-            interface.keysUp[key] = GL_TRUE;
-            interface.keysDown[key] = GL_FALSE;
+            ui.keys[key] = GL_FALSE;
+            ui.keysUp[key] = GL_TRUE;
+            ui.keysDown[key] = GL_FALSE;
         }
     }
 }
@@ -118,6 +118,6 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 // Is called whenever the window is resized via GLFW
 void resizeCallback(GLFWwindow* window, GLint width, GLint height)
 {
-    interface.processResize(width, height);
+    ui.processResize(width, height);
     glViewport(0, 0, width, height);
 }
