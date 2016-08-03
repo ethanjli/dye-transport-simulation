@@ -23,7 +23,7 @@ public:
     Interface(GLint width, GLint height);
     ~Interface();
 
-    SimulationState state = INTERFACE_ACTIVE;
+    SimulationState state = INTERFACE_PAUSED;
     std::array<GLboolean, 1024> keys = {0};
     std::array<GLboolean, 1024> keysUp = {0};
     std::array<GLboolean, 1024> keysDown = {0};

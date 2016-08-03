@@ -17,10 +17,9 @@ public:
     FluidSystem(Grid::Index width = 40, Grid::Index height = 40, Grid::Index depth = 5,
                 Scalar diffusionConstant = 0, Scalar viscosity = 0);
 
-    const Grid::Index width, height, depth;
-    const Grid::Index fullWidth, fullHeight, fullDepth;
-    const Indices dimensions;
-    const std::array<Grid::Index, 3> fullDimensions;
+    // Grid dimensions
+    const Indices dim, fullDim;
+    const TensorIndices fullTensorDim;
 
     Scalar diffusionConstant;
     Scalar viscosity;

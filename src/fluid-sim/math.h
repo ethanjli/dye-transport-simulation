@@ -10,6 +10,7 @@ const Eigen::Index kGridDimensions = 3;
 typedef Eigen::Tensor<Scalar, kGridDimensions> Grid;
 typedef Eigen::Array<Scalar, kGridDimensions, 1> Location;
 typedef Eigen::Array<Grid::Index, kGridDimensions, 1> Indices;
+typedef std::array<Grid::Index, kGridDimensions> TensorIndices;
 
 // Linearly interpolates grid to nearest neighbors
 Scalar interpolate(const Grid &grid, Location x);
