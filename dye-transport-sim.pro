@@ -40,5 +40,12 @@ INSTALLS += shaders
 
 LIBS += -lGL -lGLEW -lglfw
 
-INCLUDEPATH += /usr/include/eigen3 \
-    /usr/include/SOIL
+INCLUDEPATH += ext/eigen3.3b2 ext/glm-0.9.7.6
+
+win32: LIBS += -L$$PWD/ext/glew-2.0.0-win32/glew-2.0.0/lib/Release/x64/ -lglew32 \
+    -L$$PWD/ext/glfw-3.2.bin.WIN64/lib-mingw-w64
+
+win32: INCLUDEPATH += $$PWD/ext/glew-2.0.0-win32/glew-2.0.0/include \
+    $$PWD/ext/glfw-3.2.bin.WIN64/include
+win32: DEPENDPATH += $$PWD/ext/glew-2.0.0-win32/glew-2.0.0/include \
+    $$PWD/ext/glfw-3.2.bin.WIN64/include
