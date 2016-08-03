@@ -5,11 +5,12 @@
 
 FluidSystem::FluidSystem(Grid::Index width, Grid::Index height, Grid::Index depth,
                          Scalar diffusionConstant, Scalar viscosity) :
-    dim({width, height, depth}), fullDim(dim + 2),
-    fullTensorDim({width + 2, height + 2, depth + 2}),
+    dim({width, height, depth}), staggeredDim(dim + 1),
+    fullDim({width + 2, height + 2, depth + 2}),
+    fullStaggeredDim({width + 3, height + 3, depth + 3}),
     diffusionConstant(diffusionConstant), viscosity(viscosity),
-    density(fullTensorDim), velocity(fullTensorDim),
-    densityPrev(fullTensorDim), velocityPrev(fullTensorDim) {}
+    density(fullDim), velocity(fullStaggeredDim),
+    densityPrev(fullDim), velocityPrev(fullStaggeredDim) {}
 
 void FluidSystem::step(const DyeField &addedDensity, const VelocityField &addedVelocity,
                        Scalar dt) {
@@ -33,45 +34,46 @@ void FluidSystem::stepDensity(Scalar dt, const DyeField &addedDensity) {
     }
 
     std::swap(density, densityPrev);
-    diffuse(density, densityPrev, diffusionConstant, dt, boundarySetters);
+    diffuse(density, densityPrev, diffusionConstant, dt, dim, boundarySetters);
     std::swap(density, densityPrev);
-    advect(density, densityPrev, velocity, dt, boundarySetters);
+    advect(density, densityPrev, velocity, dt, dim, boundarySetters);
 }
 
 void FluidSystem::stepVelocity(Scalar dt, const VelocityField &addedVelocity) {
     velocity += addedVelocity;
     std::array<BoundarySetter, velocity.coords> boundarySetters;
     boundarySetters[0] = std::bind(&setHorizontalNeumannBoundaries,
-                                   std::placeholders::_1, dim);
+                                   std::placeholders::_1, staggeredDim);
     boundarySetters[1] = std::bind(&setVerticalNeumannBoundaries,
-                                   std::placeholders::_1, dim);
+                                   std::placeholders::_1, staggeredDim);
     boundarySetters[2] = std::bind(&setDepthNeumannBoundaries,
-                                   std::placeholders::_1, dim);
+                                   std::placeholders::_1, staggeredDim);
 
     std::swap(velocity, velocityPrev);
-    diffuse(velocity, velocityPrev, viscosity, dt, boundarySetters);
+    diffuse(velocity, velocityPrev, viscosity, dt, staggeredDim, boundarySetters);
     project(velocity);
 
     std::swap(velocity, velocityPrev);
-    advect(velocity, velocityPrev, velocityPrev, dt, boundarySetters);
+    advect(velocity, velocityPrev, velocityPrev, dt, staggeredDim, boundarySetters);
     project(velocity);
 }
 
 void FluidSystem::project(VelocityField &velocity) const {
-    Grid pressure(fullTensorDim);
-    Grid divergence(fullTensorDim);
+    Grid pressure(fullDim);
+    Grid divergence(fullDim);
     div(divergence, velocity, dim);
     divergence = -1 * divergence;
     setContinuityBoundaries(divergence, dim);
     setContinuityBoundaries(pressure, dim);
-    linearSolve(pressure, divergence, 1, 6, dim, fullTensorDim,
-                std::bind(&setContinuityBoundaries, std::placeholders::_1, dim));
-    VelocityField gradient(fullTensorDim);
+    linearSolve(pressure, divergence, 1, 6, dim, std::bind(&setContinuityBoundaries,
+                                                           std::placeholders::_1, dim));
+    VelocityField gradient(fullStaggeredDim);
+    gradient.clear();
     grad(gradient, pressure, dim);
     velocity -= gradient;
-    setHorizontalNeumannBoundaries(velocity[0], dim);
-    setVerticalNeumannBoundaries(velocity[1], dim);
-    setDepthNeumannBoundaries(velocity[2], dim);
+    setHorizontalNeumannBoundaries(velocity[0], staggeredDim);
+    setVerticalNeumannBoundaries(velocity[1], staggeredDim);
+    setDepthNeumannBoundaries(velocity[2], staggeredDim);
 }
 
 void grad(VelocityField &out, const Grid &in, const Indices &dim) {

@@ -1,7 +1,6 @@
 #include "math.h"
 
-void linearSolve(Grid &x, const Grid &x_0, Scalar a, Scalar c,
-                 const Indices &dim, const TensorIndices &fullTensorDim,
+void linearSolve(Grid &x, const Grid &x_0, Scalar a, Scalar c, const Indices &dim,
                  BoundarySetter setBoundaries, unsigned int iterations) {
     x = x_0;
     if (a == 0) {
@@ -9,8 +8,7 @@ void linearSolve(Grid &x, const Grid &x_0, Scalar a, Scalar c,
         return;
     }
 
-    Grid temp(fullTensorDim);
-    temp.setZero();
+    Grid temp = x_0;
     for (unsigned int iteration = 0; iteration < iterations; ++iteration) {
         for (Grid::Index i = 1; i <= dim(0); ++i) {
             for (Grid::Index j = 1; j <= dim(1); ++j) {

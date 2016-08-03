@@ -18,8 +18,8 @@ public:
                 Scalar diffusionConstant = 0, Scalar viscosity = 0);
 
     // Grid dimensions
-    const Indices dim, fullDim;
-    const TensorIndices fullTensorDim;
+    const Indices dim, staggeredDim;
+    const TensorIndices fullDim, fullStaggeredDim;
 
     Scalar diffusionConstant;
     Scalar viscosity;
@@ -41,11 +41,11 @@ private:
 
     template<std::size_t numCoords>
     void diffuse(VectorField<numCoords> &out, const VectorField<numCoords> &in,
-                 Scalar diffusionConstant, Scalar dt,
+                 Scalar diffusionConstant, Scalar dt, const Indices &dim,
                  std::array<BoundarySetter, numCoords> setBoundaries) const;
     template<std::size_t numCoords>
     void advect(VectorField<numCoords> &out, const VectorField<numCoords> &in,
-                const VelocityField &velocity, Scalar dt,
+                const VelocityField &velocity, Scalar dt, const Indices &dim,
                 std::array<BoundarySetter, numCoords> setBoundaries) const;
     void project(VelocityField &u) const;
 };

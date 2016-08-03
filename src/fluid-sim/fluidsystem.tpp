@@ -1,6 +1,6 @@
 template<std::size_t numCoords>
 void FluidSystem::advect(VectorField<numCoords> &out, const VectorField<numCoords> &in,
-                         const VelocityField &velocity, Scalar dt,
+                         const VelocityField &velocity, Scalar dt, const Indices &dim,
                          std::array<BoundarySetter, numCoords> boundarySetters) const {
     for (std::size_t d = 0; d < numCoords; ++d) {
         for (Grid::Index i = 1; i <= dim(0); ++i) {
@@ -21,10 +21,10 @@ void FluidSystem::advect(VectorField<numCoords> &out, const VectorField<numCoord
 
 template<std::size_t numCoords>
 void FluidSystem::diffuse(VectorField<numCoords> &out, const VectorField<numCoords> &in,
-                          Scalar diff, Scalar dt,
+                          Scalar diff, Scalar dt, const Indices &dim,
                           std::array<BoundarySetter, numCoords> boundarySetters) const {
     Scalar a = dt * diff;
     for (std::size_t d = 0; d < numCoords; ++d) {
-      linearSolve(out[d], in[d], a, 1 + 6 * a, dim, fullTensorDim, boundarySetters[d]);
+      linearSolve(out[d], in[d], a, 1 + 6 * a, dim, boundarySetters[d]);
     }
 }

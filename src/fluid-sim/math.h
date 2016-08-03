@@ -14,8 +14,8 @@ typedef std::array<Grid::Index, kGridDimensions> TensorIndices;
 typedef std::function<void(Grid&)> BoundarySetter;
 
 void linearSolve(Grid &solution, const Grid &initial, Scalar alpha, Scalar beta,
-                 const Indices &dim, const TensorIndices &fullTensorDim,
-                 BoundarySetter setBoundaries, unsigned int iterations = 20);
+                 const Indices &dim, BoundarySetter setBoundaries,
+                 unsigned int iterations = 20);
 
 // Linearly interpolates grid to nearest neighbors
 Scalar interpolate(const Grid &grid, Location x);

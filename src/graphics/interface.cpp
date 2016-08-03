@@ -13,7 +13,7 @@
 Interface::Interface(GLint width, GLint height) :
     width(width), height(height),
     fluidSystem(std::make_shared<FluidSystem>(width, height)),
-    addDensity(fluidSystem->fullTensorDim), addVelocity(fluidSystem->fullTensorDim) {
+    addDensity(fluidSystem->fullDim), addVelocity(fluidSystem->fullStaggeredDim) {
     Grid::Index centerX = fluidSystem->dim(0) / 2;
     Grid::Index centerY = fluidSystem->dim(1) / 2;
     Grid::Index initialWidth = fluidSystem->dim(0) / 8;
@@ -23,10 +23,10 @@ Interface::Interface(GLint width, GLint height) :
     // Initialize velocities
     Grid::Index offsetBase = initialWidth / 2;
     Grid::Index offsetSquare = initialWidth / 6;
-    addVelocity[0](centerX - offsetBase - offsetSquare, centerY - offsetBase, 1) = -600;
-    addVelocity[0](centerX - offsetBase + offsetSquare, centerY - offsetBase, 1) = 600;
-    addVelocity[1](centerX - offsetBase, centerY - offsetBase - 2 * offsetSquare, 1) = 600;
-    addVelocity[1](centerX - offsetBase, centerY - offsetBase + offsetSquare, 1) = 600;
+    addVelocity[0](centerX - offsetBase - offsetSquare, centerY - 3 * offsetBase, 1) = -100;
+    addVelocity[0](centerX - offsetBase + offsetSquare, centerY - 3 * offsetBase, 1) = 100;
+    addVelocity[1](centerX - offsetBase, centerY - 3 * offsetBase - 2 * offsetSquare, 1) = 100;
+    addVelocity[1](centerX - offsetBase, centerY - 3 * offsetBase + offsetSquare, 1) = 100;
     // Initialize dyes
     initialWidth = std::min(initialWidth, initialHeight);
     initialHeight = std::min(initialWidth, initialHeight);
@@ -54,8 +54,8 @@ Interface::Interface(GLint width, GLint height) :
     }
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
         for (Grid::Index j = 1; j <= fluidSystem->dim(0); ++j) {
-            fluidSystem->density[0](i, j, 3) = 3;
-            fluidSystem->density[0](i, j, 3) = 3;
+            fluidSystem->density[0](i, j, 4) = 2;
+            fluidSystem->density[0](i, j, 4) = 2;
         }
     }
 }
