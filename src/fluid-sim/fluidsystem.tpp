@@ -25,6 +25,6 @@ void FluidSystem::diffuse(VectorField<numCoords> &out, const VectorField<numCoor
                           std::array<BoundarySetter, numCoords> boundarySetters) const {
     Scalar a = dt * diff;
     for (std::size_t d = 0; d < numCoords; ++d) {
-      solvePoisson(out[d], in[d], a, 1 + 6 * a, boundarySetters[d]);
+      linearSolve(out[d], in[d], a, 1 + 6 * a, dim, fullTensorDim, boundarySetters[d]);
     }
 }

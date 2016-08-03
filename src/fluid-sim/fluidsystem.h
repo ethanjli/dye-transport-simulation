@@ -35,14 +35,10 @@ public:
 private:
     DyeField densityPrev;
     VelocityField velocityPrev;
-    typedef std::function<void(Grid&)> BoundarySetter;
 
     void stepDensity(Scalar dt, const DyeField &addedDensity);
     void stepVelocity(Scalar dt, const VelocityField &addedVelocity);
 
-    void solvePoisson(Grid &solution, const Grid &initial, Scalar alpha, Scalar beta,
-                      BoundarySetter setBoundaries,
-                      unsigned int numIterations = 20) const;
     template<std::size_t numCoords>
     void diffuse(VectorField<numCoords> &out, const VectorField<numCoords> &in,
                  Scalar diffusionConstant, Scalar dt,
@@ -52,15 +48,10 @@ private:
                 const VelocityField &velocity, Scalar dt,
                 std::array<BoundarySetter, numCoords> setBoundaries) const;
     void project(VelocityField &u) const;
-    void grad(VelocityField &out, const Grid &in) const;
-    void div(Grid &out, const VelocityField &in) const;
-
-    void setBoundaries(Grid &grid, int b) const;
-    void setContinuityBoundaries(Grid &grid) const;
-    void setHorizontalNeumannBoundaries(Grid &grid) const;
-    void setVerticalNeumannBoundaries(Grid &grid) const;
-    void setDepthNeumannBoundaries(Grid &grid) const;
 };
+
+void grad(VelocityField &out, const Grid &in, const Indices &dim);
+void div(Grid &out, const VelocityField &in, const Indices &dim);
 
 #include "fluidsystem.tpp"
 
