@@ -3,35 +3,39 @@
 
 #include "math.h"
 
-template<std::size_t numCoords>
+template<std::size_t numStaggers, std::size_t numCoords>
 class VectorField {
 public:
-    VectorField(const std::array<Eigen::Index, kGridDimensions> &dimensions);
+    VectorField(const TensorIndices &dimensions);
 
     static const std::size_t coords = numCoords;
 
     void clear();
 
-    const Grid &operator[](std::size_t i) const;
-    Grid &operator[](std::size_t i);
+    const Grid &operator[](std::size_t coord) const;
+    Grid &operator[](std::size_t coord);
 
-    VectorField<numCoords> &operator+=(const VectorField<numCoords> &rhs);
-    VectorField<numCoords> &operator-=(const VectorField<numCoords> &rhs);
-    VectorField<numCoords> &operator*=(Scalar rhs);
+    VectorField<numStaggers, numCoords>
+    &operator+=(const VectorField<numStaggers, numCoords> &rhs);
+    VectorField<numStaggers, numCoords>
+    &operator-=(const VectorField<numStaggers, numCoords> &rhs);
+    VectorField<numStaggers, numCoords> &operator*=(Scalar rhs);
 
 private:
     std::array<Grid, numCoords> grids;
 
 };
-
-template<std::size_t numCoords>
-VectorField<numCoords> operator-=(VectorField<numCoords> lhs,
-                                  const VectorField<numCoords> &rhs);
-template<std::size_t numCoords>
-VectorField<numCoords> operator-(VectorField<numCoords> lhs,
-                                 const VectorField<numCoords> &rhs);
-template<std::size_t numCoords>
-VectorField<numCoords> operator*(VectorField<numCoords> lhs, Scalar rhs);
+template<std::size_t numStaggers, std::size_t numCoords>
+VectorField<numStaggers, numCoords>
+operator-=(VectorField<numStaggers, numCoords> lhs,
+           const VectorField<numStaggers, numCoords> &rhs);
+template<std::size_t numStaggers, std::size_t numCoords>
+VectorField<numStaggers, numCoords>
+operator-(VectorField<numStaggers, numCoords> lhs,
+          const VectorField<numStaggers, numCoords> &rhs);
+template<std::size_t numStaggers, std::size_t numCoords>
+VectorField<numStaggers, numCoords>
+operator*(VectorField<numStaggers, numCoords> lhs, Scalar rhs);
 
 #include "vectorfield.tpp"
 

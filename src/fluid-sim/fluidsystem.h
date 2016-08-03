@@ -8,8 +8,8 @@
 // Adapted from Jos Stam's Stable Fluids method
 // https://d2f99xq7vri1nk.cloudfront.net/legacy_app_files/pdf/GDC03.pdf
 
-typedef VectorField<3> DyeField;
-typedef VectorField<3> VelocityField;
+typedef VectorField<0, 3> DyeField;
+typedef VectorField<3, 3> VelocityField;
 
 class FluidSystem
 {
@@ -39,12 +39,14 @@ private:
     void stepDensity(Scalar dt, const DyeField &addedDensity);
     void stepVelocity(Scalar dt, const VelocityField &addedVelocity);
 
-    template<std::size_t numCoords>
-    void diffuse(VectorField<numCoords> &out, const VectorField<numCoords> &in,
+    template<std::size_t numStaggers, std::size_t numCoords>
+    void diffuse(VectorField<numStaggers, numCoords> &out,
+                 const VectorField<numStaggers, numCoords> &in,
                  Scalar diffusionConstant, Scalar dt, const Indices &dim,
                  std::array<BoundarySetter, numCoords> setBoundaries) const;
-    template<std::size_t numCoords>
-    void advect(VectorField<numCoords> &out, const VectorField<numCoords> &in,
+    template<std::size_t numStaggers, std::size_t numCoords>
+    void advect(VectorField<numStaggers, numCoords> &out,
+                const VectorField<numStaggers, numCoords> &in,
                 const VelocityField &velocity, Scalar dt, const Indices &dim,
                 std::array<BoundarySetter, numCoords> setBoundaries) const;
     void project(VelocityField &u) const;
