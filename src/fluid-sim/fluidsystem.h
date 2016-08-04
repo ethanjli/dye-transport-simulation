@@ -39,12 +39,12 @@ private:
     void stepDensity(Scalar dt, const DyeField &addedDensity);
     void stepVelocity(Scalar dt, const VelocityField &addedVelocity);
 
-    template<std::size_t numStaggers, std::size_t numCoords>
+    template<Grid::Index numStaggers, std::size_t numCoords>
     void diffuse(VectorField<numStaggers, numCoords> &out,
                  const VectorField<numStaggers, numCoords> &in,
                  Scalar diffusionConstant, Scalar dt, const Indices &dim,
                  std::array<BoundarySetter, numCoords> setBoundaries) const;
-    template<std::size_t numStaggers, std::size_t numCoords>
+    template<Grid::Index numStaggers, std::size_t numCoords>
     void advect(VectorField<numStaggers, numCoords> &out,
                 const VectorField<numStaggers, numCoords> &in,
                 const VelocityField &velocity, Scalar dt, const Indices &dim,

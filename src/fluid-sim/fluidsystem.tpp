@@ -1,4 +1,6 @@
-template<std::size_t numStaggers, std::size_t numCoords>
+#include "fluidsystem.h"
+
+template<Grid::Index numStaggers, std::size_t numCoords>
 void FluidSystem::advect(VectorField<numStaggers, numCoords> &out,
                          const VectorField<numStaggers, numCoords> &in,
                          const VelocityField &velocity, Scalar dt, const Indices &dim,
@@ -26,7 +28,7 @@ void FluidSystem::advect(VectorField<numStaggers, numCoords> &out,
     }
 }
 
-template<std::size_t numStaggers, std::size_t numCoords>
+template<Grid::Index numStaggers, std::size_t numCoords>
 void FluidSystem::diffuse(VectorField<numStaggers, numCoords> &out,
                           const VectorField<numStaggers, numCoords> &in,
                           Scalar diff, Scalar dt, const Indices &dim,

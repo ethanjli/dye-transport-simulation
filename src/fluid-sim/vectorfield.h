@@ -3,7 +3,7 @@
 
 #include "math.h"
 
-template<std::size_t numStaggers, std::size_t numCoords>
+template<Grid::Index numStaggers, std::size_t numCoords>
 class VectorField {
 public:
     VectorField(const TensorIndices &dimensions);
@@ -25,15 +25,15 @@ private:
     std::array<Grid, numCoords> grids;
 
 };
-template<std::size_t numStaggers, std::size_t numCoords>
+template<Grid::Index numStaggers, std::size_t numCoords>
 VectorField<numStaggers, numCoords>
 operator-=(VectorField<numStaggers, numCoords> lhs,
            const VectorField<numStaggers, numCoords> &rhs);
-template<std::size_t numStaggers, std::size_t numCoords>
+template<Grid::Index numStaggers, std::size_t numCoords>
 VectorField<numStaggers, numCoords>
 operator-(VectorField<numStaggers, numCoords> lhs,
           const VectorField<numStaggers, numCoords> &rhs);
-template<std::size_t numStaggers, std::size_t numCoords>
+template<Grid::Index numStaggers, std::size_t numCoords>
 VectorField<numStaggers, numCoords>
 operator*(VectorField<numStaggers, numCoords> lhs, Scalar rhs);
 
