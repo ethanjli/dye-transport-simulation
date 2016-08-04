@@ -24,9 +24,9 @@ public:
     ~Interface();
 
     SimulationState state = INTERFACE_PAUSED;
-    std::array<GLboolean, 1024> keys = {0};
-    std::array<GLboolean, 1024> keysUp = {0};
-    std::array<GLboolean, 1024> keysDown = {0};
+    std::array<GLboolean, 1024> keys = {{0}};
+    std::array<GLboolean, 1024> keysUp = {{0}};
+    std::array<GLboolean, 1024> keysDown = {{0}};
 
     // Initialize interface state (load all resources)
     void init();

@@ -33,7 +33,7 @@ int main()
     // Create a GLFWwindow object that we can use for GLFW's functions
     GLFWwindow* window = glfwCreateWindow(WIDTH * ZOOM, HEIGHT * ZOOM,
                                           "Dye Transport Simulator", nullptr, nullptr);
-    glfwSetWindowAspectRatio(window, WIDTH, HEIGHT);
+    //glfwSetWindowAspectRatio(window, WIDTH, HEIGHT);
     glfwMakeContextCurrent(window);
 
     // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
