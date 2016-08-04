@@ -23,10 +23,10 @@ Interface::Interface(GLint width, GLint height) :
     // Initialize velocities
     Grid::Index offsetBase = initialWidth / 2;
     Grid::Index offsetSquare = initialWidth / 6;
-    addVelocity[0](centerX - offsetBase - offsetSquare, centerY - 3 * offsetBase, 1) = -100;
-    addVelocity[0](centerX - offsetBase + offsetSquare, centerY - 3 * offsetBase, 1) = 100;
-    addVelocity[1](centerX - offsetBase, centerY - 3 * offsetBase - 2 * offsetSquare, 1) = 100;
-    addVelocity[1](centerX - offsetBase, centerY - 3 * offsetBase + offsetSquare, 1) = 100;
+    addVelocity[0](centerX - offsetSquare, centerY - 3 * offsetBase, 1) = -100;
+    addVelocity[0](centerX + offsetSquare, centerY - 3 * offsetBase, 1) = 100;
+    addVelocity[1](centerX, centerY - 3 * offsetBase - 2 * offsetSquare, 1) = 100;
+    addVelocity[1](centerX, centerY - 3 * offsetBase + offsetSquare, 1) = 100;
     // Initialize dyes
     initialWidth = std::min(initialWidth, initialHeight);
     initialHeight = std::min(initialWidth, initialHeight);
@@ -54,8 +54,8 @@ Interface::Interface(GLint width, GLint height) :
     }
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
         for (Grid::Index j = 1; j <= fluidSystem->dim(0); ++j) {
-            fluidSystem->density[0](i, j, 4) = 2;
-            fluidSystem->density[0](i, j, 4) = 2;
+            fluidSystem->density[0](i, j, 3) = 2;
+            fluidSystem->density[0](i, j, 3) = 2;
         }
     }
 }
