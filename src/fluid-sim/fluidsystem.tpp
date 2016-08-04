@@ -9,6 +9,7 @@ void FluidSystem::advect(VectorField<numStaggers, numCoords> &out,
         for (Grid::Index i = 1; i <= dim(0); ++i) {
             for (Grid::Index j = 1; j <= dim(1); ++j) {
                 for (Grid::Index k = 1; k <= dim(2); ++k) {
+                    // Backtrack to the midpoint of RK2
                     Location x = { // position relative to the frame of the field
                       static_cast<Scalar>(i), static_cast<Scalar>(j),
                       static_cast<Scalar>(k)
@@ -18,7 +19,7 @@ void FluidSystem::advect(VectorField<numStaggers, numCoords> &out,
                         if (l < numStaggers) {
                             // average the (face-centered) velocities to get
                             // cell-centered velocity since out[l] is cell-centered
-                            if (l == 0) { // TODO: this shouldn't be hard-coded...
+                            if (l == 0) {
                                 v[l] = (velocity[l](i, j, k) + velocity[l](i + 1, j, k)) / 2;
                             } else if (l == 1) {
                                 v[l] = (velocity[l](i, j, k) + velocity[l](i, j + 1, k)) / 2;
@@ -30,11 +31,17 @@ void FluidSystem::advect(VectorField<numStaggers, numCoords> &out,
                             v[l] = velocity[l](i, j, k);
                         }
                     }
-                    x = x - dt * v;
-                    // Clamp the new position relative to the frame of the field
-                    x = x.min(dim.cast<Scalar>() + 0.5f);
-                    x = x.max(0.5);
-                    // Interpolate relative to the frame of the field
+                    Location xMidpoint = x - 0.5 * dt * v;
+                    // Clamp the midpoint position relative to the frame of the field
+                    xMidpoint = xMidpoint.min(dim.cast<Scalar>() + 0.5f).max(0.5);
+                    // Find the velocity at the RK2 midpoint
+                    Location velocityMidpoint;
+                    for (Location::Index l = 0; l < kGridDimensions; ++l) {
+                        velocityMidpoint[l] = interpolate(velocity[l], xMidpoint);
+                    }
+                    // Interpolate at the final position relative to the frame of the field
+                    x = x - dt * velocityMidpoint;
+                    x = x.min(dim.cast<Scalar>() + 0.5f).max(0.5);
                     out[d](i, j, k) = interpolate(in[d], x);
                 }
             }

@@ -43,11 +43,11 @@ void FluidSystem::stepVelocity(Scalar dt, const VelocityField &addedVelocity) {
     velocity += addedVelocity;
     std::array<BoundarySetter, velocity.coords> boundarySetters;
     boundarySetters[0] = std::bind(&setHorizontalNeumannBoundaries,
-                                   std::placeholders::_1, staggeredDim);
+                                   std::placeholders::_1, dim);
     boundarySetters[1] = std::bind(&setVerticalNeumannBoundaries,
-                                   std::placeholders::_1, staggeredDim);
+                                   std::placeholders::_1, dim);
     boundarySetters[2] = std::bind(&setDepthNeumannBoundaries,
-                                   std::placeholders::_1, staggeredDim);
+                                   std::placeholders::_1, dim);
 
     std::swap(velocity, velocityPrev);
     diffuse(velocity, velocityPrev, viscosity, dt, staggeredDim, boundarySetters);
