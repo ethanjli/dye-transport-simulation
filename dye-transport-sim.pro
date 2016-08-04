@@ -39,19 +39,5 @@ shaders.files += \
 INSTALLS += shaders
 
 INCLUDEPATH += ext/eigen3.3b2 ext/glm-0.9.7.6
-win32: INCLUDEPATH += \
-    $$PWD/ext/glew-2.0.0/include \
-    $$PWD/ext/glfw-3.2/include
-win32: DEPENDPATH += \
-    $$PWD/ext/glew-2.0.0/include \
-    $$PWD/ext/glfw-3.2/include
 
 LIBS += -lGL -lGLEW -lglfw
-win32: LIBS -= -lGL -lGLEW -lglfw
-win32: LIBS += \
-    -L$$PWD/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/lib -lglew32 \
-    -L$$PWD/ext/build-glfw-3.2-Desktop_Qt_5_7_0_MinGW_32bit-Debug/src/ -lglfw3 \
-    -lopengl32 \
-    -lgdi32
-win32: PRE_TARGETDEPS += \
-    $$PWD/ext/build-glfw-3.2-Desktop_Qt_5_7_0_MinGW_32bit-Debug/src/libglfw3.a

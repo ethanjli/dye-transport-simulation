@@ -1,4 +1,0 @@
-C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/CMakeFiles/glew.dir
-C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/CMakeFiles/glew_s.dir
-C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/CMakeFiles/glewinfo.dir
-C:/Users/lietk12/Documents/Stanford/Courses/CS 148/Final Project/dye-transport-sim/ext/glew-2.0.0/build/build-cmake-Desktop_Qt_5_7_0_MinGW_32bit-Default/CMakeFiles/visualinfo.dir

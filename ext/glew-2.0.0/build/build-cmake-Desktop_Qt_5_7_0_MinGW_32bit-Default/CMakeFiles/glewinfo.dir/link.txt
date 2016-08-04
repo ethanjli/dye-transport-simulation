@@ -1,3 +1,0 @@
-"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -E remove -f CMakeFiles\glewinfo.dir/objects.a
-C:\Qt\Tools\mingw530_32\bin\ar.exe cr CMakeFiles\glewinfo.dir/objects.a @CMakeFiles\glewinfo.dir\objects1.rsp
-C:\Qt\Tools\mingw530_32\bin\gcc.exe  -O3 -DNDEBUG    -Wl,--whole-archive CMakeFiles\glewinfo.dir/objects.a -Wl,--no-whole-archive  -o bin\glewinfo.exe -Wl,--out-implib,lib\libglewinfo.dll.a -Wl,--major-image-version,0,--minor-image-version,0  lib\libglew32.dll.a -lglu32 -lopengl32 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
