@@ -20,7 +20,7 @@ enum SimulationState {
 class Interface
 {
 public:
-    Interface(GLint width, GLint height);
+    Interface(GLint width, GLint height, GLint depth, Scalar dt);
     ~Interface();
 
     SimulationState state = INTERFACE_PAUSED;
@@ -38,7 +38,8 @@ public:
 
 private:
     Canvas *canvas;
-    GLint width, height;
+    GLint width, height, depth;
+    Scalar dt;
     std::shared_ptr<FluidSystem> fluidSystem;
 
     DyeField addDensity;

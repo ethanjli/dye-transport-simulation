@@ -50,7 +50,6 @@ void FluidSystem::backtrace(VectorField<numStaggers, numCoords> &out,
                             v[l] = velocity[l](i, j, k);
                         }
                     }
-                    //x -= dt * v;
                     Location xMidpoint = x - 0.5 * dt * v;
                     // Clamp the midpoint position relative to the frame of the field
                     xMidpoint = xMidpoint.min(dim.cast<Scalar>() + 0.5f).max(0.5);

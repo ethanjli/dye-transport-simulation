@@ -10,9 +10,9 @@
 
 #include "resourcemanager.h"
 
-Interface::Interface(GLint width, GLint height) :
-    width(width), height(height),
-    fluidSystem(std::make_shared<FluidSystem>(width, height)),
+Interface::Interface(GLint width, GLint height, GLint depth, Scalar dt) :
+    width(width), height(height), depth(depth), dt(dt),
+    fluidSystem(std::make_shared<FluidSystem>(width, height, depth)),
     addDensity(fluidSystem->fullDim), addVelocity(fluidSystem->fullStaggeredDim) {
     Grid::Index centerX = fluidSystem->dim(0) / 2;
     Grid::Index centerY = fluidSystem->dim(1) / 2;
@@ -35,28 +35,22 @@ Interface::Interface(GLint width, GLint height) :
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
           fluidSystem->density[1](i, j, 1) = 3;
-          fluidSystem->density[1](i, j, 2) = 3;
+          fluidSystem->density[1](i, j, 1) = 3;
       }
     }
     centerY = 1 + fluidSystem->dim(1) / 4;
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
           fluidSystem->density[1](i, j, 1) = 2;
-          fluidSystem->density[1](i, j, 3) = 2;
+          fluidSystem->density[1](i, j, 1) = 2;
       }
     }
     centerY = 1 + 3 * fluidSystem->dim(1) / 4;
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
           fluidSystem->density[1](i, j, 1) = 2;
-          fluidSystem->density[1](i, j, 3) = 2;
+          fluidSystem->density[1](i, j, 1) = 2;
       }
-    }
-    for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
-        for (Grid::Index j = 1; j <= fluidSystem->dim(0); ++j) {
-            fluidSystem->density[0](i, j, 4) = 2;
-            fluidSystem->density[0](i, j, 4) = 2;
-        }
     }
 }
 
@@ -82,7 +76,7 @@ void Interface::init() {
 
 void Interface::update(GLfloat dt) {
     if (state != INTERFACE_ACTIVE) return;
-    fluidSystem->step(addDensity, addVelocity, dt);
+    fluidSystem->step(addDensity, addVelocity, this->dt ? this->dt : dt);
     ResourceManager::getFluidTexture("fluid").update();
 }
 

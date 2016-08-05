@@ -16,7 +16,7 @@ void resizeCallback(GLFWwindow *window, GLint width, GLint height);
 const GLint WIDTH = 100, HEIGHT = 100;
 const GLint ZOOM = 4;
 
-Interface ui(WIDTH, HEIGHT);
+Interface ui(WIDTH, HEIGHT, 1, 0.05);
 
 // Boilerplate starter code from CS 148 (Summer 2016) Assignment 3's starter code.
 int main()
