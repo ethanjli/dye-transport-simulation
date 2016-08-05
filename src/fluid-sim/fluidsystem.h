@@ -49,6 +49,10 @@ private:
                 const VectorField<numStaggers, numCoords> &in,
                 const VelocityField &velocity, Scalar dt, const Indices &dim,
                 std::array<BoundarySetter, numCoords> setBoundaries) const;
+    template<Grid::Index numStaggers, std::size_t numCoords>
+    void backtrace(VectorField<numStaggers, numCoords> &out,
+                   const VectorField<numStaggers, numCoords> &in,
+                   const VelocityField &velocity, Scalar dt, const Indices &dim) const;
     void project(VelocityField &u) const;
 };
 

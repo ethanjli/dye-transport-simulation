@@ -5,6 +5,25 @@ void FluidSystem::advect(VectorField<numStaggers, numCoords> &out,
                          const VectorField<numStaggers, numCoords> &in,
                          const VelocityField &velocity, Scalar dt, const Indices &dim,
                          std::array<BoundarySetter, numCoords> boundarySetters) const {
+    backtrace(out, in, velocity, dt, dim);
+    for (std::size_t d = 0; d < numCoords; ++d) {
+        boundarySetters[d](out[d]);
+    }
+    VectorField<numStaggers, numCoords> outCompensation = out;
+    backtrace(outCompensation, out, velocity, -1 * dt, dim);
+    for (std::size_t d = 0; d < numCoords; ++d) {
+        boundarySetters[d](outCompensation[d]);
+    }
+    out = in + 0.5 * (in - outCompensation);
+    for (std::size_t d = 0; d < numCoords; ++d) {
+        boundarySetters[d](out[d]);
+    }
+    backtrace(out, in, velocity, dt, dim);
+}
+template<Grid::Index numStaggers, std::size_t numCoords>
+void FluidSystem::backtrace(VectorField<numStaggers, numCoords> &out,
+                            const VectorField<numStaggers, numCoords> &in,
+                            const VelocityField &velocity, Scalar dt, const Indices &dim) const {
     for (std::size_t d = 0; d < numCoords; ++d) {
         for (Grid::Index i = 1; i <= dim(0); ++i) {
             for (Grid::Index j = 1; j <= dim(1); ++j) {
@@ -31,6 +50,7 @@ void FluidSystem::advect(VectorField<numStaggers, numCoords> &out,
                             v[l] = velocity[l](i, j, k);
                         }
                     }
+                    //x -= dt * v;
                     Location xMidpoint = x - 0.5 * dt * v;
                     // Clamp the midpoint position relative to the frame of the field
                     xMidpoint = xMidpoint.min(dim.cast<Scalar>() + 0.5f).max(0.5);
@@ -46,7 +66,6 @@ void FluidSystem::advect(VectorField<numStaggers, numCoords> &out,
                 }
             }
         }
-        boundarySetters[d](out[d]);
     }
 }
 

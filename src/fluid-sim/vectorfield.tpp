@@ -41,7 +41,7 @@ template<Grid::Index numStaggers, std::size_t numCoords>
 VectorField<numStaggers, numCoords>
 &VectorField<numStaggers, numCoords>::operator*=(Scalar rhs) {
     for (std::size_t i = 0; i < numCoords; ++i) {
-        grids[i] *= rhs;
+        grids[i] = grids[i] * rhs;
     }
     return *this;
 }
@@ -65,4 +65,10 @@ VectorField<numStaggers, numCoords>
 operator*(VectorField<numStaggers, numCoords> lhs, Scalar rhs) {
     lhs *= rhs;
     return lhs;
+}
+template<Grid::Index numStaggers, std::size_t numCoords>
+VectorField<numStaggers, numCoords>
+operator*(Scalar lhs, VectorField<numStaggers, numCoords> rhs) {
+    rhs *= lhs;
+    return rhs;
 }

@@ -36,6 +36,9 @@ operator-(VectorField<numStaggers, numCoords> lhs,
 template<Grid::Index numStaggers, std::size_t numCoords>
 VectorField<numStaggers, numCoords>
 operator*(VectorField<numStaggers, numCoords> lhs, Scalar rhs);
+template<Grid::Index numStaggers, std::size_t numCoords>
+VectorField<numStaggers, numCoords>
+operator*(Scalar lhs, VectorField<numStaggers, numCoords> rhs);
 
 #include "vectorfield.tpp"
 
