@@ -87,8 +87,9 @@ void Interface::init() {
     canvas = new Canvas(ResourceManager::getShader("canvas"), width, height);
     // Load textures
     ResourceManager::loadFluidTexture("fluid", fluidSystem);
-    ResourceManager::getShader("canvas").setFloat("height", 0);
-    ResourceManager::getShader("canvas").setFloat("saturation", 1.5);
+    ResourceManager::getShader("canvas").setInteger("depth", fluidSystem->density[0].dimensions()[2] - 2);
+    ResourceManager::getShader("canvas").setFloat("saturation", 1);
+    ResourceManager::getShader("canvas").setFloat("opacity", 0.4);
     ResourceManager::getShader("canvas").setTextureUnit("cyan", 0);
     ResourceManager::getShader("canvas").setTextureUnit("magenta", 1);
     ResourceManager::getShader("canvas").setTextureUnit("yellow", 2);
