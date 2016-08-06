@@ -24,6 +24,7 @@ template<Grid::Index numStaggers, std::size_t numCoords>
 void FluidSystem::backtrace(VectorField<numStaggers, numCoords> &out,
                             const VectorField<numStaggers, numCoords> &in,
                             const VelocityField &velocity, Scalar dt, const Indices &dim) const {
+#pragma omp parallel for collapse(2)
     for (std::size_t d = 0; d < numCoords; ++d) {
         for (Grid::Index i = 1; i <= dim(0); ++i) {
             for (Grid::Index j = 1; j <= dim(1); ++j) {

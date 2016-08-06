@@ -21,12 +21,15 @@ Interface::Interface(GLint width, GLint height, GLint depth, Scalar dt) :
     initialWidth = std::min(initialWidth, initialHeight);
     initialHeight = std::min(initialWidth, initialHeight);
     // Initialize velocities
-    Grid::Index offsetBase = initialWidth / 2;
-    Grid::Index offsetSquare = initialWidth / 6;
-    addVelocity[0](centerX - offsetSquare, centerY, 1) = -50;
-    addVelocity[0](centerX + offsetSquare, centerY, 1) = 50;
-    addVelocity[1](centerX, centerY - 3 * offsetBase - 2 * offsetSquare, 1) = 50;
-    addVelocity[1](centerX, centerY - 3 * offsetBase + offsetSquare, 1) = 50;
+    addVelocity[0](centerX - 5, centerY, 1) = -100;
+    addVelocity[0](centerX + 5, centerY, 1) = 100;
+    addVelocity[1](centerX, centerY - 5, 1) = 100;
+    addVelocity[1](centerX, centerY + 5, 1) = 100;
+    for (Grid::Index i = centerX - 3; i <= centerX + 3; ++i) {
+        for (Grid::Index j = centerY - 3; j <= centerY + 3; ++j) {
+            addVelocity[2](i, j, 2) = 40;
+        }
+    }
     // Initialize dyes
     initialWidth = std::min(initialWidth, initialHeight);
     initialHeight = std::min(initialWidth, initialHeight);
@@ -34,8 +37,14 @@ Interface::Interface(GLint width, GLint height, GLint depth, Scalar dt) :
     initialHeight /= 2;
     for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[1](i, j, 1) = 3;
-          fluidSystem->density[1](i, j, 1) = 3;
+          fluidSystem->density[0](i, j, 1) = 0.5;
+          fluidSystem->density[0](i, j, 1) = 0.5;
+          fluidSystem->density[1](i, j, 1) = 1;
+          fluidSystem->density[1](i, j, 1) = 1;
+          fluidSystem->density[0](i, j, 2) = 0.25;
+          fluidSystem->density[0](i, j, 2) = 0.25;
+          fluidSystem->density[1](i, j, 1) = 0.5;
+          fluidSystem->density[1](i, j, 1) = 0.5;
       }
     }
     centerY = 1 + fluidSystem->dim(1) / 4;
@@ -43,6 +52,8 @@ Interface::Interface(GLint width, GLint height, GLint depth, Scalar dt) :
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
           fluidSystem->density[1](i, j, 1) = 2;
           fluidSystem->density[1](i, j, 1) = 2;
+          fluidSystem->density[1](i, j, 2) = 1;
+          fluidSystem->density[1](i, j, 2) = 1;
       }
     }
     centerY = 1 + 3 * fluidSystem->dim(1) / 4;
@@ -50,6 +61,8 @@ Interface::Interface(GLint width, GLint height, GLint depth, Scalar dt) :
       for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
           fluidSystem->density[1](i, j, 1) = 2;
           fluidSystem->density[1](i, j, 1) = 2;
+          fluidSystem->density[1](i, j, 2) = 1;
+          fluidSystem->density[1](i, j, 2) = 1;
       }
     }
 }

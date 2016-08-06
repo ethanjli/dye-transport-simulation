@@ -3,6 +3,7 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
+QMAKE_CXXFLAGS += -fopenmp
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3
 
@@ -40,4 +41,4 @@ INSTALLS += shaders
 
 INCLUDEPATH += ext/eigen3.3b2 ext/glm-0.9.7.6
 
-LIBS += -lGL -lGLEW -lglfw
+LIBS += -fopenmp -lGL -lGLEW -lglfw

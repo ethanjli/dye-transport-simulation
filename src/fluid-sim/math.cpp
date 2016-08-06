@@ -10,6 +10,7 @@ void linearSolve(Grid &x, const Grid &x_0, Scalar a, Scalar c, const Indices &di
 
     Grid temp = x_0;
     for (unsigned int iteration = 0; iteration < iterations; ++iteration) {
+#pragma omp parallel for
         for (Grid::Index i = 1; i <= dim(0); ++i) {
             for (Grid::Index j = 1; j <= dim(1); ++j) {
                 for (Grid::Index k = 1; k <= dim(2); ++k) {

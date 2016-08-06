@@ -13,10 +13,10 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 void resizeCallback(GLFWwindow *window, GLint width, GLint height);
 
 // Grid and window dimensions
-const GLint WIDTH = 100, HEIGHT = 100;
+const GLint WIDTH = 96, HEIGHT = 96;
 const GLint ZOOM = 4;
 
-Interface ui(WIDTH, HEIGHT, 1, 0.05);
+Interface ui(WIDTH, HEIGHT, 6, 0.05);
 
 // Boilerplate starter code from CS 148 (Summer 2016) Assignment 3's starter code.
 int main()
@@ -71,8 +71,8 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         ++renderedFrames;
-        if (currentFrame - lastCheckpoint >= 1) {
-            std::cout << 1000.0 / renderedFrames << " ms/frame" << std::endl;
+        if (currentFrame - lastCheckpoint >= 5) {
+            std::cout << 5 * 1000.0 / renderedFrames << " ms/frame" << std::endl;
             renderedFrames = 0;
             lastCheckpoint = currentFrame;
         }
