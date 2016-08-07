@@ -27,6 +27,10 @@ public:
     std::array<GLboolean, 1024> keys = {{0}};
     std::array<GLboolean, 1024> keysUp = {{0}};
     std::array<GLboolean, 1024> keysDown = {{0}};
+    std::array<GLboolean, 3> buttons = {{0}};
+    std::array<GLboolean, 3> buttonsUp = {{0}};
+    std::array<GLboolean, 3> buttonsDown = {{0}};
+    std::array<double, 2> scroll = {{0}};
 
     // Initialize interface state (load all resources)
     void init();
@@ -41,6 +45,9 @@ private:
     GLint width, height, depth;
     Scalar dt;
     std::shared_ptr<FluidSystem> fluidSystem;
+
+    GLfloat saturation = 1;
+    GLfloat visibility = 0.8;
 
     FluidManipulator manipulator;
 };

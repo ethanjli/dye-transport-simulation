@@ -10,6 +10,8 @@
 
 // GLFW function prototypes
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void clickCallback(GLFWwindow* window, int button, int action, int mode);
+void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 void resizeCallback(GLFWwindow *window, GLint width, GLint height);
 
 // Grid and window dimensions
@@ -19,8 +21,7 @@ const GLint ZOOM = 6;
 Interface ui(WIDTH, HEIGHT, 6, 0.05);
 
 // Boilerplate starter code from CS 148 (Summer 2016) Assignment 3's starter code.
-int main()
-{
+int main() {
     // Init GLFW
     glfwInit();
     // Set all the required options for GLFW
@@ -44,6 +45,8 @@ int main()
 
     // Set the required callback functions
     glfwSetKeyCallback(window, keyCallback);
+    glfwSetMouseButtonCallback(window, clickCallback);
+    glfwSetScrollCallback(window, scrollCallback);
     glfwSetWindowSizeCallback(window, resizeCallback);
 
     // OpenGL configuration
@@ -64,8 +67,7 @@ int main()
     int renderedFrames = 0;
 
     // Game loop
-    while (!glfwWindowShouldClose(window))
-    {
+    while (!glfwWindowShouldClose(window)) {
         // Calculate deltatime of current frame
         GLfloat currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -99,8 +101,7 @@ int main()
 }
 
 // Is called whenever a key is pressed/released via GLFW
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GL_TRUE);
     if (key >= 0 && key < 1024) {
         if (action == GLFW_PRESS) {
@@ -115,9 +116,29 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
     }
 }
 
+// Is called whenever a mouse button is pressed/released via GLFW
+void clickCallback(GLFWwindow* window, int button, int action, int mode) {
+    if (button >= 0 && button < 3) {
+        if (action == GLFW_PRESS) {
+            ui.buttons[button] = GL_TRUE;
+            ui.buttonsDown[button] = GL_TRUE;
+            ui.buttonsUp[button] = GL_FALSE;
+        } else if (action == GLFW_RELEASE) {
+            ui.buttons[button] = GL_FALSE;
+            ui.buttonsDown[button] = GL_TRUE;
+            ui.buttonsUp[button] = GL_FALSE;
+        }
+    }
+}
+
+// Is called whenever the mouse is scrolled via GLFW
+void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+    ui.scroll[0] = xoffset;
+    ui.scroll[1] = yoffset;
+}
+
 // Is called whenever the window is resized via GLFW
-void resizeCallback(GLFWwindow* window, GLint width, GLint height)
-{
+void resizeCallback(GLFWwindow* window, GLint width, GLint height) {
     ui.processResize(width, height);
     glViewport(0, 0, width, height);
 }

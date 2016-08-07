@@ -34,8 +34,8 @@ void Interface::init() {
     ResourceManager::getShader("canvas").setInteger("scatterDepth", fluidSystem->dim(2) / 2);
     ResourceManager::getShader("canvas").setInteger("blur", 2);
     ResourceManager::getShader("canvas").setFloat("blurDiscreteness", 0.75);
-    ResourceManager::getShader("canvas").setFloat("saturation", 1);
-    ResourceManager::getShader("canvas").setFloat("visibility", 0.8);
+    ResourceManager::getShader("canvas").setFloat("saturation", saturation);
+    ResourceManager::getShader("canvas").setFloat("visibility", visibility);
     ResourceManager::getShader("canvas").setTextureUnit("cyan", 0);
     ResourceManager::getShader("canvas").setTextureUnit("magenta", 1);
     ResourceManager::getShader("canvas").setTextureUnit("yellow", 2);
@@ -53,6 +53,12 @@ void Interface::processInput(GLfloat dt) {
     const GLfloat zoomVelocity = 4;
     const GLfloat maxZoom = 4;
     const GLfloat minZoom = 0.95;
+    const GLfloat saturationVelocity = 1;
+    const GLfloat minSaturation = 0.5;
+    const GLfloat maxSaturation = 2;
+    const GLfloat visibilityVelocity = 1;
+    const GLfloat minVisibility = 0.2;
+    const GLfloat maxVisibility = 1;
 
     // CAMERA_CONTROLS
     if (keys[GLFW_KEY_W]) { //pan move camera up with respect to canvas
@@ -89,6 +95,26 @@ void Interface::processInput(GLfloat dt) {
         else if (state == INTERFACE_PAUSED) state = INTERFACE_ACTIVE;
 
         keysUp[GLFW_KEY_SPACE] = GL_FALSE;
+    }
+
+    // DISPLAY
+    if (scroll[1] > 0) {
+        saturation = std::min(maxSaturation, saturation + saturationVelocity * dt);
+        ResourceManager::getShader("canvas").setFloat("saturation", saturation);
+        scroll[1] = 0;
+    } else if (scroll[1] < 0) {
+        saturation = std::max(minSaturation, saturation - saturationVelocity * dt);
+        ResourceManager::getShader("canvas").setFloat("saturation", saturation);
+        scroll[1] = 0;
+    }
+    if (scroll[0] > 0) {
+        visibility = std::min(maxVisibility, visibility + visibilityVelocity * dt);
+        ResourceManager::getShader("canvas").setFloat("visibility", visibility);
+        scroll[0] = 0;
+    } else if (scroll[0] < 0) {
+        visibility = std::max(minVisibility, visibility - visibilityVelocity * dt);
+        ResourceManager::getShader("canvas").setFloat("visibility", visibility);
+        scroll[0] = 0;
     }
 
     // DYE MANIPULATION
