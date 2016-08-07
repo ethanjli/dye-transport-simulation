@@ -12,10 +12,18 @@ public:
 
     void step(Scalar dt);
 
+    void addDyeRect(Scalar x, Scalar y, Scalar halfLength, Scalar halfHeight,
+                    Scalar depthStart, Scalar depthStop,
+                    Scalar cyan, Scalar magenta, Scalar yellow,
+                    bool constantSource = false);
+
+    void clearConstantDyeSource();
+    void clearConstantFlowSource();
+
 private:
     std::shared_ptr<FluidSystem> fluidSystem;
-    DyeField addDensity;
-    VelocityField addVelocity;
+    DyeField constantDyeSource;
+    VelocityField constantFlowSource;
 };
 
 #endif // FLUIDMANIPULATOR_H

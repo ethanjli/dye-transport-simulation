@@ -54,6 +54,7 @@ void Interface::processInput(GLfloat dt) {
     const GLfloat maxZoom = 4;
     const GLfloat minZoom = 0.95;
 
+    // CAMERA_CONTROLS
     if (keys[GLFW_KEY_W]) { //pan move camera up with respect to canvas
         canvas->cameraX += translateVelocity * dt * std::sin(canvas->cameraAngle);
         canvas->cameraY += translateVelocity * dt * std::cos(canvas->cameraAngle);
@@ -88,6 +89,20 @@ void Interface::processInput(GLfloat dt) {
         else if (state == INTERFACE_PAUSED) state = INTERFACE_ACTIVE;
 
         keysUp[GLFW_KEY_SPACE] = GL_FALSE;
+    }
+
+    // DYE MANIPULATION
+    if (keysUp[GLFW_KEY_COMMA]) {
+        std::cout << "Clearing constant dye sources." << std::endl;
+        manipulator.clearConstantDyeSource();
+
+        keysUp[GLFW_KEY_COMMA] = GL_FALSE;
+    }
+    if (keysUp[GLFW_KEY_PERIOD]) {
+        std::cout << "Clearing constant flow sources." << std::endl;
+        manipulator.clearConstantFlowSource();
+
+        keysUp[GLFW_KEY_PERIOD] = GL_FALSE;
     }
 }
 

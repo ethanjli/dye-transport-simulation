@@ -1,7 +1,5 @@
 #include "fluidtexture.h"
 
-#include <iostream>
-
 FluidTexture::FluidTexture(const std::shared_ptr<FluidSystem> &fluidSystem) :
     fluidSystem(fluidSystem)
 {
