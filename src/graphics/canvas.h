@@ -18,12 +18,15 @@ public:
     GLint width;
     GLint height;
     GLfloat cameraAngle = 0;
-    GLfloat cameraZoom = 1;
+    GLfloat cameraZoom = 0;
     GLfloat cameraX = 0;
     GLfloat cameraY = 0;
 
     // Renders a defined quad textured with a given sprite
     void draw(const FluidTexture &fluidTexture);
+
+    glm::mat4 viewMatrix;
+    glm::mat4 viewInverseMatrix;
 
 private:
     Shader shader;

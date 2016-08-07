@@ -31,6 +31,9 @@ public:
     std::array<GLboolean, 3> buttonsUp = {{0}};
     std::array<GLboolean, 3> buttonsDown = {{0}};
     std::array<double, 2> scroll = {{0}};
+    std::array<double, 2> cursor = {{0}};
+
+    glm::vec4 viewport;
 
     // Initialize interface state (load all resources)
     void init();
@@ -42,7 +45,9 @@ public:
 
 private:
     Canvas *canvas;
+    glm::mat4 projectionMatrix;
     GLint width, height, depth;
+
     Scalar dt;
     std::shared_ptr<FluidSystem> fluidSystem;
 

@@ -16,19 +16,23 @@ void Canvas::draw(const FluidTexture &fluidTexture) {
 
     shader.use();
 
-    glm::mat4 view;
+    glm::mat4 view, viewInverse;
 
+    // Canvas to pre-projection
     view = glm::translate(view, glm::vec3(0.5 * width, 0.5 * height, 0.0f));
-    // Scale
-    view = glm::scale(view, glm::vec3(cameraZoom, cameraZoom, 1.0f));
-    // Rotate
+    view = glm::scale(view, glm::vec3(1 + cameraZoom, 1 + cameraZoom, 1.0f));
     view = glm::rotate(view, rotate, glm::vec3(0.0f, 0.0f, 1.0f));
-    // Move
     view = glm::translate(view, glm::vec3(cameraX, cameraY, 0.0f));
-    // Scale to the frame's size
-    view = glm::scale(view, glm::vec3(width, height, 1.0f));
+    // Post-unprojection to canvas
+    viewInverse = glm::translate(viewInverse, glm::vec3(-cameraX, cameraY, 0.0f));
+    viewInverse = glm::rotate(viewInverse, rotate, glm::vec3(0.0f, 0.0f, 1.0f));
+    viewInverse = glm::scale(viewInverse, glm::vec3(1 / (1 + cameraZoom), 1 / (1 + cameraZoom), 1.0f));
+    viewInverse = glm::translate(viewInverse, glm::vec3(-0.5 * width, -0.5 * height, 0.0f));
 
     shader.setMatrix4("view", view);
+
+    viewMatrix = view;
+    viewInverseMatrix = viewInverse;
 
     for (std::size_t i = 0; i < fluidTexture.textures; ++i) {
         glActiveTexture(GL_TEXTURE0 + i);
@@ -43,14 +47,14 @@ void Canvas::draw(const FluidTexture &fluidTexture) {
 void Canvas::initRenderData() {
     GLuint VBO;
     GLfloat vertices[] = {
-        // Pos        // Tex
-        -0.5f, 0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f,
+        // Pos                         // Tex
+        -0.5f * width, 0.5f * height,  0.0f, 0.0f,
+        0.5f * width, -0.5f * height,  1.0f, 1.0f,
+        -0.5f * width, -0.5f * height, 0.0f, 1.0f,
 
-        -0.5f, 0.5f,  0.0f, 1.0f,
-        0.5f, 0.5f,   1.0f, 1.0f,
-        0.5f, -0.5f,  1.0f, 0.0f
+        -0.5f * width, 0.5f * height,  0.0f, 0.0f,
+        0.5f * width, 0.5f * height,   1.0f, 0.0f,
+        0.5f * width, -0.5f * height,  1.0f, 1.0f
     };
 
     glGenVertexArrays(1, &quadVAO);

@@ -11,8 +11,8 @@
 #include "resourcemanager.h"
 
 Interface::Interface(GLint width, GLint height, GLint depth, Scalar dt) :
-    width(width), height(height), depth(depth), dt(dt),
-    fluidSystem(std::make_shared<FluidSystem>(width, height, depth)),
+    viewport(0, 0, width, height), width(width), height(height), depth(depth),
+    dt(dt), fluidSystem(std::make_shared<FluidSystem>(width, height, depth)),
     manipulator(fluidSystem) {}
 
 Interface::~Interface() {}
@@ -21,10 +21,10 @@ void Interface::init() {
     // Load shaders
     ResourceManager::loadShader("canvas", "shaders/canvas.vert", "shaders/canvas.frag").use();
     // Configure shaders
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width),
-                                      static_cast<GLfloat>(height), 0.0f, -1.0f, 1.0f);
+    projectionMatrix = glm::ortho(0.0f, static_cast<GLfloat>(width),
+                                  static_cast<GLfloat>(height), 0.0f, -1.0f, 1.0f);
     ResourceManager::getShader("canvas").setInteger("image", 0);
-    ResourceManager::getShader("canvas").setMatrix4("projection", projection);
+    ResourceManager::getShader("canvas").setMatrix4("projection", projectionMatrix);
     // Set render-specific controls
     canvas = new Canvas(ResourceManager::getShader("canvas"), width, height);
     // Load textures
@@ -56,10 +56,10 @@ void Interface::processInput(GLfloat dt) {
 
 void Interface::processCameraInput(GLfloat dt) {
     const GLfloat translateVelocity = std::min(width, height) / 4;
-    const GLfloat rotateVelocity = 2;
+    const GLfloat rotateVelocity = 0.5;
     const GLfloat zoomVelocity = 4;
-    const GLfloat maxZoom = 4;
-    const GLfloat minZoom = 0.95;
+    const GLfloat maxZoom = 3;
+    const GLfloat minZoom = -0.05;
 
     if (keys[GLFW_KEY_W]) { //pan move camera up with respect to canvas
         canvas->cameraX += translateVelocity * dt * std::sin(canvas->cameraAngle);
@@ -171,17 +171,26 @@ void Interface::processManipulationInput(GLfloat dt) {
 
         keysUp[GLFW_KEY_SLASH] = GL_FALSE;
     }
+    if (buttonsUp[GLFW_MOUSE_BUTTON_LEFT]) {
+        glm::vec3 cursorPos(cursor[0], cursor[1], 1.0f);
+        glm::vec3 worldPos = glm::unProject(cursorPos, glm::mat4(), projectionMatrix, viewport);
+        glm::vec4 gridPos = glm::vec4(worldPos, 1.0f);
+        gridPos = canvas->viewInverseMatrix * gridPos;
+        std::cout << "click canvas " << gridPos[0] << "," << gridPos[1] << "," << gridPos[2] << "," << gridPos[3] << std::endl;
+        buttonsUp[GLFW_MOUSE_BUTTON_LEFT] = GL_FALSE;
+    }
 }
 
 void Interface::processResize(GLint newWidth, GLint newHeight) {
     width = newWidth;
     height = newHeight;
+    viewport = glm::vec4(0, 0, width, height);
     canvas->width = newWidth;
     canvas->height = newHeight;
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(newWidth),
-                                      static_cast<GLfloat>(newHeight), 0.0f,
-                                      -1.0f, 1.0f);
-    ResourceManager::getShader("canvas").setMatrix4("projection", projection);
+    projectionMatrix = glm::ortho(0.0f, static_cast<GLfloat>(newWidth),
+                                  static_cast<GLfloat>(newHeight), 0.0f,
+                                  -1.0f, 1.0f);
+    ResourceManager::getShader("canvas").setMatrix4("projection", projectionMatrix);
 }
 
 void Interface::render() {

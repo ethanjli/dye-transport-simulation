@@ -12,6 +12,7 @@
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void clickCallback(GLFWwindow* window, int button, int action, int mode);
 void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+void cursorCallback(GLFWwindow* window, double xpos, double ypos);
 void resizeCallback(GLFWwindow *window, GLint width, GLint height);
 
 // Grid and window dimensions
@@ -47,10 +48,12 @@ int main() {
     glfwSetKeyCallback(window, keyCallback);
     glfwSetMouseButtonCallback(window, clickCallback);
     glfwSetScrollCallback(window, scrollCallback);
+    glfwSetCursorPosCallback(window, cursorCallback);
     glfwSetWindowSizeCallback(window, resizeCallback);
 
     // OpenGL configuration
     glViewport(0, 0, WIDTH * ZOOM, HEIGHT * ZOOM);
+    ui.viewport = glm::vec4(0, 0, WIDTH * ZOOM, HEIGHT * ZOOM);
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -125,8 +128,8 @@ void clickCallback(GLFWwindow* window, int button, int action, int mode) {
             ui.buttonsUp[button] = GL_FALSE;
         } else if (action == GLFW_RELEASE) {
             ui.buttons[button] = GL_FALSE;
-            ui.buttonsDown[button] = GL_TRUE;
-            ui.buttonsUp[button] = GL_FALSE;
+            ui.buttonsUp[button] = GL_TRUE;
+            ui.buttonsDown[button] = GL_FALSE;
         }
     }
 }
@@ -135,6 +138,12 @@ void clickCallback(GLFWwindow* window, int button, int action, int mode) {
 void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
     ui.scroll[0] = xoffset;
     ui.scroll[1] = yoffset;
+}
+
+// Is called whenever the mouse is moved via GLFW
+void cursorCallback(GLFWwindow* window, double xpos, double ypos) {
+    ui.cursor[0] = xpos;
+    ui.cursor[1] = ypos;
 }
 
 // Is called whenever the window is resized via GLFW
