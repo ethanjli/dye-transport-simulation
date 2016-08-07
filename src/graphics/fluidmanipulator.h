@@ -12,10 +12,14 @@ public:
 
     void step(Scalar dt);
 
-    void addDyeRect(Scalar x, Scalar y, Scalar halfLength, Scalar halfHeight,
-                    Scalar depthStart, Scalar depthStop,
+    void addDyeRect(int x, int y, int halfLength, int halfHeight,
+                    Grid::Index depthStart, Grid::Index depthStop,
                     Scalar cyan, Scalar magenta, Scalar yellow,
-                    bool constantSource = false);
+                    Scalar concentration = 1, bool constantSource = false);
+    void addDyeCircle(int x, int y, int radius, Grid::Index depthStop,
+                      Scalar cyan, Scalar magenta, Scalar yellow,
+                      Scalar concentration = 1,
+                      bool constantSource = false);
 
     void clearConstantDyeSource();
     void clearConstantFlowSource();
