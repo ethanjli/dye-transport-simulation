@@ -24,6 +24,7 @@ void Canvas::draw(const FluidTexture &fluidTexture) {
     view = glm::rotate(view, rotate, glm::vec3(0.0f, 0.0f, 1.0f));
     view = glm::translate(view, glm::vec3(cameraX, cameraY, 0.0f));
     // Post-unprojection to canvas
+    viewInverse = glm::translate(viewInverse, glm::vec3(0.5 * width, 0.5 * height, 0.0f));
     viewInverse = glm::translate(viewInverse, glm::vec3(-cameraX, cameraY, 0.0f));
     viewInverse = glm::rotate(viewInverse, rotate, glm::vec3(0.0f, 0.0f, 1.0f));
     viewInverse = glm::scale(viewInverse, glm::vec3(1 / (1 + cameraZoom), 1 / (1 + cameraZoom), 1.0f));

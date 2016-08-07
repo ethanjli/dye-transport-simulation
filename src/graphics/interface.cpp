@@ -55,7 +55,7 @@ void Interface::processInput(GLfloat dt) {
 }
 
 void Interface::processCameraInput(GLfloat dt) {
-    const GLfloat translateVelocity = std::min(width, height) / 4;
+    const GLfloat translateVelocity = std::min(width, height) / 5;
     const GLfloat rotateVelocity = 0.5;
     const GLfloat zoomVelocity = 4;
     const GLfloat maxZoom = 3;
@@ -181,10 +181,10 @@ void Interface::processManipulationInput(GLfloat dt) {
     }
 }
 
-void Interface::processResize(GLint newWidth, GLint newHeight) {
+void Interface::processResize(GLint newWidth, GLint newHeight, GLint windowZoom) {
     width = newWidth;
     height = newHeight;
-    viewport = glm::vec4(0, 0, width, height);
+    viewport = glm::vec4(0, 0, width * windowZoom, height * windowZoom);
     canvas->width = newWidth;
     canvas->height = newHeight;
     projectionMatrix = glm::ortho(0.0f, static_cast<GLfloat>(newWidth),

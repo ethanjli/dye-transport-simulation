@@ -39,7 +39,7 @@ public:
     void init();
     // Interface loop
     void processInput(GLfloat dt);
-    void processResize(GLint width, GLint height);
+    void processResize(GLint width, GLint height, GLint windowZoom);
     void update(GLfloat dt);
     void render();
 

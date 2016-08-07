@@ -53,7 +53,6 @@ int main() {
 
     // OpenGL configuration
     glViewport(0, 0, WIDTH * ZOOM, HEIGHT * ZOOM);
-    ui.viewport = glm::vec4(0, 0, WIDTH * ZOOM, HEIGHT * ZOOM);
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -64,6 +63,7 @@ int main() {
 
     // Initialize ui
     ui.init();
+    ui.processResize(WIDTH, HEIGHT, ZOOM);
     ui.state = INTERFACE_ACTIVE;
 
     double lastCheckpoint = glfwGetTime();
@@ -148,6 +148,6 @@ void cursorCallback(GLFWwindow* window, double xpos, double ypos) {
 
 // Is called whenever the window is resized via GLFW
 void resizeCallback(GLFWwindow* window, GLint width, GLint height) {
-    ui.processResize(width, height);
+    ui.processResize(width, height, ZOOM);
     glViewport(0, 0, width, height);
 }
