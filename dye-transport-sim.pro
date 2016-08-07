@@ -15,7 +15,8 @@ SOURCES += \
     src/graphics/fluidtexture.cpp \
     src/graphics/resourcemanager.cpp \
     src/graphics/canvas.cpp \
-    src/graphics/interface.cpp
+    src/graphics/interface.cpp \
+    src/graphics/fluidmanipulator.cpp
 
 HEADERS += \
     src/fluid-sim/math.h \
@@ -27,7 +28,8 @@ HEADERS += \
     src/graphics/fluidtexture.h \
     src/graphics/canvas.h \
     src/graphics/resourcemanager.h \
-    src/graphics/interface.h
+    src/graphics/interface.h \
+    src/graphics/fluidmanipulator.h
 
 DISTFILES += \
     src/graphics/canvas.frag \

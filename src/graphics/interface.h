@@ -9,7 +9,7 @@
 #include "resourcemanager.h"
 #include "canvas.h"
 
-#include "../fluid-sim/fluidsystem.h"
+#include "fluidmanipulator.h"
 
 enum SimulationState {
     INTERFACE_ACTIVE,
@@ -42,8 +42,7 @@ private:
     Scalar dt;
     std::shared_ptr<FluidSystem> fluidSystem;
 
-    DyeField addDensity;
-    VelocityField addVelocity;
+    FluidManipulator manipulator;
 };
 
 #endif // INTERFACE_H

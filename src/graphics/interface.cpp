@@ -13,64 +13,7 @@
 Interface::Interface(GLint width, GLint height, GLint depth, Scalar dt) :
     width(width), height(height), depth(depth), dt(dt),
     fluidSystem(std::make_shared<FluidSystem>(width, height, depth)),
-    addDensity(fluidSystem->fullDim), addVelocity(fluidSystem->fullStaggeredDim) {
-    Grid::Index centerX = fluidSystem->dim(0) / 2;
-    Grid::Index centerY = fluidSystem->dim(1) / 2;
-    Grid::Index initialWidth = fluidSystem->dim(0) / 8;
-    Grid::Index initialHeight = fluidSystem->dim(1) / 8;
-    initialWidth = std::min(initialWidth, initialHeight);
-    initialHeight = std::min(initialWidth, initialHeight);
-    // Initialize velocities
-    addVelocity[0](centerX - 5, centerY, 1) = -100;
-    addVelocity[0](centerX + 5, centerY, 1) = 100;
-    addVelocity[1](centerX, centerY - 5, 1) = 100;
-    addVelocity[1](centerX, centerY + 5, 1) = 100;
-    for (Grid::Index i = centerX - 3; i <= centerX + 3; ++i) {
-        for (Grid::Index j = centerY - 3; j <= centerY + 3; ++j) {
-            addVelocity[2](i, j, 2) = 40;
-        }
-    }
-    // Initialize dyes
-    Scalar concentrationGain = 4;
-    initialWidth = std::min(initialWidth, initialHeight);
-    initialHeight = std::min(initialWidth, initialHeight);
-    initialWidth /= 2;
-    initialHeight /= 2;
-    for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
-      for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[0](i, j, 1) = 0.25;
-          fluidSystem->density[0](i, j, 1) = 0.25;
-          fluidSystem->density[1](i, j, 1) = 1;
-          fluidSystem->density[1](i, j, 1) = 1;
-          fluidSystem->density[0](i, j, 2) = 0.25;
-          fluidSystem->density[0](i, j, 2) = 0.25;
-          fluidSystem->density[1](i, j, 1) = 1;
-          fluidSystem->density[1](i, j, 1) = 1;
-          //fluidSystem->density[0](i, j, 1) = 1;
-      }
-    }
-    centerY = 1 + fluidSystem->dim(1) / 4;
-    for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
-      for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[1](i, j, 1) = 1;
-          fluidSystem->density[1](i, j, 1) = 1;
-          fluidSystem->density[1](i, j, 2) = 0.5;
-          fluidSystem->density[1](i, j, 2) = 0.5;
-          //fluidSystem->density[1](i, j, 2) = 1;
-      }
-    }
-    centerY = 1 + 3 * fluidSystem->dim(1) / 4;
-    for (Grid::Index i = centerX - initialWidth; i <= centerX + initialWidth; ++i) {
-      for (Grid::Index j = centerY - initialHeight; j <= centerY + initialHeight; ++j) {
-          fluidSystem->density[1](i, j, 1) = 1;
-          fluidSystem->density[1](i, j, 1) = 1;
-          fluidSystem->density[1](i, j, 2) = 0.5;
-          fluidSystem->density[1](i, j, 2) = 0.5;
-          //fluidSystem->density[2](i, j, 3) = 1;
-      }
-    }
-    fluidSystem->density *= concentrationGain;
-}
+    manipulator(fluidSystem) {}
 
 Interface::~Interface() {}
 
@@ -79,8 +22,7 @@ void Interface::init() {
     ResourceManager::loadShader("canvas", "shaders/canvas.vert", "shaders/canvas.frag").use();
     // Configure shaders
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width),
-                                      static_cast<GLfloat>(height), 0.0f,
-                                      -1.0f, 1.0f);
+                                      static_cast<GLfloat>(height), 0.0f, -1.0f, 1.0f);
     ResourceManager::getShader("canvas").setInteger("image", 0);
     ResourceManager::getShader("canvas").setMatrix4("projection", projection);
     // Set render-specific controls
@@ -89,7 +31,6 @@ void Interface::init() {
     ResourceManager::loadFluidTexture("fluid", fluidSystem);
     ResourceManager::getShader("canvas").setInteger("width", width);
     ResourceManager::getShader("canvas").setInteger("height", height);
-    //ResourceManager::getShader("canvas").setInteger("depth", fluidSystem->dim(2));
     ResourceManager::getShader("canvas").setInteger("scatterDepth", fluidSystem->dim(2) / 2);
     ResourceManager::getShader("canvas").setInteger("blur", 2);
     ResourceManager::getShader("canvas").setFloat("blurDiscreteness", 0.75);
@@ -102,7 +43,7 @@ void Interface::init() {
 
 void Interface::update(GLfloat dt) {
     if (state != INTERFACE_ACTIVE) return;
-    fluidSystem->step(addDensity, addVelocity, this->dt ? this->dt : dt);
+    manipulator.step(this->dt ? this->dt : dt);
     ResourceManager::getFluidTexture("fluid").update();
 }
 
