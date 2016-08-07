@@ -48,19 +48,19 @@ void Interface::update(GLfloat dt) {
 }
 
 void Interface::processInput(GLfloat dt) {
+    processCameraInput(dt);
+    processSimulationInput(dt);
+    processRenderInput(dt);
+    processManipulationInput(dt);
+}
+
+void Interface::processCameraInput(GLfloat dt) {
     const GLfloat translateVelocity = std::min(width, height) / 4;
     const GLfloat rotateVelocity = 2;
     const GLfloat zoomVelocity = 4;
     const GLfloat maxZoom = 4;
     const GLfloat minZoom = 0.95;
-    const GLfloat saturationVelocity = 1;
-    const GLfloat minSaturation = 0.5;
-    const GLfloat maxSaturation = 2;
-    const GLfloat visibilityVelocity = 1;
-    const GLfloat minVisibility = 0.2;
-    const GLfloat maxVisibility = 1;
 
-    // CAMERA_CONTROLS
     if (keys[GLFW_KEY_W]) { //pan move camera up with respect to canvas
         canvas->cameraX += translateVelocity * dt * std::sin(canvas->cameraAngle);
         canvas->cameraY += translateVelocity * dt * std::cos(canvas->cameraAngle);
@@ -89,6 +89,12 @@ void Interface::processInput(GLfloat dt) {
     if (keys[GLFW_KEY_F]) { // zoom out
         canvas->cameraZoom = std::max(minZoom, canvas->cameraZoom - zoomVelocity * dt);
     }
+}
+
+void Interface::processSimulationInput(GLfloat dt) {
+    const GLfloat dtVelocity = 0.1;
+    const GLfloat minDt = 0.01666667;
+    const GLfloat maxDt = 0.1;
 
     if (keysUp[GLFW_KEY_SPACE]) { // toggle pause/unpause
         if (state == INTERFACE_ACTIVE) state = INTERFACE_PAUSED;
@@ -96,8 +102,22 @@ void Interface::processInput(GLfloat dt) {
 
         keysUp[GLFW_KEY_SPACE] = GL_FALSE;
     }
+    if (keys[GLFW_KEY_EQUAL]) { // speed up
+        this->dt = std::min(maxDt, this->dt + dtVelocity * dt);
+    }
+    if (keys[GLFW_KEY_MINUS]) { // slow down
+        this->dt = std::max(minDt, this->dt - dtVelocity * dt);
+    }
+}
 
-    // DISPLAY
+void Interface::processRenderInput(GLfloat dt) {
+    const GLfloat saturationVelocity = 1;
+    const GLfloat minSaturation = 0.5;
+    const GLfloat maxSaturation = 2;
+    const GLfloat visibilityVelocity = 1;
+    const GLfloat minVisibility = 0.2;
+    const GLfloat maxVisibility = 1;
+
     if (scroll[1] > 0) {
         saturation = std::min(maxSaturation, saturation + saturationVelocity * dt);
         ResourceManager::getShader("canvas").setFloat("saturation", saturation);
@@ -116,19 +136,20 @@ void Interface::processInput(GLfloat dt) {
         ResourceManager::getShader("canvas").setFloat("visibility", visibility);
         scroll[0] = 0;
     }
+}
 
-    // DYE MANIPULATION
-    if (keysUp[GLFW_KEY_COMMA]) {
+void Interface::processManipulationInput(GLfloat dt) {
+    if (keysUp[GLFW_KEY_APOSTROPHE]) {
         std::cout << "Clearing constant dye sources." << std::endl;
         manipulator.clearConstantDyeSource();
 
-        keysUp[GLFW_KEY_COMMA] = GL_FALSE;
+        keysUp[GLFW_KEY_APOSTROPHE] = GL_FALSE;
     }
-    if (keysUp[GLFW_KEY_PERIOD]) {
+    if (keysUp[GLFW_KEY_SLASH]) {
         std::cout << "Clearing constant flow sources." << std::endl;
         manipulator.clearConstantFlowSource();
 
-        keysUp[GLFW_KEY_PERIOD] = GL_FALSE;
+        keysUp[GLFW_KEY_SLASH] = GL_FALSE;
     }
 }
 

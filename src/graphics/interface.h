@@ -50,6 +50,11 @@ private:
     GLfloat visibility = 0.8;
 
     FluidManipulator manipulator;
+
+    void processCameraInput(GLfloat dt);
+    void processSimulationInput(GLfloat dt);
+    void processRenderInput(GLfloat dt);
+    void processManipulationInput(GLfloat dt);
 };
 
 #endif // INTERFACE_H
