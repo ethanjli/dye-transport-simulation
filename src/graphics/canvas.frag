@@ -11,26 +11,26 @@ uniform float saturation;
 // Layer blurring
 uniform int width;
 uniform int height;
-uniform int blurQuality;
+uniform int blur;
 
 // Layer blending
 uniform float visibility;
-uniform int depth;
+uniform int scatterDepth;
 
 void main()
 {
     int numLayers = 4;
     vec3 cmyColor = vec3(0.0, 0.0, 0.0);
-    for (int layer = depth - 1; layer >= 0; layer--) {
+    for (int layer = scatterDepth - 1; layer >= 0; layer--) {
         float layerDepth = layer * 1.0 / (numLayers - 1);
         vec3 layerCoords = vec3(TexCoords, layerDepth);
         vec3 layerColor = vec3(0.0, 0.0, 0.0);
         int neighboringSamples = 0;
-        for (int i = -blurQuality; i <= blurQuality; i++) {
-            for (int j = -blurQuality; j <= blurQuality; j++) {
+        for (int i = -layer * blur; i <= layer * blur; i++) {
+            for (int j = -layer * blur; j <= layer * blur; j++) {
                 vec3 neighborCoords = layerCoords;
-                neighborCoords.s += 1.0 * i * layer / width;
-                neighborCoords.t += 1.0 * j * layer / height;
+                neighborCoords.s += 1.0 * i / width;
+                neighborCoords.t += 1.0 * j / height;
                 layerColor += vec3(texture(cyan, neighborCoords).r,
                                    texture(magenta, neighborCoords).r,
                                    texture(yellow, neighborCoords).r);
