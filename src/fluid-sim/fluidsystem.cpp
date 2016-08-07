@@ -29,8 +29,7 @@ void FluidSystem::stepDensity(Scalar dt, const DyeField &addedDensity) {
     density += addedDensity;
     std::array<BoundarySetter, density.coords> boundarySetters;
     for (std::size_t i = 0; i < density.coords; ++i) {
-        boundarySetters[i] = std::bind(&setContinuityBoundaries,
-                                       std::placeholders::_1, dim);
+        boundarySetters[i] = std::bind(&setContinuityBoundaries, std::placeholders::_1, dim);
     }
 
     std::swap(density, densityPrev);
@@ -42,12 +41,17 @@ void FluidSystem::stepDensity(Scalar dt, const DyeField &addedDensity) {
 void FluidSystem::stepVelocity(Scalar dt, const VelocityField &addedVelocity) {
     velocity += addedVelocity;
     std::array<BoundarySetter, velocity.coords> boundarySetters;
-    boundarySetters[0] = std::bind(&setHorizontalNeumannBoundaries,
-                                   std::placeholders::_1, dim);
-    boundarySetters[1] = std::bind(&setVerticalNeumannBoundaries,
-                                   std::placeholders::_1, dim);
-    boundarySetters[2] = std::bind(&setDepthNeumannBoundaries,
-                                   std::placeholders::_1, dim);
+    if (horizontalNeumann) {
+        boundarySetters[0] = std::bind(&setHorizontalNeumannBoundaries, std::placeholders::_1, dim);
+    } else {
+        boundarySetters[0] = std::bind(&setContinuityBoundaries, std::placeholders::_1, dim);
+    }
+    if (verticalNeumann) {
+        boundarySetters[1] = std::bind(&setVerticalNeumannBoundaries, std::placeholders::_1, dim);
+    } else {
+        boundarySetters[1] = std::bind(&setContinuityBoundaries, std::placeholders::_1, dim);
+    }
+    boundarySetters[2] = std::bind(&setDepthNeumannBoundaries, std::placeholders::_1, dim);
 
     std::swap(velocity, velocityPrev);
     diffuse(velocity, velocityPrev, viscosity, dt, staggeredDim, boundarySetters);
@@ -71,9 +75,17 @@ void FluidSystem::project(VelocityField &velocity) const {
     gradient.clear();
     grad(gradient, pressure, dim);
     velocity -= gradient;
-    setHorizontalNeumannBoundaries(velocity[0], staggeredDim);
-    setVerticalNeumannBoundaries(velocity[1], staggeredDim);
-    setDepthNeumannBoundaries(velocity[2], staggeredDim);
+    if (horizontalNeumann) {
+        setHorizontalNeumannBoundaries(velocity[0], dim);
+    } else {
+        setContinuityBoundaries(velocity[0], dim);
+    }
+    if (verticalNeumann) {
+        setVerticalNeumannBoundaries(velocity[1], dim);
+    } else {
+        setContinuityBoundaries(velocity[1], dim);
+    }
+    setDepthNeumannBoundaries(velocity[2], dim);
 }
 
 void grad(VelocityField &out, const Grid &in, const Indices &dim) {

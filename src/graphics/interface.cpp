@@ -108,6 +108,26 @@ void Interface::processSimulationInput(GLfloat dt) {
     if (keys[GLFW_KEY_MINUS]) { // slow down
         this->dt = std::max(minDt, this->dt - dtVelocity * dt);
     }
+    if (keysUp[GLFW_KEY_COMMA]) { // toggle horizontal boundary conditions
+        fluidSystem->horizontalNeumann = !fluidSystem->horizontalNeumann;
+        if (fluidSystem->horizontalNeumann) {
+          std::cout << "Now using Neumann boundary conditions for the sides" << std::endl;
+        } else {
+            std::cout << "Now using continuity boundary conditions for the sides" << std::endl;
+        }
+
+        keysUp[GLFW_KEY_COMMA] = GL_FALSE;
+    }
+    if (keysUp[GLFW_KEY_PERIOD]) { // toggle vertical boundary conditions
+        fluidSystem->verticalNeumann = !fluidSystem->verticalNeumann;
+        if (fluidSystem->verticalNeumann) {
+            std::cout << "Now using Neumann boundary conditions for the top and bottom" << std::endl;
+        } else {
+            std::cout << "Now using continuity boundary conditions for the top and bottom" << std::endl;
+        }
+
+        keysUp[GLFW_KEY_PERIOD] = GL_FALSE;
+    }
 }
 
 void Interface::processRenderInput(GLfloat dt) {

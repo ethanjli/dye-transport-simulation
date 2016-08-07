@@ -27,6 +27,9 @@ public:
     DyeField density;
     VelocityField velocity;
 
+    bool horizontalNeumann = true;
+    bool verticalNeumann = true;
+
     void step(const DyeField &addedDensity, const VelocityField &addedVelocity,
               Scalar dt);
 
