@@ -92,6 +92,7 @@ void Interface::init() {
     //ResourceManager::getShader("canvas").setInteger("depth", fluidSystem->dim(2));
     ResourceManager::getShader("canvas").setInteger("scatterDepth", fluidSystem->dim(2) / 2);
     ResourceManager::getShader("canvas").setInteger("blur", 2);
+    ResourceManager::getShader("canvas").setFloat("blurDiscreteness", 0.75);
     ResourceManager::getShader("canvas").setFloat("saturation", 1);
     ResourceManager::getShader("canvas").setFloat("visibility", 0.8);
     ResourceManager::getShader("canvas").setTextureUnit("cyan", 0);

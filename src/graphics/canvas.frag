@@ -12,6 +12,7 @@ uniform float saturation;
 uniform int width;
 uniform int height;
 uniform int blur;
+uniform float blurDiscreteness;
 
 // Layer blending
 uniform float visibility;
@@ -29,8 +30,8 @@ void main()
         for (int i = -layer * blur; i <= layer * blur; i++) {
             for (int j = -layer * blur; j <= layer * blur; j++) {
                 vec3 neighborCoords = layerCoords;
-                neighborCoords.s += 1.0 * i / width;
-                neighborCoords.t += 1.0 * j / height;
+                neighborCoords.s += blurDiscreteness * i / width;
+                neighborCoords.t += blurDiscreteness * j / height;
                 layerColor += vec3(texture(cyan, neighborCoords).r,
                                    texture(magenta, neighborCoords).r,
                                    texture(yellow, neighborCoords).r);
