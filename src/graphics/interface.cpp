@@ -40,10 +40,30 @@ void Interface::init() {
     ResourceManager::getShader("canvas").setTextureUnit("magenta", 1);
     ResourceManager::getShader("canvas").setTextureUnit("yellow", 2);
 
+    std::cout << "~~~~CAMERA~~~~" << std::endl;
+    std::cout << "Pan the camera with W,A,S,D.\nRotate the camera with Q (ccw) and E (cw).\n"
+              << "Zoom the camera with R (zoom in) and F (zoom out)." << std::endl;
+    std::cout << "~~~~SIMULATION~~~~" << std::endl;
+    std::cout << "Pause/unpause the simulation with the spacebar." << std::endl;
+    std::cout << "Simulation timestep is now " << (dt * 1000) << " ms." << std::endl;
+    std::cout << "  Adjust the timestep in +/- 10 ms increments with ` "
+              << "and decrease with ^`." << std::endl;
+    std::cout << "Using Neumann boundary conditions for all system edges." << std::endl;
+    std::cout << "  Toggle sides with , and top/bottom with . ." << std::endl;
+    std::cout << "~~~~DYE~~~~" << std::endl;
     std::cout << "Droplet color is now CMY=(" << dropletCyan << ","
               << dropletMagenta << "," << dropletYellow << ")" << std::endl;
+    std::cout << "  Adjust each color channel in +/-0.25 increments with Z,X,C (to increase)\n"
+              << "  and ^Z,^X,^C (to decrease)." << std::endl;
     std::cout << "Droplet concentration is now " << dropletConcentration << std::endl;
+    std::cout << "  Adjust in +/-0.25 increments with V (to increase) and ^V (to decrease)." << std::endl;
     std::cout << "Droplet depth is now " << dropletDepth << std::endl;
+    std::cout << "  Adjust in +/-1 increments with B (to increase) and ^B (to decrease)." << std::endl;
+    std::cout << "Droplet radius is now " << dropletRadius << std::endl;
+    std::cout << "  Adjust in +/-5 increments with G (to increase) and ^G (to decrease)." << std::endl;
+    std::cout << "~~~~RENDER~~~~" << std::endl;
+    std::cout << "Adjust color saturation by scrolling up (to increase) or down (to decrease)." << std::endl;
+    std::cout << "Adjust light penetration by scrolling right (to increase) or left (to decrease)." << std::endl;
 }
 
 void Interface::update(GLfloat dt) {
@@ -97,9 +117,8 @@ void Interface::processCameraInput(GLfloat dt) {
 }
 
 void Interface::processSimulationInput(GLfloat dt) {
-    const GLfloat dtVelocity = 0.1;
     const GLfloat minDt = 0.01666667;
-    const GLfloat maxDt = 0.1;
+    const GLfloat maxDt = 0.09666667;
 
     if (keysUp[GLFW_KEY_SPACE]) { // toggle pause/unpause
         if (state == INTERFACE_ACTIVE) state = INTERFACE_PAUSED;
@@ -107,18 +126,21 @@ void Interface::processSimulationInput(GLfloat dt) {
 
         keysUp[GLFW_KEY_SPACE] = GL_FALSE;
     }
-    if (keys[GLFW_KEY_EQUAL]) { // speed up
-        this->dt = std::min(maxDt, this->dt + dtVelocity * dt);
-    }
-    if (keys[GLFW_KEY_MINUS]) { // slow down
-        this->dt = std::max(minDt, this->dt - dtVelocity * dt);
+    if (keysUp[GLFW_KEY_GRAVE_ACCENT]) {
+        if (keys[GLFW_KEY_RIGHT_SHIFT] || keys[GLFW_KEY_LEFT_SHIFT]) {
+            this->dt = std::max(minDt, this->dt - 0.01f);
+        } else {
+            this->dt = std::min(maxDt, this->dt + 0.01f);
+        }
+        std::cout << "Simulation timestep is now " << (this->dt * 1000) << " ms." << std::endl;
+        keysUp[GLFW_KEY_GRAVE_ACCENT] = GL_FALSE;
     }
     if (keysUp[GLFW_KEY_COMMA]) { // toggle horizontal boundary conditions
         fluidSystem->horizontalNeumann = !fluidSystem->horizontalNeumann;
         if (fluidSystem->horizontalNeumann) {
-          std::cout << "Now using Neumann boundary conditions for the sides" << std::endl;
+          std::cout << "Now using Neumann boundary conditions for the sides." << std::endl;
         } else {
-            std::cout << "Now using continuity boundary conditions for the sides" << std::endl;
+            std::cout << "Now using continuity boundary conditions for the sides." << std::endl;
         }
 
         keysUp[GLFW_KEY_COMMA] = GL_FALSE;
@@ -126,9 +148,9 @@ void Interface::processSimulationInput(GLfloat dt) {
     if (keysUp[GLFW_KEY_PERIOD]) { // toggle vertical boundary conditions
         fluidSystem->verticalNeumann = !fluidSystem->verticalNeumann;
         if (fluidSystem->verticalNeumann) {
-            std::cout << "Now using Neumann boundary conditions for the top and bottom" << std::endl;
+            std::cout << "Now using Neumann boundary conditions for the top and bottom." << std::endl;
         } else {
-            std::cout << "Now using continuity boundary conditions for the top and bottom" << std::endl;
+            std::cout << "Now using continuity boundary conditions for the top and bottom." << std::endl;
         }
 
         keysUp[GLFW_KEY_PERIOD] = GL_FALSE;
@@ -244,6 +266,17 @@ void Interface::processManipulationInput(GLfloat dt) {
 
         keysUp[GLFW_KEY_B] = GL_FALSE;
     }
+    if (keysUp[GLFW_KEY_G]) {
+        if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
+            dropletRadius -= 5;
+        } else {
+            dropletRadius += 5;
+        }
+        dropletRadius = std::max(1L, std::min(depth, dropletRadius));
+        std::cout << "Droplet radius is now " << dropletRadius << std::endl;
+
+        keysUp[GLFW_KEY_G] = GL_FALSE;
+    }
     if (buttonsUp[GLFW_MOUSE_BUTTON_LEFT]) {
         glm::vec3 cursorPos(cursor[0], cursor[1], 1.0f);
         glm::vec3 worldPos = glm::unProject(cursorPos, glm::mat4(), projectionMatrix, viewport);
@@ -251,7 +284,7 @@ void Interface::processManipulationInput(GLfloat dt) {
         gridPos = canvas->viewInverseMatrix * gridPos;
         bool whetherConstant = keys[GLFW_KEY_RIGHT_SHIFT] || keys[GLFW_KEY_LEFT_SHIFT];
         manipulator.addDyeCircle(std::round(gridPos[0]), std::round(gridPos[1]),
-                                 dropletRadius, dropletThickness,
+                                 dropletRadius, dropletDepth,
                                  dropletCyan, dropletMagenta, dropletYellow,
                                  dropletConcentration, whetherConstant);
         buttonsUp[GLFW_MOUSE_BUTTON_LEFT] = GL_FALSE;

@@ -60,9 +60,9 @@ private:
     Scalar dropletCyan = 0;
     Scalar dropletMagenta = 0;
     Scalar dropletYellow = 0;
-    Scalar dropletRadius = 5;
-    Grid::Index dropletDepth = 2;
     Scalar dropletConcentration = 1;
+    Grid::Index dropletRadius = 6;
+    Grid::Index dropletDepth = 2;
 
     void processCameraInput(GLfloat dt);
     void processSimulationInput(GLfloat dt);
