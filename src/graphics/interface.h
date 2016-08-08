@@ -33,7 +33,7 @@ public:
     std::array<double, 2> scroll = {{0}};
     std::array<double, 2> cursor = {{0}};
 
-    glm::vec4 viewport;
+    Scalar renderTime = -1;
 
     // Initialize interface state (load all resources)
     void init();
@@ -48,6 +48,7 @@ private:
     glm::mat4 projectionMatrix;
     GLint width, height;
     Grid::Index depth;
+    glm::vec4 viewport;
 
     Scalar dt;
     std::shared_ptr<FluidSystem> fluidSystem;

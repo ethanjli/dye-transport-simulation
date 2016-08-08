@@ -11,7 +11,7 @@
 #include "resourcemanager.h"
 
 Interface::Interface(GLint width, GLint height, Grid::Index depth, Scalar dt) :
-    viewport(0, 0, width, height), width(width), height(height), depth(depth),
+    width(width), height(height), depth(depth), viewport(0, 0, width, height),
     dt(dt), fluidSystem(std::make_shared<FluidSystem>(width, height, depth)),
     manipulator(fluidSystem) {}
 
@@ -40,6 +40,7 @@ void Interface::init() {
     ResourceManager::getShader("canvas").setTextureUnit("magenta", 1);
     ResourceManager::getShader("canvas").setTextureUnit("yellow", 2);
 
+    std::cout << "USAGE INSTRUCTIONS:\n\n";
     std::cout << "~~~~CAMERA~~~~" << std::endl;
     std::cout << "Pan the camera with W,A,S,D.\nRotate the camera with Q (ccw) and E (cw).\n"
               << "Zoom the camera with R (zoom in) and F (zoom out)." << std::endl;
@@ -64,6 +65,9 @@ void Interface::init() {
     std::cout << "~~~~RENDER~~~~" << std::endl;
     std::cout << "Adjust color saturation by scrolling up (to increase) or down (to decrease)." << std::endl;
     std::cout << "Adjust light penetration by scrolling right (to increase) or left (to decrease)." << std::endl;
+    std::cout << "Print average per-frame render time and framerate with TAB.\n"
+              << "  Average is calculated over a 10 s interval and updated every 10 s." << std::endl;
+    std::cout << "\n\nHAVE FUN!" << std::endl;
 }
 
 void Interface::update(GLfloat dt) {
@@ -182,6 +186,14 @@ void Interface::processRenderInput(GLfloat dt) {
         visibility = std::max(minVisibility, visibility - visibilityVelocity * dt);
         ResourceManager::getShader("canvas").setFloat("visibility", visibility);
         scroll[0] = 0;
+    }
+    if (keysUp[GLFW_KEY_TAB]) {
+        if (renderTime == -1) {
+            std::cout << "Not enough data collected yet to estimate average render time." << std::endl;
+        } else {
+            std::cout << "Frame render time: " << renderTime << " ms (" << (1000.0 / renderTime) << " fps)" << std::endl;
+        }
+        keysUp[GLFW_KEY_TAB] = GL_FALSE;
     }
 }
 

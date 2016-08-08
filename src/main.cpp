@@ -77,7 +77,7 @@ int main() {
         lastFrame = currentFrame;
         ++renderedFrames;
         if (currentFrame - lastCheckpoint >= 5) {
-            std::cout << 5 * 1000.0 / renderedFrames << " ms/frame" << std::endl;
+            ui.renderTime = 5 * 1000.0 / renderedFrames;
             renderedFrames = 0;
             lastCheckpoint = currentFrame;
         }
