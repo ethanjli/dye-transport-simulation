@@ -56,6 +56,10 @@ private:
 
     FluidManipulator manipulator;
 
+    Scalar cyan = 0;
+    Scalar magenta = 0;
+    Scalar yellow = 0;
+
     void processCameraInput(GLfloat dt);
     void processSimulationInput(GLfloat dt);
     void processRenderInput(GLfloat dt);

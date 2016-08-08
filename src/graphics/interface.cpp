@@ -39,6 +39,8 @@ void Interface::init() {
     ResourceManager::getShader("canvas").setTextureUnit("cyan", 0);
     ResourceManager::getShader("canvas").setTextureUnit("magenta", 1);
     ResourceManager::getShader("canvas").setTextureUnit("yellow", 2);
+
+    std::cout << "Color is now CMY=(" << cyan << "," << magenta << "," << yellow << ")" << std::endl;
 }
 
 void Interface::update(GLfloat dt) {
@@ -171,12 +173,32 @@ void Interface::processManipulationInput(GLfloat dt) {
 
         keysUp[GLFW_KEY_SLASH] = GL_FALSE;
     }
+    // Adding dye
+    if (keysUp[GLFW_KEY_Z]) {
+        cyan = 1 - cyan;
+        std::cout << "Color is now CMY=(" << cyan << "," << magenta << "," << yellow << ")" << std::endl;
+
+        keysUp[GLFW_KEY_Z] = GL_FALSE;
+    }
+    if (keysUp[GLFW_KEY_X]) {
+        magenta = 1 - magenta;
+        std::cout << "Color is now CMY=(" << cyan << "," << magenta << "," << yellow << ")" << std::endl;
+
+        keysUp[GLFW_KEY_X] = GL_FALSE;
+    }
+    if (keysUp[GLFW_KEY_C]) {
+        yellow = 1 - yellow;
+        std::cout << "Color is now CMY=(" << cyan << "," << magenta << "," << yellow << ")" << std::endl;
+
+        keysUp[GLFW_KEY_C] = GL_FALSE;
+    }
     if (buttonsUp[GLFW_MOUSE_BUTTON_LEFT]) {
         glm::vec3 cursorPos(cursor[0], cursor[1], 1.0f);
         glm::vec3 worldPos = glm::unProject(cursorPos, glm::mat4(), projectionMatrix, viewport);
         glm::vec4 gridPos = glm::vec4(worldPos, 1.0f);
         gridPos = canvas->viewInverseMatrix * gridPos;
-        std::cout << "click canvas " << gridPos[0] << "," << gridPos[1] << "," << gridPos[2] << "," << gridPos[3] << std::endl;
+        manipulator.addDyeCircle(std::round(gridPos[0]), std::round(gridPos[1]), 6, 2,
+                                 cyan, magenta, yellow);
         buttonsUp[GLFW_MOUSE_BUTTON_LEFT] = GL_FALSE;
     }
 }
