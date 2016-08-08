@@ -20,7 +20,7 @@ enum SimulationState {
 class Interface
 {
 public:
-    Interface(GLint width, GLint height, GLint depth, Scalar dt);
+    Interface(GLint width, GLint height, Grid::Index depth, Scalar dt);
     ~Interface();
 
     SimulationState state = INTERFACE_PAUSED;
@@ -46,7 +46,8 @@ public:
 private:
     Canvas *canvas;
     glm::mat4 projectionMatrix;
-    GLint width, height, depth;
+    GLint width, height;
+    Grid::Index depth;
 
     Scalar dt;
     std::shared_ptr<FluidSystem> fluidSystem;
@@ -56,9 +57,12 @@ private:
 
     FluidManipulator manipulator;
 
-    Scalar cyan = 0;
-    Scalar magenta = 0;
-    Scalar yellow = 0;
+    Scalar dropletCyan = 0;
+    Scalar dropletMagenta = 0;
+    Scalar dropletYellow = 0;
+    Scalar dropletRadius = 5;
+    Grid::Index dropletDepth = 2;
+    Scalar dropletConcentration = 1;
 
     void processCameraInput(GLfloat dt);
     void processSimulationInput(GLfloat dt);

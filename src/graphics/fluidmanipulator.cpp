@@ -71,8 +71,9 @@ void FluidManipulator::addDyeCircle(int x, int y, int r, Grid::Index depthStop,
             int dy = j - y;
             int outerDistance = dx * dx + dy * dy - r * r;
             if (outerDistance > 0) continue;
-            // Is this how real people do antialiasing? Who knows!
-            // But this heuristic works well, and it makes sense (because implicit functions)
+            // Is this how real people do antialiasing? Who knows! I hacked this
+            // together by trial and error (and by applying the coverage of implicit
+            // functions from the first lecture). This heuristic works well, so.
             Scalar antialias = 1;
             if (outerDistance >= -2.0 * r) {
                 antialias = -outerDistance / (2.0 * r);

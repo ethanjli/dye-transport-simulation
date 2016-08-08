@@ -27,6 +27,8 @@ void main()
         vec3 layerCoords = vec3(TexCoords, layerDepth);
         vec3 layerColor = vec3(0.0, 0.0, 0.0);
         int neighboringSamples = 0;
+        // This box blur implementation was based (with heavy modifications) on
+        // http://blog.trsquarelab.com/2015/12/a-simple-box-blur-implementation-in.html
         for (int i = -layer * blur; i <= layer * blur; i++) {
             for (int j = -layer * blur; j <= layer * blur; j++) {
                 vec3 neighborCoords = layerCoords;
