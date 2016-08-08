@@ -162,15 +162,23 @@ void Interface::processRenderInput(GLfloat dt) {
 
 void Interface::processManipulationInput(GLfloat dt) {
     if (keysUp[GLFW_KEY_APOSTROPHE]) {
-        std::cout << "Clearing constant dye sources." << std::endl;
-        manipulator.clearConstantDyeSource();
-
+        if (keys[GLFW_KEY_RIGHT_SHIFT] || keys[GLFW_KEY_LEFT_SHIFT]) {
+            std::cout << "Clearing all dye." << std::endl;
+            fluidSystem->density.clear();
+        } else {
+            std::cout << "Clearing constant dye sources." << std::endl;
+            manipulator.clearConstantDyeSource();
+        }
         keysUp[GLFW_KEY_APOSTROPHE] = GL_FALSE;
     }
     if (keysUp[GLFW_KEY_SLASH]) {
-        std::cout << "Clearing constant flow sources." << std::endl;
-        manipulator.clearConstantFlowSource();
-
+        if (keys[GLFW_KEY_RIGHT_SHIFT] || keys[GLFW_KEY_LEFT_SHIFT]) {
+            std::cout << "Clearing all flow." << std::endl;
+            fluidSystem->velocity.clear();
+        } else {
+            std::cout << "Clearing constant flow sources." << std::endl;
+            manipulator.clearConstantFlowSource();
+        }
         keysUp[GLFW_KEY_SLASH] = GL_FALSE;
     }
     // Adding dye
