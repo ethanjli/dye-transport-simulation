@@ -5,6 +5,12 @@
 
 #include "../fluid-sim/fluidsystem.h"
 
+enum AdditionMode {
+    kAdditionReplacement,
+    kAdditionAdditive,
+    kAdditionConstantAdditive
+};
+
 class FluidManipulator
 {
 public:
@@ -19,7 +25,7 @@ public:
     void addDyeCircle(int x, int y, int radius, Grid::Index depthStop,
                       Scalar cyan, Scalar magenta, Scalar yellow,
                       Scalar concentration = 1,
-                      bool constantSource = false);
+                      AdditionMode mode = kAdditionAdditive);
 
     void clearConstantDyeSource();
     void clearConstantFlowSource();

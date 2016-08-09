@@ -12,19 +12,19 @@ FluidManipulator::FluidManipulator(std::shared_ptr<FluidSystem> fluidSystem) :
     initialWidth = std::min(initialWidth, initialHeight);
     initialHeight = std::min(initialWidth, initialHeight);
     // Initialize velocities
-    constantFlowSource[0](centerX - 5, centerY, 1) = -100;
-    constantFlowSource[0](centerX + 5, centerY, 1) = 100;
-    constantFlowSource[1](centerX, centerY - 5, 1) = 100;
-    constantFlowSource[1](centerX, centerY + 5, 1) = 100;
+    constantFlowSource[0](centerX - 5, centerY, 1) = -2000;
+    constantFlowSource[0](centerX + 5, centerY, 1) = 2000;
+    constantFlowSource[1](centerX, centerY - 5, 1) = 2000;
+    constantFlowSource[1](centerX, centerY + 5, 1) = 2000;
     for (Grid::Index i = centerX - 3; i <= centerX + 3; ++i) {
         for (Grid::Index j = centerY - 3; j <= centerY + 3; ++j) {
-            constantFlowSource[2](i, j, 2) = 40;
+            constantFlowSource[2](i, j, 2) = 800;
         }
     }
     // Initialize dyes
     Scalar halfLength = std::min(initialWidth, initialHeight) / 2;
     addDyeRect(centerX, 1, fluidSystem->dim(0) / 3, 1, 4, 6,
-               0, 1, 0, 0.16, true);
+               0, 1, 0, 3.5, true);
     addDyeCircle(centerX, centerY, halfLength * 4, 2,
                  1, 1, 0, 0.5);
 }
@@ -56,9 +56,9 @@ void FluidManipulator::addDyeRect(int x, int y, int halfLength, int halfHeight,
 }
 void FluidManipulator::addDyeCircle(int x, int y, int r, Grid::Index depthStop,
                                     Scalar cyan, Scalar magenta, Scalar yellow,
-                                    Scalar concentration, bool constantSource) {
+                                    Scalar concentration, AdditionMode mode) {
     DyeField *target;
-    if (constantSource) {
+    if (mode == kAdditionConstantAdditive) {
         target = &constantDyeSource;
     } else {
         target = &(fluidSystem->density);
@@ -81,9 +81,14 @@ void FluidManipulator::addDyeCircle(int x, int y, int r, Grid::Index depthStop,
                 else antialias *= concentration;
             }
             for (Grid::Index k = 1; k <= depthStop; ++k) {
-                (*target)[0](i, j, k) = cyan * concentration * antialias;
-                (*target)[1](i, j, k) = magenta * concentration * antialias;
-                (*target)[2](i, j, k) = yellow * concentration * antialias;
+                if (mode == kAdditionReplacement) {
+                    (*target)[0](i, j, k) = 0;
+                    (*target)[1](i, j, k) = 0;
+                    (*target)[2](i, j, k) = 0;
+                }
+                (*target)[0](i, j, k) += cyan * concentration * antialias;
+                (*target)[1](i, j, k) += magenta * concentration * antialias;
+                (*target)[2](i, j, k) += yellow * concentration * antialias;
             }
         }
     }

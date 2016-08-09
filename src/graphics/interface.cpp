@@ -56,12 +56,17 @@ void Interface::init() {
               << dropletMagenta << "," << dropletYellow << ")" << std::endl;
     std::cout << "  Adjust each color channel in +/-0.25 increments with Z,X,C (to increase)\n"
               << "  and ^Z,^X,^C (to decrease)." << std::endl;
+    std::cout << "  Hold alt while adjusting to use +/-0.05 increments." << std::endl;
     std::cout << "Droplet concentration is now " << dropletConcentration << std::endl;
     std::cout << "  Adjust in +/-0.25 increments with V (to increase) and ^V (to decrease)." << std::endl;
+    std::cout << "  Hold alt while adjusting to use +/-0.05 increments." << std::endl;
     std::cout << "Droplet depth is now " << dropletDepth << std::endl;
     std::cout << "  Adjust in +/-1 increments with B (to increase) and ^B (to decrease)." << std::endl;
     std::cout << "Droplet radius is now " << dropletRadius << std::endl;
     std::cout << "  Adjust in +/-5 increments with G (to increase) and ^G (to decrease)." << std::endl;
+    std::cout << "  Hold alt while adjusting to use +/-1 increments." << std::endl;
+    std::cout << "Left click to add a droplet to the fluid. Hold shift to make it a constant source.\n"
+              << "Hold control instead to make it replace the fluid is added to." << std::endl;
     std::cout << "~~~~RENDER~~~~" << std::endl;
     std::cout << "Adjust color saturation by scrolling up (to increase) or down (to decrease)." << std::endl;
     std::cout << "Adjust light penetration by scrolling right (to increase) or left (to decrease)." << std::endl;
@@ -131,7 +136,7 @@ void Interface::processSimulationInput(GLfloat dt) {
         keysUp[GLFW_KEY_SPACE] = GL_FALSE;
     }
     if (keysUp[GLFW_KEY_GRAVE_ACCENT]) {
-        if (keys[GLFW_KEY_RIGHT_SHIFT] || keys[GLFW_KEY_LEFT_SHIFT]) {
+        if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
             this->dt = std::max(minDt, this->dt - 0.01f);
         } else {
             this->dt = std::min(maxDt, this->dt + 0.01f);
@@ -198,7 +203,19 @@ void Interface::processRenderInput(GLfloat dt) {
 }
 
 void Interface::processManipulationInput(GLfloat dt) {
-    const Grid::Index dropletThickness = 2;
+    Scalar dyeIncrement = 0.25;
+    if (keys[GLFW_KEY_RIGHT_ALT] || keys[GLFW_KEY_LEFT_ALT]) {
+        dyeIncrement = 0.05;
+    }
+    Scalar concentrationIncrement = 0.25;
+    if (keys[GLFW_KEY_RIGHT_ALT] || keys[GLFW_KEY_LEFT_ALT]) {
+        concentrationIncrement = 0.05;
+    }
+    Grid::Index radiusIncrement = 5;
+    if (keys[GLFW_KEY_RIGHT_ALT] || keys[GLFW_KEY_LEFT_ALT]) {
+        radiusIncrement = 1;
+    }
+
     if (keysUp[GLFW_KEY_APOSTROPHE]) {
         if (keys[GLFW_KEY_RIGHT_SHIFT] || keys[GLFW_KEY_LEFT_SHIFT]) {
             std::cout << "Clearing constant dye sources." << std::endl;
@@ -222,9 +239,9 @@ void Interface::processManipulationInput(GLfloat dt) {
     // Adding dye
     if (keysUp[GLFW_KEY_Z]) {
         if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
-            dropletCyan -= 0.25;
+            dropletCyan -= dyeIncrement;
         } else {
-            dropletCyan += 0.25;
+            dropletCyan += dyeIncrement;
         }
         dropletCyan = std::max(0.0f, std::min(1.0f, dropletCyan));
         std::cout << "Droplet color is now CMY=(" << dropletCyan << ","
@@ -234,9 +251,9 @@ void Interface::processManipulationInput(GLfloat dt) {
     }
     if (keysUp[GLFW_KEY_X]) {
         if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
-            dropletMagenta -= 0.25;
+            dropletMagenta -= dyeIncrement;
         } else {
-            dropletMagenta += 0.25;
+            dropletMagenta += dyeIncrement;
         }
         dropletMagenta = std::max(0.0f, std::min(1.0f, dropletMagenta));
         std::cout << "Droplet color is now CMY=(" << dropletCyan << ","
@@ -246,9 +263,9 @@ void Interface::processManipulationInput(GLfloat dt) {
     }
     if (keysUp[GLFW_KEY_C]) {
         if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
-            dropletYellow -= 0.25;
+            dropletYellow -= dyeIncrement;
         } else {
-            dropletYellow += 0.25;
+            dropletYellow += dyeIncrement;
         }
         dropletYellow = std::max(0.0f, std::min(1.0f, dropletYellow));
         std::cout << "Droplet color is now CMY=(" << dropletCyan << ","
@@ -258,9 +275,9 @@ void Interface::processManipulationInput(GLfloat dt) {
     }
     if (keysUp[GLFW_KEY_V]) {
         if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
-            dropletConcentration -= 0.25;
+            dropletConcentration -= concentrationIncrement;
         } else {
-            dropletConcentration += 0.25;
+            dropletConcentration += concentrationIncrement;
         }
         dropletConcentration = std::max(0.0f, dropletConcentration);
         std::cout << "Droplet concentration is now " << dropletConcentration << std::endl;
@@ -280,9 +297,9 @@ void Interface::processManipulationInput(GLfloat dt) {
     }
     if (keysUp[GLFW_KEY_G]) {
         if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
-            dropletRadius -= 5;
+            dropletRadius -= radiusIncrement;
         } else {
-            dropletRadius += 5;
+            dropletRadius += radiusIncrement;
         }
         dropletRadius = std::max(1L, std::min(depth, dropletRadius));
         std::cout << "Droplet radius is now " << dropletRadius << std::endl;
@@ -294,11 +311,16 @@ void Interface::processManipulationInput(GLfloat dt) {
         glm::vec3 worldPos = glm::unProject(cursorPos, glm::mat4(), projectionMatrix, viewport);
         glm::vec4 gridPos = glm::vec4(worldPos, 1.0f);
         gridPos = canvas->viewInverseMatrix * gridPos;
-        bool whetherConstant = keys[GLFW_KEY_RIGHT_SHIFT] || keys[GLFW_KEY_LEFT_SHIFT];
+        AdditionMode mode = kAdditionAdditive;
+        if (keys[GLFW_KEY_RIGHT_SHIFT] || keys[GLFW_KEY_LEFT_SHIFT]) {
+            mode = kAdditionConstantAdditive;
+        } else if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
+            mode = kAdditionReplacement;
+        }
         manipulator.addDyeCircle(std::round(gridPos[0]), std::round(gridPos[1]),
                                  dropletRadius, dropletDepth,
                                  dropletCyan, dropletMagenta, dropletYellow,
-                                 dropletConcentration, whetherConstant);
+                                 dropletConcentration, mode);
         buttonsUp[GLFW_MOUSE_BUTTON_LEFT] = GL_FALSE;
     }
 }

@@ -26,7 +26,7 @@ void FluidSystem::clear() {
 }
 
 void FluidSystem::stepDensity(Scalar dt, const DyeField &addedDensity) {
-    density += addedDensity;
+    density += addedDensity * dt;
     std::array<BoundarySetter, density.coords> boundarySetters;
     for (std::size_t i = 0; i < density.coords; ++i) {
         boundarySetters[i] = std::bind(&setContinuityBoundaries, std::placeholders::_1, dim);
@@ -39,7 +39,7 @@ void FluidSystem::stepDensity(Scalar dt, const DyeField &addedDensity) {
 }
 
 void FluidSystem::stepVelocity(Scalar dt, const VelocityField &addedVelocity) {
-    velocity += addedVelocity;
+    velocity += addedVelocity * dt;
     std::array<BoundarySetter, velocity.coords> boundarySetters;
     if (horizontalNeumann) {
         boundarySetters[0] = std::bind(&setHorizontalNeumannBoundaries, std::placeholders::_1, dim);
