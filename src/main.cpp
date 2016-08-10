@@ -148,6 +148,6 @@ void cursorCallback(GLFWwindow* window, double xpos, double ypos) {
 
 // Is called whenever the window is resized via GLFW
 void resizeCallback(GLFWwindow* window, GLint width, GLint height) {
-    ui.processResize(width, height, ZOOM);
+    ui.processResize(width / ZOOM, height / ZOOM, ZOOM);
     glViewport(0, 0, width, height);
 }
