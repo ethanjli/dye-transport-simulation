@@ -12,21 +12,12 @@ FluidManipulator::FluidManipulator(std::shared_ptr<FluidSystem> fluidSystem) :
     initialWidth = std::min(initialWidth, initialHeight);
     initialHeight = std::min(initialWidth, initialHeight);
     // Initialize velocities
-    constantFlowSource[0](centerX - 5, centerY, 1) = -2000;
-    constantFlowSource[0](centerX + 5, centerY, 1) = 2000;
-    constantFlowSource[1](centerX, centerY - 5, 1) = 2000;
-    constantFlowSource[1](centerX, centerY + 5, 1) = 2000;
-    for (Grid::Index i = centerX - 3; i <= centerX + 3; ++i) {
-        for (Grid::Index j = centerY - 3; j <= centerY + 3; ++j) {
-            constantFlowSource[2](i, j, 2) = 800;
-        }
-    }
+    //addSoapRect(centerX, centerY, 5, 5, 2000, 2000, kAdditionConstantAdditive);
     // Initialize dyes
     Scalar halfLength = std::min(initialWidth, initialHeight) / 2;
-    addDyeRect(centerX, 1, fluidSystem->dim(0) / 3, 1, 4, 6,
-               0, 1, 0, 3.5, true);
-    addDyeCircle(centerX, centerY, halfLength * 4, 2,
-                 1, 1, 0, 0.5);
+    //addDyeRect(centerX, 1, fluidSystem->dim(0) / 3, 1, 4, 6,
+    //           0, 1, 0, 3.5, kAdditionAdditive);
+    addDyeCircle(centerX, centerY, halfLength * 4, 2, 1, 1, 0, 0.5);
 }
 void FluidManipulator::step(Scalar dt) {
     fluidSystem->step(constantDyeSource, constantFlowSource, dt);
@@ -35,9 +26,9 @@ void FluidManipulator::step(Scalar dt) {
 void FluidManipulator::addDyeRect(int x, int y, int halfLength, int halfHeight,
                                   Grid::Index depthStart, Grid::Index depthStop,
                                   Scalar cyan, Scalar magenta, Scalar yellow,
-                                  Scalar concentration, bool constantSource) {
+                                  Scalar concentration, AdditionMode mode) {
     DyeField *target;
-    if (constantSource) {
+    if (mode == kAdditionConstantAdditive) {
         target = &constantDyeSource;
     } else {
         target = &(fluidSystem->density);
@@ -90,6 +81,42 @@ void FluidManipulator::addDyeCircle(int x, int y, int r, Grid::Index depthStop,
                 (*target)[1](i, j, k) += magenta * concentration * antialias;
                 (*target)[2](i, j, k) += yellow * concentration * antialias;
             }
+        }
+    }
+}
+void FluidManipulator::addSoapRect(int x, int y, int halfLength, int halfHeight,
+                                   Scalar outwardsVelocity, Scalar upwardsVelocity,
+                                   AdditionMode mode) {
+    VelocityField *target;
+    if (mode == kAdditionConstantAdditive) {
+        target = &constantFlowSource;
+    } else {
+        target = &(fluidSystem->velocity);
+    }
+    // Add top and bottom velocities
+    //for (Grid::Index i = x - halfLength; i <= x + halfLength; ++i) {
+    for (Grid::Index i = x - halfLength; i <= x + halfLength; i += halfLength) {
+        if (i < 0 || i > fluidSystem->dim(0)) continue;
+        if (y - halfHeight >= 0) { // bottom in bounds
+            (*target)[1](i, y - halfHeight, 1) = -outwardsVelocity;
+            (*target)[2](i, y - halfHeight, 1) = -upwardsVelocity;
+        }
+        if (y + halfHeight <= fluidSystem->dim(1)) { // top in bounds
+            (*target)[1](i, y + halfHeight, 1) = outwardsVelocity;
+            (*target)[2](i, y + halfHeight, 1) = -upwardsVelocity;
+        }
+    }
+    // Add left and right velocities
+    //for (Grid::Index j = y - halfHeight; j <= y + halfHeight; ++j) {
+    for (Grid::Index j = y - halfHeight; j <= y + halfHeight; j += halfHeight) {
+        if (j < 0 || j > fluidSystem->dim(1)) continue;
+        if (x - halfLength >= 0) { // left in bounds
+            (*target)[0](x - halfLength, j, 1) = -outwardsVelocity;
+            (*target)[0](x - halfLength, j, 1) = -upwardsVelocity;
+        }
+        if (x + halfLength <= fluidSystem->dim(0)) { // right in bounds
+            (*target)[0](x + halfLength, j, 1) = outwardsVelocity;
+            (*target)[0](x + halfLength, j, 1) = -upwardsVelocity;
         }
     }
 }

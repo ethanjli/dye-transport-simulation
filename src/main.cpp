@@ -16,7 +16,7 @@ void cursorCallback(GLFWwindow* window, double xpos, double ypos);
 void resizeCallback(GLFWwindow *window, GLint width, GLint height);
 
 // Grid and window dimensions
-const GLint WIDTH = 54, HEIGHT = 96;
+const GLint WIDTH = 80, HEIGHT = 80;
 const GLint ZOOM = 6;
 
 Interface ui(WIDTH, HEIGHT, 6, 0.05);

@@ -67,6 +67,8 @@ void Interface::init() {
     std::cout << "  Hold alt while adjusting to use +/-1 increments." << std::endl;
     std::cout << "Left click to add a droplet to the fluid. Hold shift to make it a constant source.\n"
               << "Hold control instead to make it replace the fluid is added to." << std::endl;
+    std::cout << "~~~~SOAP~~~~" << std::endl;
+    std::cout << "Right click to add soap to the fluid. It will be a constant source." << std::endl;
     std::cout << "~~~~RENDER~~~~" << std::endl;
     std::cout << "Adjust color saturation by scrolling up (to increase) or down (to decrease)." << std::endl;
     std::cout << "Adjust light penetration by scrolling right (to increase) or left (to decrease)." << std::endl;
@@ -301,12 +303,12 @@ void Interface::processManipulationInput(GLfloat dt) {
         } else {
             dropletRadius += radiusIncrement;
         }
-        dropletRadius = std::max(1L, std::min(depth, dropletRadius));
+        dropletRadius = std::max(1L, dropletRadius);
         std::cout << "Droplet radius is now " << dropletRadius << std::endl;
 
         keysUp[GLFW_KEY_G] = GL_FALSE;
     }
-    if (buttonsUp[GLFW_MOUSE_BUTTON_LEFT]) {
+    if (buttonsUp[GLFW_MOUSE_BUTTON_LEFT] || buttonsUp[GLFW_MOUSE_BUTTON_RIGHT]) {
         glm::vec3 cursorPos(cursor[0], cursor[1], 1.0f);
         glm::vec3 worldPos = glm::unProject(cursorPos, glm::mat4(), projectionMatrix, viewport);
         glm::vec4 gridPos = glm::vec4(worldPos, 1.0f);
@@ -317,11 +319,16 @@ void Interface::processManipulationInput(GLfloat dt) {
         } else if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
             mode = kAdditionReplacement;
         }
-        manipulator.addDyeCircle(std::round(gridPos[0]), std::round(gridPos[1]),
-                                 dropletRadius, dropletDepth,
-                                 dropletCyan, dropletMagenta, dropletYellow,
-                                 dropletConcentration, mode);
-        buttonsUp[GLFW_MOUSE_BUTTON_LEFT] = GL_FALSE;
+        if (buttonsUp[GLFW_MOUSE_BUTTON_LEFT]) {
+            manipulator.addDyeCircle(std::round(gridPos[0]), std::round(gridPos[1]),
+                                     dropletRadius, dropletDepth,
+                                     dropletCyan, dropletMagenta, dropletYellow,
+                                     dropletConcentration, mode);
+            buttonsUp[GLFW_MOUSE_BUTTON_LEFT] = GL_FALSE;
+        } else if (buttonsUp[GLFW_MOUSE_BUTTON_RIGHT]) {
+            manipulator.addSoapRect(std::round(gridPos[0]), std::round(gridPos[1]),
+                                    5, 5, 1000, 1000, kAdditionConstantAdditive);
+        }
     }
 }
 
