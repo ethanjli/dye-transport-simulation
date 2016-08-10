@@ -12,7 +12,7 @@ FluidManipulator::FluidManipulator(std::shared_ptr<FluidSystem> fluidSystem) :
     initialWidth = std::min(initialWidth, initialHeight);
     initialHeight = std::min(initialWidth, initialHeight);
     // Initialize velocities
-    //addSoapRect(centerX, centerY, 5, 5, 2000, 2000, kAdditionConstantAdditive);
+    addSoapRect(centerX, centerY, 5, 5, 2000, 2000, kAdditionConstantAdditive);
     // Initialize dyes
     Scalar halfLength = std::min(initialWidth, initialHeight) / 2;
     //addDyeRect(centerX, 1, fluidSystem->dim(0) / 3, 1, 4, 6,
@@ -94,8 +94,7 @@ void FluidManipulator::addSoapRect(int x, int y, int halfLength, int halfHeight,
         target = &(fluidSystem->velocity);
     }
     // Add top and bottom velocities
-    //for (Grid::Index i = x - halfLength; i <= x + halfLength; ++i) {
-    for (Grid::Index i = x - halfLength; i <= x + halfLength; i += halfLength) {
+    for (Grid::Index i = x - halfLength; i <= x + halfLength; ++i) {
         if (i < 0 || i > fluidSystem->dim(0)) continue;
         if (y - halfHeight >= 0) { // bottom in bounds
             (*target)[1](i, y - halfHeight, 1) = -outwardsVelocity;
@@ -107,16 +106,15 @@ void FluidManipulator::addSoapRect(int x, int y, int halfLength, int halfHeight,
         }
     }
     // Add left and right velocities
-    //for (Grid::Index j = y - halfHeight; j <= y + halfHeight; ++j) {
-    for (Grid::Index j = y - halfHeight; j <= y + halfHeight; j += halfHeight) {
+    for (Grid::Index j = y - halfHeight; j <= y + halfHeight; ++j) {
         if (j < 0 || j > fluidSystem->dim(1)) continue;
         if (x - halfLength >= 0) { // left in bounds
             (*target)[0](x - halfLength, j, 1) = -outwardsVelocity;
-            (*target)[0](x - halfLength, j, 1) = -upwardsVelocity;
+            (*target)[2](x - halfLength, j, 1) = -upwardsVelocity;
         }
         if (x + halfLength <= fluidSystem->dim(0)) { // right in bounds
             (*target)[0](x + halfLength, j, 1) = outwardsVelocity;
-            (*target)[0](x + halfLength, j, 1) = -upwardsVelocity;
+            (*target)[2](x + halfLength, j, 1) = -upwardsVelocity;
         }
     }
 }

@@ -106,7 +106,7 @@ void div(Grid &out, const VelocityField &in, const Indices &dim) {
                 out(i, j, k) = 0;
                 out(i, j, k) += 0.5 * (in[0](i + 1, j, k) - in[0](i - 1, j, k));
                 out(i, j, k) += 0.5 * (in[1](i, j + 1, k) - in[1](i, j - 1, k));
-                out(i, j, k) += 0.5 * (in[1](i, j, k + 1) - in[1](i, j, k - 1));
+                out(i, j, k) += 0.5 * (in[2](i, j, k + 1) - in[2](i, j, k - 1));
             }
         }
     }
