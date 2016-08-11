@@ -5,6 +5,7 @@
 FluidManipulator::FluidManipulator(std::shared_ptr<FluidSystem> fluidSystem) :
     fluidSystem(fluidSystem), constantDyeSource(fluidSystem->fullDim),
     constantFlowSource(fluidSystem->fullStaggeredDim) {
+    /*
     Grid::Index centerX = fluidSystem->dim(0) / 2;
     Grid::Index centerY = fluidSystem->dim(1) / 2;
     Grid::Index initialWidth = fluidSystem->dim(0) / 8;
@@ -15,9 +16,10 @@ FluidManipulator::FluidManipulator(std::shared_ptr<FluidSystem> fluidSystem) :
     addSoapRect(centerX, centerY, 5, 5, 2000, 2000, kAdditionConstantAdditive);
     // Initialize dyes
     Scalar halfLength = std::min(initialWidth, initialHeight) / 2;
-    //addDyeRect(centerX, 1, fluidSystem->dim(0) / 3, 1, 4, 6,
-    //           0, 1, 0, 3.5, kAdditionAdditive);
+    addDyeRect(centerX, 1, fluidSystem->dim(0) / 3, 1, 4, 6,
+               0, 1, 0, 3.5, kAdditionAdditive);
     addDyeCircle(centerX, centerY, halfLength * 4, 2, 1, 1, 0, 0.5);
+    */
 }
 void FluidManipulator::step(Scalar dt) {
     fluidSystem->step(constantDyeSource, constantFlowSource, dt);
@@ -84,6 +86,7 @@ void FluidManipulator::addDyeCircle(int x, int y, int r, Grid::Index depthStop,
         }
     }
 }
+
 void FluidManipulator::addSoapRect(int x, int y, int halfLength, int halfHeight,
                                    Scalar outwardsVelocity, Scalar upwardsVelocity,
                                    AdditionMode mode) {
@@ -115,6 +118,42 @@ void FluidManipulator::addSoapRect(int x, int y, int halfLength, int halfHeight,
         if (x + halfLength <= fluidSystem->dim(0)) { // right in bounds
             (*target)[0](x + halfLength, j, 1) = outwardsVelocity;
             (*target)[2](x + halfLength, j, 1) = -upwardsVelocity;
+        }
+    }
+}
+void FluidManipulator::addSoapCircle(int x, int y, int r, Scalar outwardsFlux,
+                                     Scalar upwardsFlux, AdditionMode mode) {
+    VelocityField *target;
+    if (mode == kAdditionConstantAdditive) {
+        target = &constantFlowSource;
+    } else {
+        target = &(fluidSystem->velocity);
+    }
+    Scalar outwardsVelocity = outwardsFlux * 2 * 3.14159 * r;
+    Scalar upwardsVelocity = upwardsFlux * 2 * 3.14159 * r;
+    for (int i = x - r; i <= x + r; ++i) {
+        if (i < 0 || i > fluidSystem->dim(0)) continue;
+        for (int j = y - r; j <= y + r; ++j) {
+            if (j < 0 || j > fluidSystem->dim(1)) continue;
+            int dx = i - x;
+            int dy = j - y;
+            int outerDistance = dx * dx + dy * dy - r * r;
+            if (outerDistance > 1) continue;
+            // Is this how real people do antialiasing? Who knows! I hacked this
+            // together by trial and error (and by applying the coverage of implicit
+            // functions from the first lecture). This heuristic works well, so.
+            if (outerDistance < -4.0 * r) continue;
+            Scalar antialias = -outerDistance / (4.0 * r);
+            Scalar x_component = dx / std::sqrt(dx * dx + dy * dy);
+            Scalar y_component = dy / std::sqrt(dx * dx + dy * dy);
+            if (mode == kAdditionReplacement) {
+              (*target)[0](i, j, 1) = 0;
+              (*target)[1](i, j, 1) = 0;
+              (*target)[2](i, j, 1) = 0;
+            }
+            (*target)[0](i, j, 1) += x_component * outwardsVelocity * antialias;
+            (*target)[1](i, j, 1) += y_component * outwardsVelocity * antialias;
+            (*target)[2](i, j, 1) -= upwardsVelocity * antialias;
         }
     }
 }

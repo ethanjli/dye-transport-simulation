@@ -68,6 +68,15 @@ void Interface::init() {
     std::cout << "Left click to add a droplet to the fluid. Hold shift to make it a constant source.\n"
               << "Hold control instead to make it replace the fluid is added to." << std::endl;
     std::cout << "~~~~SOAP~~~~" << std::endl;
+    std::cout << "Soap outwards flux is now " << soapOutwardsFlux << "[velocity] per [circumferential length]" << std::endl;
+    std::cout << "  Adjust in +/-2 increments with 1 (to increase) and ^1 (to decrease)." << std::endl;
+    std::cout << "  Hold alt while adjusting to use +/-0.5 increments." << std::endl;
+    std::cout << "Soap upwards flux is now " << soapUpwardsFlux << "[velocity] per [circumferential length]" << std::endl;
+    std::cout << "  Adjust in +/-2 increments with 2 (to increase) and ^2 (to decrease)." << std::endl;
+    std::cout << "  Hold alt while adjusting to use +/-0.5 increments." << std::endl;
+      std::cout << "Soap radius is now " << soapRadius << std::endl;
+    std::cout << "  Adjust in +/-5 increments with T (to increase) and ^T (to decrease)." << std::endl;
+    std::cout << "  Hold alt while adjusting to use +/-1 increments." << std::endl;
     std::cout << "Right click to add soap to the fluid. It will be a constant source." << std::endl;
     std::cout << "~~~~RENDER~~~~" << std::endl;
     std::cout << "Adjust color saturation by scrolling up (to increase) or down (to decrease)." << std::endl;
@@ -217,6 +226,10 @@ void Interface::processManipulationInput(GLfloat dt) {
     if (keys[GLFW_KEY_RIGHT_ALT] || keys[GLFW_KEY_LEFT_ALT]) {
         radiusIncrement = 1;
     }
+    Scalar fluxIncrement = 2;
+    if (keys[GLFW_KEY_RIGHT_ALT] || keys[GLFW_KEY_LEFT_ALT]) {
+        fluxIncrement = 0.5;
+    }
 
     if (keysUp[GLFW_KEY_APOSTROPHE]) {
         if (keys[GLFW_KEY_RIGHT_SHIFT] || keys[GLFW_KEY_LEFT_SHIFT]) {
@@ -308,6 +321,40 @@ void Interface::processManipulationInput(GLfloat dt) {
 
         keysUp[GLFW_KEY_G] = GL_FALSE;
     }
+    // Adding soap
+    if (keysUp[GLFW_KEY_1]) {
+        if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
+            soapOutwardsFlux -= fluxIncrement;
+        } else {
+            soapOutwardsFlux += fluxIncrement;
+        }
+        soapOutwardsFlux = std::max(0.0f, soapOutwardsFlux);
+        std::cout << "Soap outwards flux is now " << soapOutwardsFlux << "[velocity] per [droplet circumferential length]" << std::endl;
+
+        keysUp[GLFW_KEY_1] = GL_FALSE;
+    }
+    if (keysUp[GLFW_KEY_2]) {
+        if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
+            soapUpwardsFlux -= fluxIncrement;
+        } else {
+            soapUpwardsFlux += fluxIncrement;
+        }
+        soapUpwardsFlux = std::max(0.0f, soapUpwardsFlux);
+        std::cout << "Soap upwards flux is now " << soapUpwardsFlux << "[velocity] per [droplet circumferential length]" << std::endl;
+
+        keysUp[GLFW_KEY_2] = GL_FALSE;
+    }
+    if (keysUp[GLFW_KEY_T]) {
+        if (keys[GLFW_KEY_RIGHT_CONTROL] || keys[GLFW_KEY_LEFT_CONTROL]) {
+            soapRadius -= radiusIncrement;
+        } else {
+            soapRadius += radiusIncrement;
+        }
+        soapRadius = std::max(1L, soapRadius);
+        std::cout << "Soap radius is now " << soapRadius << std::endl;
+
+        keysUp[GLFW_KEY_T] = GL_FALSE;
+    }
     if (buttonsUp[GLFW_MOUSE_BUTTON_LEFT] || buttonsUp[GLFW_MOUSE_BUTTON_RIGHT]) {
         glm::vec3 cursorPos(cursor[0], cursor[1], 1.0f);
         glm::vec3 worldPos = glm::unProject(cursorPos, glm::mat4(), projectionMatrix, viewport);
@@ -326,8 +373,10 @@ void Interface::processManipulationInput(GLfloat dt) {
                                      dropletConcentration, mode);
             buttonsUp[GLFW_MOUSE_BUTTON_LEFT] = GL_FALSE;
         } else if (buttonsUp[GLFW_MOUSE_BUTTON_RIGHT]) {
-            manipulator.addSoapRect(std::round(gridPos[0]), std::round(gridPos[1]),
-                                    5, 5, 1000, 1000, kAdditionConstantAdditive);
+            manipulator.addSoapCircle(std::round(gridPos[0]), std::round(gridPos[1]),
+                                      soapRadius, soapOutwardsFlux, soapUpwardsFlux,
+                                      kAdditionConstantAdditive);
+            buttonsUp[GLFW_MOUSE_BUTTON_RIGHT] = GL_FALSE;
         }
     }
 }

@@ -29,10 +29,8 @@ public:
     void addSoapRect(int x, int y, int halfLength, int halfHeight,
                      Scalar outwardsVelocity, Scalar upwardsVelocity,
                      AdditionMode mode = kAdditionAdditive);
-    /*
-    void addSoapCircle(int x, int y, int radius, Grid::Index depthStop,
+    void addSoapCircle(int x, int y, int radius, Scalar outwardsFlux, Scalar upwardsFlux,
                        AdditionMode mode = kAdditionAdditive);
-                       */
 
     void clearConstantDyeSource();
     void clearConstantFlowSource();

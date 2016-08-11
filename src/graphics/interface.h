@@ -64,6 +64,9 @@ private:
     Scalar dropletConcentration = 1;
     Grid::Index dropletRadius = 6;
     Grid::Index dropletDepth = 2;
+    Scalar soapOutwardsFlux = 40;
+    Scalar soapUpwardsFlux = 10;
+    Grid::Index soapRadius = 6;
 
     void processCameraInput(GLfloat dt);
     void processSimulationInput(GLfloat dt);
